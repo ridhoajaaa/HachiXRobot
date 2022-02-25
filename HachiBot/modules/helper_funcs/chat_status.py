@@ -13,7 +13,7 @@ from HachiBot import (
     dispatcher,
 )
 
-from telegram import Chat, ChatMember, ParseMode, Update, User
+from telegram import Chat, ChatMember, ParseMode, Update
 from telegram.ext import CallbackContext
 
 # stores admemes in memory for 10 min.
@@ -93,7 +93,6 @@ def is_user_ban_protected(update: Update, user_id: int, member: ChatMember = Non
         member = chat.get_member(user_id)
 
     return member.status in ("administrator", "creator")
-
 
 
 def is_user_in_chat(chat: Chat, user_id: int) -> bool:
@@ -190,23 +189,23 @@ def whitelist_plus(func):
 
 def user_admin(func):
     @wraps(func)
-    def is_admin(update, context, *args, **kwargs):
+    def is_admin(update: Update, context: CallbackContext, *args, **kwargs):
+        bot = context.bot
         user = update.effective_user
-        if user and is_user_admin(update.effective_chat, user.id):
-            return func(update, context, *args, **kwargs)
+        chat = update.effective_chat
 
+        if user and is_user_admin(chat, user.id):
+            return func(update, context, *args, **kwargs)
         if not user:
             pass
-
         elif DEL_CMDS and " " not in update.effective_message.text:
             try:
                 update.effective_message.delete()
-            except BadRequest:
+            except:
                 pass
-
         else:
             update.effective_message.reply_text(
-                "You're missing admin rights for using this command!"
+                "Who dis non-admin telling me what to do? You want a punch?",
             )
 
     return is_admin
@@ -271,6 +270,7 @@ def bot_admin(func):
 
     return is_admin
 
+
 def bot_can_delete(func):
     @wraps(func)
     def delete_rights(update: Update, context: CallbackContext, *args, **kwargs):
@@ -289,7 +289,7 @@ def bot_can_delete(func):
         update.effective_message.reply_text(cant_delete, parse_mode=ParseMode.HTML)
 
     return delete_rights
-    
+
 
 def callbacks_in_filters(data):
     return filters.create(lambda flt, _, query: flt.data in query.data, data=data)
