@@ -1,6 +1,6 @@
-import PrimeMega.modules.sql.blacklistusers_sql as sql
-from PrimeMega import ALLOW_EXCL
-from PrimeMega import DEV_USERS, DRAGONS, DEMONS, TIGERS, WOLVES
+import HachiBot.modules.sql.blacklistusers_sql as sql
+from HachiBot import ALLOW_EXCL
+from HachiBot import DEV_USERS, DRAGONS, DEMONS, TIGERS, WOLVES
 
 from telegram import Update
 from telegram.ext import CommandHandler, MessageHandler, RegexHandler, Filters
