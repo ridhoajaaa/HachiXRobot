@@ -30,7 +30,7 @@ LOCK_TYPES = {
     "audio": Filters.audio,
     "voice": Filters.voice,
     "document": Filters.document,
-    "video": Filters.video,
+    "video": Filters.document & ~Filters.animation & ~Filters.video,
     "contact": Filters.contact,
     "photo": Filters.photo,
     "url": Filters.entity(MessageEntity.URL)
@@ -131,17 +131,15 @@ def unrestr_members(
             pass
 
 
-@run_async
 def locktypes(update, context):
     update.effective_message.reply_text(
-        "\n • ".join(
+        "\n × ".join(
             ["Locks available: "]
             + sorted(list(LOCK_TYPES) + list(LOCK_CHAT_RESTRICTION))
         )
     )
 
 
-@run_async
 @user_admin
 @loggable
 @typing_action
@@ -235,10 +233,15 @@ def lock(update, context) -> str:
             else:
                 send_message(
                     update.effective_message,
-                    "What are you trying to lock...? Try /locktypes for the list of lockables",
-                )
+                    f"<u><b>Lock Not Found</b></u>\n"
+        f"The command /lock must be used specifying Try /locktypes for the list of lockables",
+        parse_mode=ParseMode.HTML,
+        )
         else:
-            send_message(update.effective_message, "What are you trying to lock...?")
+            send_message(update.effective_message, "<u><b>Lock Not Found</b></u>\n"
+        f"The command /lock must be used specifying Try /locktypes for the list of lockables",
+        parse_mode=ParseMode.HTML,
+        )
 
     else:
         send_message(
@@ -249,7 +252,6 @@ def lock(update, context) -> str:
     return ""
 
 
-@run_async
 @user_admin
 @loggable
 @typing_action
@@ -346,16 +348,20 @@ def unlock(update, context) -> str:
             else:
                 send_message(
                     update.effective_message,
-                    "What are you trying to unlock...? Try /locktypes for the list of lockables.",
-                )
+                    "<u><b>UnLock Not Found</b></u>\n"
+        f"The command /unlock must be used specifying Try /locktypes for the list of lockables",
+        parse_mode=ParseMode.HTML,
+        )
 
         else:
-            send_message(update.effective_message, "What are you trying to unlock...?")
+            send_message(update.effective_message, "<u><b>UnLock Not Found</b></u>\n"
+        f"The command /unlock must be used specifying Try /locktypes for the list of lockables",
+        parse_mode=ParseMode.HTML,
+        )
 
     return ""
 
 
-@run_async
 @user_not_admin
 def del_lockables(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
@@ -488,14 +494,13 @@ def build_lock_message(chat_id):
         locklist.sort()
         # Building lock list string
         for x in locklist:
-            res += "\n • {}".format(x)
+            res += "\n × {}".format(x)
     res += "\n\n*" + "These are the current chat permissions:" + "*"
     for x in permslist:
-        res += "\n • {}".format(x)
+        res += "\n × {}".format(x)
     return res
 
 
-@run_async
 @user_admin
 @typing_action
 def list_locks(update, context):
@@ -566,12 +571,12 @@ Do stickers annoy you? or want to avoid people sharing links? or pictures? \
 You're in the right place!
 The locks module allows you to lock away some common items in the \
 telegram world; the bot will automatically delete them!
- ❍ /locktypes*:* Lists all possible locktypes
+ × /locktypes*:* Lists all possible locktypes
  
 *Admins only:*
- ❍ /lock <type>*:* Lock items of a certain type (not available in private)
- ❍ /unlock <type>*:* Unlock items of a certain type (not available in private)
- ❍ /locks*:* The current list of locks in this chat.
+ × /lock <type>*:* Lock items of a certain type (not available in private)
+ × /unlock <type>*:* Unlock items of a certain type (not available in private)
+ × /locks*:* The current list of locks in this chat.
  
 Locks can be used to restrict a group's users.
 eg:
@@ -579,18 +584,18 @@ Locking urls will auto-delete all messages with urls, locking stickers will rest
 non-admin users from sending stickers, etc.
 Locking bots will stop non-admins from adding bots to the chat.
 *Note:*
- • Unlocking permission *info* will allow members (non-admins) to change the group information, such as the description or the group name
- • Unlocking permission *pin* will allow members (non-admins) to pinned a message in a group
+ × Unlocking permission *info* will allow members (non-admins) to change the group information, such as the description or the group name
+ × Unlocking permission *pin* will allow members (non-admins) to pinned a message in a group
 """
 
 __mod_name__ = "Locks"
 
-LOCKTYPES_HANDLER = DisableAbleCommandHandler("locktypes", locktypes)
-LOCK_HANDLER = CommandHandler("lock", lock, pass_args=True)  # , filters=Filters.group)
+LOCKTYPES_HANDLER = DisableAbleCommandHandler("locktypes", locktypes, run_async=True)
+LOCK_HANDLER = CommandHandler("lock", lock, pass_args=True, run_async=True)  # , filters=Filters.group,)
 UNLOCK_HANDLER = CommandHandler(
-    "unlock", unlock, pass_args=True
+    "unlock", unlock, pass_args=True, run_async=True
 )  # , filters=Filters.group)
-LOCKED_HANDLER = CommandHandler("locks", list_locks)  # , filters=Filters.group)
+LOCKED_HANDLER = CommandHandler("locks", list_locks, run_async=True)  # , filters=Filters.group)
 
 dispatcher.add_handler(LOCK_HANDLER)
 dispatcher.add_handler(UNLOCK_HANDLER)

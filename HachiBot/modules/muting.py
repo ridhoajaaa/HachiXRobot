@@ -33,27 +33,45 @@ from telegram.ext import CallbackContext, CommandHandler, run_async, CallbackQue
 from telegram.utils.helpers import mention_html
 
 
-def check_user(user_id: int, bot: Bot, chat: Chat) -> Optional[str]:
-    
+def check_user(user_id: int, bot: Bot, chat: Chat, update: Update) -> Optional[str]:
+    message = update.effective_message
+    log_message = ""
+
     if not user_id:
-        reply = "⚠️ User not found"
-        return reply
+        message.reply_text(
+        f"<u><b>User Not Found</b></u>\n"
+        f"The command /mute must be used specifying user <b>username/id/mention</b> or <b>replying</b> to one of his messages.",
+        parse_mode=ParseMode.HTML,
+        )
+        return log_message
 
     try:
         member = chat.get_member(user_id)
     except BadRequest as excp:
         if excp.message == "User not found":
-            reply = "I can't seem to find this user"
-            return reply
+            message.reply_text(
+            f"<u><b>User Not Found</b></u>\n"
+            f"The command /mute must be used specifying user <b>username/id/mention</b> or <b>replying</b> to one of his messages.",
+            parse_mode=ParseMode.HTML,
+        )
+            return log_message
         raise
 
     if user_id == bot.id:
-        reply = "I'm not gonna MUTE myself, How high are you?"
-        return reply
+        message.reply_text(
+        f"<u><b>This Is My Self</b></u>\n"
+        f"Oh yeah, Mute myself, gblk! don't be like crazy.",
+        parse_mode=ParseMode.HTML,
+        )
+        return log_message
 
     if is_user_admin(chat, user_id, member) or user_id in TIGERS:
-        reply = "Can't. Find someone else to mute but not this one."
-        return reply
+        message.reply_text(
+        f"<u><b>The user is part of the group staff</b></u>\n"
+        f"This user has immunity and cannot be mute gblk.",
+        parse_mode=ParseMode.HTML,
+        )
+        return log_message
 
     return None
 
@@ -69,7 +87,7 @@ def mute(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     
     user_id, reason = extract_user_and_text(message, args)
-    reply = check_user(user_id, bot, chat)
+    reply = check_user(user_id, bot, chat, update)
    
 
     if reply:
@@ -96,11 +114,11 @@ def mute(update: Update, context: CallbackContext) -> str:
             f"{mention_html(member.user.id, member.user.first_name)} [<code>{member.user.id}</code>] Is now 🔇 Muted."
             )
         if reason:
-            msg += f"\nReason: {html.escape(reason)}"
+            msg += f"\n\nReason: {html.escape(reason)}"
 
         keyboard = InlineKeyboardMarkup([[
             InlineKeyboardButton(
-                "🔄  Unmute", callback_data="unmute_({})".format(member.user.id))
+                "Unmute ✅", callback_data="unmute_({})".format(member.user.id))
         ]])
         bot.sendMessage(
             chat.id,
@@ -127,7 +145,9 @@ def unmute(update: Update, context: CallbackContext) -> str:
     user_id, reason = extract_user_and_text(message, args)
     if not user_id:
         message.reply_text(
-            "You'll need to either give me a username to unmute, or reply to someone to be unmuted."
+        f"<u><b>User Not Found</b></u>\n"
+        f"The command /unmute must be used specifying user <b>username/id/mention</b> or <b>replying</b> to one of his messages.",
+        parse_mode=ParseMode.HTML,
         )
         return ""
 
@@ -234,7 +254,7 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
 
             keyboard = InlineKeyboardMarkup([[
                 InlineKeyboardButton(
-                    "🔄  Unmute", callback_data="unmute_({})".format(member.user.id))
+                    "Unmute ✅", callback_data="unmute_({})".format(member.user.id))
             ]])
             bot.sendMessage(chat.id, msg, reply_markup=keyboard, parse_mode=ParseMode.HTML)
 

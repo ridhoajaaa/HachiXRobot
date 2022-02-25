@@ -13,7 +13,7 @@ from HachiBot import (
     dispatcher,
 )
 
-from telegram import Chat, ChatMember, ParseMode, Update
+from telegram import Chat, ChatMember, ParseMode, Update, User
 from telegram.ext import CallbackContext
 
 # stores admemes in memory for 10 min.
@@ -74,22 +74,26 @@ def can_delete(chat: Chat, bot_id: int) -> bool:
     return chat.get_member(bot_id).can_delete_messages
 
 
-def is_user_ban_protected(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
+def is_user_ban_protected(update: Update, user_id: int, member: ChatMember = None) -> bool:
+    chat = update.effective_chat
+    msg = update.effective_message
     if (
-        chat.type == "private"
-        or user_id in DRAGONS
-        or user_id in DEV_USERS
-        or user_id in WOLVES
-        or user_id in TIGERS
-        or chat.all_members_are_administrators
-        or user_id in [777000, 1087968824]
-    ):  # Count telegram and Group Anonymous as admin
+            chat.type == "private"
+            or user_id in DEMONS
+            or user_id in DEV_USERS
+            or user_id in TIGERS
+            or user_id in DRAGONS
+            or chat.all_members_are_administrators
+            or (msg.reply_to_message and msg.reply_to_message.sender_chat is not None
+                and msg.reply_to_message.sender_chat.type != "channel")
+    ):
         return True
 
     if not member:
         member = chat.get_member(user_id)
 
     return member.status in ("administrator", "creator")
+
 
 
 def is_user_in_chat(chat: Chat, user_id: int) -> bool:
@@ -186,23 +190,23 @@ def whitelist_plus(func):
 
 def user_admin(func):
     @wraps(func)
-    def is_admin(update: Update, context: CallbackContext, *args, **kwargs):
-        bot = context.bot
+    def is_admin(update, context, *args, **kwargs):
         user = update.effective_user
-        chat = update.effective_chat
-
-        if user and is_user_admin(chat, user.id):
+        if user and is_user_admin(update.effective_chat, user.id):
             return func(update, context, *args, **kwargs)
+
         if not user:
             pass
+
         elif DEL_CMDS and " " not in update.effective_message.text:
             try:
                 update.effective_message.delete()
-            except:
+            except BadRequest:
                 pass
+
         else:
             update.effective_message.reply_text(
-                "Who dis non-admin telling me what to do? You want a punch?",
+                "You're missing admin rights for using this command!"
             )
 
     return is_admin
@@ -267,7 +271,6 @@ def bot_admin(func):
 
     return is_admin
 
-
 def bot_can_delete(func):
     @wraps(func)
     def delete_rights(update: Update, context: CallbackContext, *args, **kwargs):
@@ -286,6 +289,10 @@ def bot_can_delete(func):
         update.effective_message.reply_text(cant_delete, parse_mode=ParseMode.HTML)
 
     return delete_rights
+    
+
+def callbacks_in_filters(data):
+    return filters.create(lambda flt, _, query: flt.data in query.data, data=data)
 
 
 def can_pin(func):
