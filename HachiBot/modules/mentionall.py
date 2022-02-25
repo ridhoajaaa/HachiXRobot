@@ -72,7 +72,7 @@ async def mentionall(event):
         pass
 
 
-@Client.on(events.NewMessage(pattern="^/cancel$"))
+@Client.on(events.NewMessage(pattern="^/stop$"))
 async def cancel_spam(event):
     if not event.chat_id in spam_chats:
         return await event.respond("There is no proccess on going...")

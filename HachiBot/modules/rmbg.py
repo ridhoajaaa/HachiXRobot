@@ -10,7 +10,7 @@ from HachiBot import REM_BG_API_KEY
 from HachiBot.events import register
 from HachiBot import telethn as tbot
 
-REM_BG_API_KEY = "REM_BG_API_KEY"
+REM_BG_API_KEY = "CtwF5o4aZJkBDZmYaqiB3VwF"
 TEMP_DOWNLOAD_DIRECTORY = "./"
 
 

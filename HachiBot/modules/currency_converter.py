@@ -1,10 +1,10 @@
 import requests
-
-from HachiBot import CASH_API_KEY, dispatcher
+from HachiBot import CASH_API_KEY
 from telegram import Update, ParseMode
-from telegram.ext import CallbackContext, CommandHandler, run_async
+from telegram.ext import CallbackContext
+from HachiBot.modules.helper_funcs.decorators import ddocmd
 
-
+@ddocmd(command='cash')
 def convert(update: Update, context: CallbackContext):
     args = update.effective_message.text.split(" ")
 
@@ -30,14 +30,14 @@ def convert(update: Update, context: CallbackContext):
         response = requests.get(request_url).json()
         try:
             current_rate = float(
-                response["Realtime Currency Exchange Rate"]["5. Exchange Rate"],
+                response["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
             )
         except KeyError:
             update.effective_message.reply_text("Currency Not Supported.")
             return
         new_cur_amount = round(orig_cur_amount * current_rate, 5)
         update.effective_message.reply_text(
-            f"{orig_cur_amount} {orig_cur} = {new_cur_amount} {new_cur}",
+            f"{orig_cur_amount} {orig_cur} = {new_cur_amount} {new_cur}"
         )
 
     elif len(args) == 1:
@@ -48,11 +48,8 @@ def convert(update: Update, context: CallbackContext):
             f"*Invalid Args!!:* Required 3 But Passed {len(args) -1}",
             parse_mode=ParseMode.MARKDOWN,
         )
-
-
-CONVERTER_HANDLER = CommandHandler("cash", convert, run_async=True)
-
-dispatcher.add_handler(CONVERTER_HANDLER)
-
-__command_list__ = ["cash"]
-__handlers__ = [CONVERTER_HANDLER]
+        
+__help__ = """
+*Cash Not Found*
+The command /cash must be used specifying example syntax: /cash 1 USD IDR
+"""

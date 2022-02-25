@@ -2,18 +2,22 @@ import random
 from HachiBot.events import register
 from HachiBot import telethn
 
-APAKAH_STRING = ["Iya", 
-                 "Tidak", 
-                 "Mungkin", 
-                 "Mungkin Tidak", 
-                 "Bisa jadi", 
-                 "Mungkin Tidak",
-                 "Tidak Mungkin",
-                 "YNTKTS",
-                 "Pala bapak kau pecah",
-                 "Apa iya?",
-                 "Tanya aja sama mamak kau tu pler",
-                 "Lu tanya gua, terus gua tanya siapa?"
+APAKAH_STRING = ["iya",
+    "tidak",
+    "mungkin",
+    "bisa jadi",
+    "anda benar sekali",
+    "anda salah besar",
+    "au deh",
+    "sapa tau bener",
+    "sapa tau salah",
+    "bener bet anj",
+    "awoakekwawsek",
+    "y",
+    "g",
+    "🤔",
+    "👍",
+    "👎",
                  ]
 
 

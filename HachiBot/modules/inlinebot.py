@@ -4,8 +4,7 @@ from HachiBot import pbot as app
 from HachiBot.utils.pluginhelper import fetch
 from HachiBot.utils.inlinefuncs import *
 
-__MODULE__ = "Inline"
-__HELP__ = """See inline for help related to inline"""
+__mod_name__ = "Inline"
 
 
 @app.on_inline_query()

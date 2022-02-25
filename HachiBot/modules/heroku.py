@@ -158,15 +158,15 @@ async def dyno_usage(dyno):
     await asyncio.sleep(1.5)
 
     return await die.edit(
-        "❂ **Dyno Usage **:\n\n"
-        f" » Dyno usage for **{HEROKU_APP_NAME}**:\n"
-        f"      •  `{AppHours}`**h**  `{AppMinutes}`**m**  "
+        "**DYNO MANAGE USAGE**:\n\n"
+        f"**Usage:**\n"
+        f"Total Usage: `{AppHours}`**h**  `{AppMinutes}`**m**  "
         f"**|**  [`{AppPercentage}`**%**]"
         "\n\n"
-        "  » Dyno hours quota remaining this month:\n"
-        f"      •  `{hours}`**h**  `{minutes}`**m**  "
-        f"**|**  [`{percentage}`**%**]"
-        f"\n\n  » Dynos heroku {day} days left"
+        "**Remaining Quota:**\n"
+        f"Total Left: `{hours}`**h**  `{minutes}`**m**  "
+        f"**|**  [`{percentage}`**%**]\n\n"
+        f"**{day} Days Left**"
     )
 
 
@@ -193,7 +193,7 @@ async def _(dyno):
         dyno.chat_id,
         "logs.txt",
         reply_to=dyno.id,
-        caption="Prime logs.",
+        caption="HachiXBot logs.",
     )
 
     await asyncio.sleep(5)

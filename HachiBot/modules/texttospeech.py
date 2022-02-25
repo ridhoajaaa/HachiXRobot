@@ -13,7 +13,7 @@ from HachiBot import telethn as tbot
 from HachiBot.events import register
 
 
-@register(pattern="^/tts (.*)")
+@register(pattern="^/tts ?(.*)")
 async def _(event):
     if event.fwd_from:
         return

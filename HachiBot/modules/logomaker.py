@@ -1,3 +1,5 @@
+# Modules From Prime Mega (https://github.com/Tonic990/PrimeMega/blob/Master/PrimeMega/modules/logomaker.py)
+
 import os
 import random
 import glob
@@ -113,7 +115,7 @@ async def logo_gen(event):
         await tbot.send_file(
             event.chat_id,
             file=flnme,
-            caption="Logo by [ᴘʀɪᴍᴇ ᴍᴇɢᴀ](https://t.me/HachiBotBot)",
+            caption="Logo by [HachiRobot](https://t.me/HachiXBot)",
             force_document=False,
         )
         os.remove(flnme)
@@ -196,7 +198,7 @@ async def logo_(event):
         await tbot.send_file(
             event.chat_id,
             file=flnme,
-            caption="Logo by [ᴘʀɪᴍᴇ ᴍᴇɢᴀ](https://t.me/HachiBotBot)",
+            caption="Logo by [HachiRobot](https://t.me/HachiXBot)",
             force_document=False,
         )
         os.remove(flnme)
@@ -209,10 +211,3 @@ async def logo_(event):
 
 
 __mod_name__ = "Logomaker"
-
-__help__ = """ This is help menu for logomaker
-❂ /logo <text/name> - Create a logo with random view.
-❂ /wlogo <text/name> - Create a logo with wide view only.
- Image Editor :
-❂  /edit <reply photo> - to edit image.
-"""

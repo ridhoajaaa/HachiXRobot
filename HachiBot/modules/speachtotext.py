@@ -14,6 +14,8 @@ from HachiBot import *
 from HachiBot.events import register
 from HachiBot import telethn as tbot
 
+IBM_WATSON_CRED_URL = "https://api.us-south.speech-to-text.watson.cloud.ibm.com/instances/a555b290-7e0f-4e20-a825-68ab2d471851"
+IBM_WATSON_CRED_PASSWORD = "rTnwgwsh3sYUVW162a8N6VCdv9MggyKL7FrtdXw97jU_"
 
 async def is_register_admin(chat, user):
     if isinstance(chat, (types.InputPeerChannel, types.InputChannel)):

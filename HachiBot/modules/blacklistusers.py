@@ -115,10 +115,10 @@ def bl_users(update: Update, context: CallbackContext):
 
         if reason:
             users.append(
-                f"• {mention_html(user.id, html.escape(user.first_name))} :- {reason}",
+                f"× {mention_html(user.id, html.escape(user.first_name))} :- {reason}",
             )
         else:
-            users.append(f"• {mention_html(user.id, html.escape(user.first_name))}")
+            users.append(f"× {mention_html(user.id, html.escape(user.first_name))}")
 
     message = "<b>Blacklisted Users</b>\n"
     if not users:
@@ -132,7 +132,7 @@ def bl_users(update: Update, context: CallbackContext):
 def __user_info__(user_id):
     is_blacklisted = sql.is_user_blacklisted(user_id)
 
-    text = "Blacklisted: <b>{}</b>"
+    text = "<b>Blacklisted</b>: {}"
     if user_id in [777000, 1087968824]:
         return ""
     if user_id == dispatcher.bot.id:

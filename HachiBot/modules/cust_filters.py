@@ -74,7 +74,7 @@ def list_handlers(update, context):
         return
 
     for keyword in all_handlers:
-        entry = " • `{}`\n".format(escape_markdown(keyword))
+        entry = " × `{}`\n".format(escape_markdown(keyword))
         if len(entry) + len(filter_list) > telegram.MAX_MESSAGE_LENGTH:
             send_message(
                 update.effective_message,
@@ -366,7 +366,7 @@ def reply_filter(update, context):
                     try:
                         context.bot.send_message(
                             chat.id,
-                            markdown_to_html(filtext),
+                            filtext,
                             reply_to_message_id=message.message_id,
                             parse_mode=ParseMode.HTML,
                             disable_web_page_preview=True,
@@ -378,7 +378,7 @@ def reply_filter(update, context):
                             try:
                                 context.bot.send_message(
                                     chat.id,
-                                    markdown_to_html(filtext),
+                                    filtext,
                                     parse_mode=ParseMode.HTML,
                                     disable_web_page_preview=True,
                                     reply_markup=keyboard,
@@ -412,7 +412,7 @@ def reply_filter(update, context):
                         ENUM_FUNC_MAP[filt.file_type](
                             chat.id,
                             filt.file_id,
-                            caption=markdown_to_html(filtext),
+                            caption=filtext,
                             reply_to_message_id=message.message_id,
                             parse_mode=ParseMode.HTML,
                             reply_markup=keyboard,
@@ -496,7 +496,7 @@ def reply_filter(update, context):
                 break
 
 
-def rmall_filters(update, context):
+def rmall_filters(update, _):
     chat = update.effective_chat
     user = update.effective_user
     member = chat.get_member(user.id)
@@ -522,7 +522,7 @@ def rmall_filters(update, context):
         )
 
 
-def rmall_callback(update, context):
+def rmall_callback(update, _):
     query = update.callback_query
     chat = update.effective_chat
     msg = update.effective_message
@@ -587,7 +587,7 @@ def addnew_filter(update, chat_id, keyword, text, file_type, file_id, buttons):
 
 
 def __stats__():
-    return "• {} filters, across {} chats.".format(sql.num_filters(), sql.num_chats())
+    return "× {} filters, across {} chats.".format(sql.num_filters(), sql.num_chats())
 
 
 def __import_data__(chat_id, data):
@@ -607,9 +607,9 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
-❂ /filters*:* List all active filters saved in the chat.
+× /filters*:* List all active filters saved in the chat.
 *Admin only:*
-❂ /filter <keyword> <reply message>*:* Add a filter to this chat. The bot will now reply that message whenever 'keyword'\
+× /filter <keyword> <reply message>*:* Add a filter to this chat. The bot will now reply that message whenever 'keyword'\
 is mentioned. If you reply to a sticker with a keyword, the bot will reply with that sticker. NOTE: all filter \
 keywords are in lowercase. If you want your keyword to be a sentence, use quotes. eg: /filter "hey there" How you \
 doin?
@@ -622,11 +622,10 @@ doin?
  %%%
  Reply 3`
 
-❂ /stop <filter keyword>*:* Stop that filter.
+× /stop <filter keyword>*:* Stop that filter.
 
 *Chat creator only:*
-
-❂ /removeallfilters*:* Remove all chat filters at once.
+× /removeallfilters*:* Remove all chat filters at once.
 *Note*: Filters also support markdown formatters like: {first}, {last} etc.. and buttons.
 Check /markdownhelp to know more!
 """

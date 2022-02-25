@@ -9,6 +9,7 @@ from pyrogram.types import (
     CallbackQuery,
     Message,
 )
+from telegram import ParseMode
 
 from HachiBot import pbot as Client
 from HachiBot import (
@@ -46,10 +47,11 @@ async def bug(_, msg: Message):
     datetimes_fmt = "%d-%m-%Y"
     datetimes = datetime.utcnow().strftime(datetimes_fmt)
 
-    thumb = "https://telegra.ph/file/efc27dec817626cc95016.jpg"
+    thumb = "https://telegra.ph/file/e9e0cc43bfba8ecb02b7f.jpg"
     
     bug_report = f"""
-**#BUG : ** **[Lord](https://t.me/Bukan_guudlooking)**
+**#BUG : ** **[Lord](https://t.me/yxdodd)**
+
 **From User : ** **{mention}**
 **User ID : ** **{user_id}**
 **Group : ** **{chat_username}**
@@ -104,8 +106,10 @@ async def bug(_, msg: Message):
             )
         else:
             await msg.reply_text(
-                f"❎ <b>No bug to Report!</b>",
-            )
+        f"<u><b>Bug Not Found</b></u>\n"
+        f"The command /bug <b><Reason></b> must be used specifying, <b>Example:</b> /bug Music Lag .",
+        parse_mode=ParseMode.HTML,
+        )
         
     
 

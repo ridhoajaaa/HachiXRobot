@@ -51,7 +51,7 @@ def get_user_id(username):
 
 
 @dev_plus
-def broadcast(update: Update, context: CallbackContext):
+def gcast(update: Update, context: CallbackContext):
     to_send = update.effective_message.text.split(None, 1)
 
     if len(to_send) >= 2:
@@ -154,15 +154,15 @@ def chat_checker(update: Update, context: CallbackContext):
 
 def __user_info__(user_id):
     if user_id in [777000, 1087968824]:
-        return """╘═━「 Groups count: <code>???</code> 」"""
+        return """╚═══✦✪「 <b>Groups Count:</b> <code>???</code> 」"""
     if user_id == dispatcher.bot.id:
-        return """╘═━「 Groups count: <code>???</code> 」"""
+        return """╚═══✦✪「 <b>Groups Count:</b> <code>???</code> 」"""
     num_chats = sql.get_user_num_chats(user_id)
-    return f"""╘═━「 Groups count: <code>{num_chats}</code> 」"""
+    return f"""╚═══✦✪「 <b>Groups Count:</b> <code>{num_chats}</code> 」"""
 
 
 def __stats__():
-    return f"• {sql.num_users()} users, across {sql.num_chats()} chats"
+    return f"× {sql.num_users()} users, across {sql.num_chats()} chats"
 
 
 def __migrate__(old_chat_id, new_chat_id):
@@ -171,9 +171,9 @@ def __migrate__(old_chat_id, new_chat_id):
 
 __help__ = ""  # no help string
 
-BROADCAST_HANDLER = CommandHandler(
-    ["broadcastall", "broadcastusers", "broadcastgroups"],
-    broadcast,
+GCAST_HANDLER = CommandHandler(
+    ["gcast", "gcastusers", "gcastgc"],
+    gcast,
     run_async=True,
 )
 USER_HANDLER = MessageHandler(
@@ -185,9 +185,9 @@ CHAT_CHECKER_HANDLER = MessageHandler(
 CHATLIST_HANDLER = CommandHandler("groups", chats, run_async=True)
 
 dispatcher.add_handler(USER_HANDLER, USERS_GROUP)
-dispatcher.add_handler(BROADCAST_HANDLER)
+dispatcher.add_handler(GCAST_HANDLER)
 dispatcher.add_handler(CHATLIST_HANDLER)
 dispatcher.add_handler(CHAT_CHECKER_HANDLER, CHAT_GROUP)
 
 __mod_name__ = "Users"
-__handlers__ = [(USER_HANDLER, USERS_GROUP), BROADCAST_HANDLER, CHATLIST_HANDLER]
+__handlers__ = [(USER_HANDLER, USERS_GROUP), GCAST_HANDLER, CHATLIST_HANDLER]

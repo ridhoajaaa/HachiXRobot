@@ -54,7 +54,7 @@ def check_user_id(user_id: int, context: CallbackContext) -> Optional[str]:
 
 @dev_plus
 @gloggable
-def addsudo(update: Update, context: CallbackContext) -> str:
+def addgod(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     user = update.effective_user
     chat = update.effective_chat
@@ -112,7 +112,7 @@ def addsudo(update: Update, context: CallbackContext) -> str:
 
 @sudo_plus
 @gloggable
-def addsupport(
+def addsaint(
     update: Update,
     context: CallbackContext,
 ) -> str:
@@ -170,7 +170,7 @@ def addsupport(
 
 @sudo_plus
 @gloggable
-def addwhitelist(update: Update, context: CallbackContext) -> str:
+def addcommander(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     user = update.effective_user
     chat = update.effective_chat
@@ -285,7 +285,7 @@ def addtiger(update: Update, context: CallbackContext) -> str:
 
 @dev_plus
 @gloggable
-def removesudo(update: Update, context: CallbackContext) -> str:
+def removegod(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     user = update.effective_user
     chat = update.effective_chat
@@ -325,7 +325,7 @@ def removesudo(update: Update, context: CallbackContext) -> str:
 
 @sudo_plus
 @gloggable
-def removesupport(update: Update, context: CallbackContext) -> str:
+def removesaint(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     user = update.effective_user
     chat = update.effective_chat
@@ -365,7 +365,7 @@ def removesupport(update: Update, context: CallbackContext) -> str:
 
 @sudo_plus
 @gloggable
-def removewhitelist(update: Update, context: CallbackContext) -> str:
+def removecommander(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     user = update.effective_user
     chat = update.effective_chat
@@ -444,7 +444,7 @@ def removetiger(update: Update, context: CallbackContext) -> str:
 
 
 @whitelist_plus
-def whitelistlist(update: Update, context: CallbackContext):
+def commander(update: Update, context: CallbackContext):
     reply = "<b>Known the Trader 🧜:</b>\n"
     m = update.effective_message.reply_text(
         "<code>Gathering intel..</code>",
@@ -456,7 +456,7 @@ def whitelistlist(update: Update, context: CallbackContext):
         try:
             user = bot.get_chat(user_id)
 
-            reply += f"• {mention_html(user_id, html.escape(user.first_name))}\n"
+            reply += f"× {mention_html(user_id, html.escape(user.first_name))}\n"
         except TelegramError:
             pass
     m.edit_text(reply, parse_mode=ParseMode.HTML)
@@ -474,14 +474,14 @@ def tigerlist(update: Update, context: CallbackContext):
         user_id = int(each_user)
         try:
             user = bot.get_chat(user_id)
-            reply += f"• {mention_html(user_id, html.escape(user.first_name))}\n"
+            reply += f"× {mention_html(user_id, html.escape(user.first_name))}\n"
         except TelegramError:
             pass
     m.edit_text(reply, parse_mode=ParseMode.HTML)
 
 
 @whitelist_plus
-def supportlist(update: Update, context: CallbackContext):
+def saint(update: Update, context: CallbackContext):
     bot = context.bot
     m = update.effective_message.reply_text(
         "<code>Gathering intel..</code>",
@@ -492,14 +492,14 @@ def supportlist(update: Update, context: CallbackContext):
         user_id = int(each_user)
         try:
             user = bot.get_chat(user_id)
-            reply += f"• {mention_html(user_id, html.escape(user.first_name))}\n"
+            reply += f"× {mention_html(user_id, html.escape(user.first_name))}\n"
         except TelegramError:
             pass
     m.edit_text(reply, parse_mode=ParseMode.HTML)
 
 
 @whitelist_plus
-def sudolist(update: Update, context: CallbackContext):
+def god(update: Update, context: CallbackContext):
     bot = context.bot
     m = update.effective_message.reply_text(
         "<code>Gathering intel..</code>",
@@ -511,14 +511,14 @@ def sudolist(update: Update, context: CallbackContext):
         user_id = int(each_user)
         try:
             user = bot.get_chat(user_id)
-            reply += f"• {mention_html(user_id, html.escape(user.first_name))}\n"
+            reply += f"× {mention_html(user_id, html.escape(user.first_name))}\n"
         except TelegramError:
             pass
     m.edit_text(reply, parse_mode=ParseMode.HTML)
 
 
 @whitelist_plus
-def devlist(update: Update, context: CallbackContext):
+def lord(update: Update, context: CallbackContext):
     bot = context.bot
     m = update.effective_message.reply_text(
         "<code>Gathering intel..</code>",
@@ -530,66 +530,66 @@ def devlist(update: Update, context: CallbackContext):
         user_id = int(each_user)
         try:
             user = bot.get_chat(user_id)
-            reply += f"• {mention_html(user_id, html.escape(user.first_name))}\n"
+            reply += f"× {mention_html(user_id, html.escape(user.first_name))}\n"
         except TelegramError:
             pass
     m.edit_text(reply, parse_mode=ParseMode.HTML)
 
 
-SUDO_HANDLER = CommandHandler(("addsudo", "addemperor"), addsudo, run_async=True)
-SUPPORT_HANDLER = CommandHandler(("addsupport", "addcaptain"), addsupport, run_async=True)
+ADDGOD_HANDLER = CommandHandler(("addgod", "addemperor"), addgod, run_async=True)
+ADDSAINT_HANDLER = CommandHandler(("addsaint", "addcaptain"), addsaint, run_async=True)
 TIGER_HANDLER = CommandHandler(("addsoldier"), addtiger, run_async=True)
-WHITELIST_HANDLER = CommandHandler(
-    ("addwhitelist", "addtrader"), addwhitelist, run_async=True
+ADDCOMMANDER_HANDLER = CommandHandler(
+    ("addcommander", "addtrader"), addcommander, run_async=True
 )
-UNSUDO_HANDLER = CommandHandler(
-    ("removesudo", "removeemperor"), removesudo, run_async=True
+UNGOD_HANDLER = CommandHandler(
+    ("removegod", "removeemperor"), removegod, run_async=True
 )
-UNSUPPORT_HANDLER = CommandHandler(
-    ("removesupport", "removesoldier"), removesupport, run_async=True
+UNSAINT_HANDLER = CommandHandler(
+    ("removesaint", "removesoldier"), removesaint, run_async=True
 )
 UNTIGER_HANDLER = CommandHandler(("removetiger"), removetiger, run_async=True)
-UNWHITELIST_HANDLER = CommandHandler(
-    ("removewhitelist", "removetrader"), removewhitelist, run_async=True
+UNCOMMANDER_HANDLER = CommandHandler(
+    ("removecommander", "removetrader"), removecommander, run_async=True
 )
-WHITELISTLIST_HANDLER = CommandHandler(
-    ["whitelistlist", "trader"], whitelistlist, run_async=True
+COMMANDER_HANDLER = CommandHandler(
+    ["commander", "trader"], commander, run_async=True
 )
 TIGERLIST_HANDLER = CommandHandler(["trader"], tigerlist, run_async=True)
-SUPPORTLIST_HANDLER = CommandHandler(
-    ["supportlist", "captain"], supportlist, run_async=True
+SAINT_HANDLER = CommandHandler(
+    ["saint", "captain"], saint, run_async=True
 )
-SUDOLIST_HANDLER = CommandHandler(["sudolist", "emperor"], sudolist, run_async=True)
-DEVLIST_HANDLER = CommandHandler(["devlist", "kingdom"], devlist, run_async=True)
+GOD_HANDLER = CommandHandler(["god", "emperor"], god, run_async=True)
+LORD_HANDLER = CommandHandler(["lord", "kingdom"], lord, run_async=True)
 
-dispatcher.add_handler(SUDO_HANDLER)
-dispatcher.add_handler(SUPPORT_HANDLER)
+dispatcher.add_handler(ADDGOD_HANDLER)
+dispatcher.add_handler(ADDSAINT_HANDLER)
 dispatcher.add_handler(TIGER_HANDLER)
-dispatcher.add_handler(WHITELIST_HANDLER)
-dispatcher.add_handler(UNSUDO_HANDLER)
-dispatcher.add_handler(UNSUPPORT_HANDLER)
+dispatcher.add_handler(ADDCOMMANDER_HANDLER)
+dispatcher.add_handler(UNGOD_HANDLER)
+dispatcher.add_handler(UNSAINT_HANDLER)
 dispatcher.add_handler(UNTIGER_HANDLER)
-dispatcher.add_handler(UNWHITELIST_HANDLER)
+dispatcher.add_handler(UNCOMMANDER_HANDLER)
 
-dispatcher.add_handler(WHITELISTLIST_HANDLER)
+dispatcher.add_handler(COMMANDER_HANDLER)
 dispatcher.add_handler(TIGERLIST_HANDLER)
-dispatcher.add_handler(SUPPORTLIST_HANDLER)
-dispatcher.add_handler(SUDOLIST_HANDLER)
-dispatcher.add_handler(DEVLIST_HANDLER)
+dispatcher.add_handler(SAINT_HANDLER)
+dispatcher.add_handler(GOD_HANDLER)
+dispatcher.add_handler(LORD_HANDLER)
 
 __mod_name__ = "Disasters"
 __handlers__ = [
-    SUDO_HANDLER,
-    SUPPORT_HANDLER,
+    ADDGOD_HANDLER,
+    ADDSAINT_HANDLER,
     TIGER_HANDLER,
-    WHITELIST_HANDLER,
-    UNSUDO_HANDLER,
-    UNSUPPORT_HANDLER,
+    ADDCOMMANDER_HANDLER,
+    UNGOD_HANDLER,
+    UNSAINT_HANDLER,
     UNTIGER_HANDLER,
-    UNWHITELIST_HANDLER,
-    WHITELISTLIST_HANDLER,
+    UNCOMMANDER_HANDLER,
+    COMMANDER_HANDLER,
     TIGERLIST_HANDLER,
-    SUPPORTLIST_HANDLER,
-    SUDOLIST_HANDLER,
-    DEVLIST_HANDLER,
+    SAINT_HANDLER,
+    GOD_HANDLER,
+    LORD_HANDLER,
 ]

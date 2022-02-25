@@ -1,12 +1,159 @@
-from platform import python_version as y
-from telegram import __version__ as o
-from pyrogram import __version__ as z
-from telethon import __version__ as s
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram import filters
 from HachiBot import pbot
 from HachiBot.utils.errors import capture_err
 from HachiBot.utils.functions import make_carbon
+
+
+all_col = [
+    "Black",
+    "Navy",
+    "DarkBlue",
+    "MediumBlue",
+    "Blue",
+    "DarkGreen",
+    "Green",
+    "Teal",
+    "DarkCyan",
+    "DeepSkyBlue",
+    "DarkTurquoise",
+    "MediumSpringGreen",
+    "Lime",
+    "SpringGreen",
+    "Aqua",
+    "Cyan",
+    "MidnightBlue",
+    "DodgerBlue",
+    "LightSeaGreen",
+    "ForestGreen",
+    "SeaGreen",
+    "DarkSlateGray",
+    "DarkSlateGrey",
+    "LimeGreen",
+    "MediumSeaGreen",
+    "Turquoise",
+    "RoyalBlue",
+    "SteelBlue",
+    "DarkSlateBlue",
+    "MediumTurquoise",
+    "Indigo  ",
+    "DarkOliveGreen",
+    "CadetBlue",
+    "CornflowerBlue",
+    "RebeccaPurple",
+    "MediumAquaMarine",
+    "DimGray",
+    "DimGrey",
+    "SlateBlue",
+    "OliveDrab",
+    "SlateGray",
+    "SlateGrey",
+    "LightSlateGray",
+    "LightSlateGrey",
+    "MediumSlateBlue",
+    "LawnGreen",
+    "Chartreuse",
+    "Aquamarine",
+    "Maroon",
+    "Purple",
+    "Olive",
+    "Gray",
+    "Grey",
+    "SkyBlue",
+    "LightSkyBlue",
+    "BlueViolet",
+    "DarkRed",
+    "DarkMagenta",
+    "SaddleBrown",
+    "DarkSeaGreen",
+    "LightGreen",
+    "MediumPurple",
+    "DarkViolet",
+    "PaleGreen",
+    "DarkOrchid",
+    "YellowGreen",
+    "Sienna",
+    "Brown",
+    "DarkGray",
+    "DarkGrey",
+    "LightBlue",
+    "GreenYellow",
+    "PaleTurquoise",
+    "LightSteelBlue",
+    "PowderBlue",
+    "FireBrick",
+    "DarkGoldenRod",
+    "MediumOrchid",
+    "RosyBrown",
+    "DarkKhaki",
+    "Silver",
+    "MediumVioletRed",
+    "IndianRed ",
+    "Peru",
+    "Chocolate",
+    "Tan",
+    "LightGray",
+    "LightGrey",
+    "Thistle",
+    "Orchid",
+    "GoldenRod",
+    "PaleVioletRed",
+    "Crimson",
+    "Gainsboro",
+    "Plum",
+    "BurlyWood",
+    "LightCyan",
+    "Lavender",
+    "DarkSalmon",
+    "Violet",
+    "PaleGoldenRod",
+    "LightCoral",
+    "Khaki",
+    "AliceBlue",
+    "HoneyDew",
+    "Azure",
+    "SandyBrown",
+    "Wheat",
+    "Beige",
+    "WhiteSmoke",
+    "MintCream",
+    "GhostWhite",
+    "Salmon",
+    "AntiqueWhite",
+    "Linen",
+    "LightGoldenRodYellow",
+    "OldLace",
+    "Red",
+    "Fuchsia",
+    "Magenta",
+    "DeepPink",
+    "OrangeRed",
+    "Tomato",
+    "HotPink",
+    "Coral",
+    "DarkOrange",
+    "LightSalmon",
+    "Orange",
+    "LightPink",
+    "Pink",
+    "Gold",
+    "PeachPuff",
+    "NavajoWhite",
+    "Moccasin",
+    "Bisque",
+    "MistyRose",
+    "BlanchedAlmond",
+    "PapayaWhip",
+    "LavenderBlush",
+    "SeaShell",
+    "Cornsilk",
+    "LemonChiffon",
+    "FloralWhite",
+    "Snow",
+    "Yellow",
+    "LightYellow",
+    "Ivory",
+    "White",
+]
 
 
 @pbot.on_message(filters.command("carbon"))
@@ -22,26 +169,3 @@ async def carbon_func(_, message):
     await pbot.send_photo(message.chat.id, carbon)
     await m.delete()
     carbon.close()
-
-
-@pbot.on_message(filters.command("repo"))
-async def repo(_, message):
-    await message.reply_text(
-        f"""✨ **Hey I'm HachiXBot** 
-**Owner repo : [『TØNIC』](https://t.me/Bukan_guudlooking)**
-**Python Version :** `{y()}`
-**Library Version :** `{o}`
-**Telethon Version :** `{s}`
-**Pyrogram Version :** `{z}`
-**Create your own with click button bellow.**
-""",
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton("Repo", url="https://github.com/Tonic990/HachiBot"), 
-                    InlineKeyboardButton("Support", url="https://t.me/demonszxx")
-                ]
-            ]
-        ),
-        disable_web_page_preview=True
-    )

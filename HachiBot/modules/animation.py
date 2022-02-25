@@ -254,7 +254,7 @@ def hack(update: Update, context: CallbackContext):
     for x in range(EDIT_TIMES):
         msg.edit_text(hack_you[x % 5])
         time.sleep(EDIT_SLEEP)
-    msg.edit_text("successful hacked all data send on my Database")
+    msg.edit_text("successful haangker all data send on my Database")
 
 
 @user_admin
@@ -264,7 +264,7 @@ def love(update: Update, context: CallbackContext):
     for x in range(EDIT_TIMES):
         msg.edit_text(love_siren[x % 5])
         time.sleep(EDIT_SLEEP)
-    msg.edit_text("True Love💞")
+    msg.edit_text("Love Tai💞")
 
 
 @user_admin
