@@ -54,7 +54,7 @@ class PrimeHandler:
                         group,
                     )
                 LOGGER.debug(
-                    f"[PrimeCMD] Loaded handler {command} for function {func.__name__} in group {group}"
+                    f"[ddocmd] Loaded handler {command} for function {func.__name__} in group {group}"
                 )
             except TypeError:
                 if can_disable:
@@ -81,7 +81,7 @@ class PrimeHandler:
                         )
                     )
                 LOGGER.debug(
-                    f"[PrimeCMD] Loaded handler {command} for function {func.__name__}"
+                    f"[ddocmd] Loaded handler {command} for function {func.__name__}"
                 )
 
             return func
@@ -110,7 +110,7 @@ class PrimeHandler:
                         MessageHandler(pattern, func, run_async=run_async), group
                     )
                 LOGGER.debug(
-                    f"[PrimeMSG] Loaded filter pattern {pattern} for function {func.__name__} in group {group}"
+                    f"[ddomsg] Loaded filter pattern {pattern} for function {func.__name__} in group {group}"
                 )
             except TypeError:
                 if can_disable:
@@ -124,7 +124,7 @@ class PrimeHandler:
                         MessageHandler(pattern, func, run_async=run_async)
                     )
                 LOGGER.debug(
-                    f"[PrimeMSG] Loaded filter pattern {pattern} for function {func.__name__}"
+                    f"[ddomsg] Loaded filter pattern {pattern} for function {func.__name__}"
                 )
 
             return func
@@ -139,7 +139,7 @@ class PrimeHandler:
                 )
             )
             LOGGER.debug(
-                f"[PrimeCALLBACK] Loaded callbackquery handler with pattern {pattern} for function {func.__name__}"
+                f"[ddocallback] Loaded callbackquery handler with pattern {pattern} for function {func.__name__}"
             )
             return func
 
@@ -165,14 +165,14 @@ class PrimeHandler:
                 )
             )
             LOGGER.debug(
-                f"[PrimeINLINE] Loaded inlinequery handler with pattern {pattern} for function {func.__name__} | PASSES USER DATA: {pass_user_data} | PASSES CHAT DATA: {pass_chat_data} | CHAT TYPES: {chat_types}"
+                f"[ddoinline] Loaded inlinequery handler with pattern {pattern} for function {func.__name__} | PASSES USER DATA: {pass_user_data} | PASSES CHAT DATA: {pass_chat_data} | CHAT TYPES: {chat_types}"
             )
             return func
 
         return _inlinequery
 
 
-Primecmd = PrimeHandler(d).command
-Primemsg = PrimeHandler(d).message
-Primecallback = PrimeHandler(d).callbackquery
-Primeinline = PrimeHandler(d).inlinequery
+ddocmd = PrimeHandler(d).command
+ddomsg = PrimeHandler(d).message
+ddocallback = PrimeHandler(d).callbackquery
+ddoinline = PrimeHandler(d).inlinequery

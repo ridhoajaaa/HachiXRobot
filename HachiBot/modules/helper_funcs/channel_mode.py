@@ -7,7 +7,7 @@ from telegram.inline.inlinekeyboardbutton import InlineKeyboardButton
 from telegram.inline.inlinekeyboardmarkup import InlineKeyboardMarkup
 
 from HachiBot import DRAGONS, DEV_USERS, dispatcher
-from HachiBot.modules.helper_funcs.decorators import Primecallback
+from HachiBot.modules.helper_funcs.decorators import ddocallback
 
 
 class AdminPerms(Enum):
@@ -61,7 +61,7 @@ def user_admin(permission: AdminPerms):
     return wrapper
 
 
-@Primecallback(pattern="anoncb")
+@ddocallback(pattern="anoncb")
 def anon_callback_handler1(upd: Update, _: CallbackContext):
     callback = upd.callback_query
     perm = callback.data.split('/')[3]
