@@ -398,7 +398,7 @@ def info(update: Update, context: CallbackContext):
                     ]
                 ),
                 parse_mode=ParseMode.HTML,
-                disable_web_page_preview=True,
+                disable_web_page_preview=False,
             )
 
     else:

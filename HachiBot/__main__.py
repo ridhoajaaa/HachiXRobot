@@ -92,19 +92,19 @@ PM_START_TEXT = """
 buttons = [
     [
 
-                       InlineKeyboardButton(text="ɢᴇᴛ ʜᴇʟᴘ", callback_data="help_back"),
-                       InlineKeyboardButton(text="ᴀʙᴏᴜᴛ ʜᴀᴄʜɪ", callback_data="hachi_"),
+                       InlineKeyboardButton(text="Get Help", callback_data="help_back"),
+                       InlineKeyboardButton(text="About Hachi", callback_data="hachi_"),
                      ],
                      [
                         InlineKeyboardButton(
-                            text="ᴀᴅᴅ ʜᴀᴄʜɪ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ",
+                            text="Add Hachi To Your Group",
                             url="t.me/HachiXBot?startgroup=true"),
                      ], 
     ]
 
 
 HELP_STRINGS = """
-This Is Avaliable Commands Hachi"""
+This Is Avaliable Commands HachiXRobot"""
 
 hachi_IMG = "https://telegra.ph/file/b9fa4e1360d0a872a3cd5.jpg"
 
@@ -167,7 +167,7 @@ def send_help(chat_id, text, keyboard=None):
         chat_id=chat_id,
         text=text,
         parse_mode=ParseMode.MARKDOWN,
-        disable_web_page_preview=True,
+        disable_web_page_preview=False,
         reply_markup=keyboard,
     )
 
