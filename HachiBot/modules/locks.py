@@ -38,6 +38,7 @@ LOCK_TYPES = {
     | Filters.caption_entity(MessageEntity.URL),
     "bots": Filters.status_update.new_chat_members,
     "forward": Filters.forwarded,
+    "forwardchannel": Filters.chat_type.channel,
     "game": Filters.game,
     "location": Filters.location,
     "egame": Filters.dice,
@@ -475,6 +476,7 @@ def build_lock_message(chat_id):
             locklist.append("url = `{}`".format(locks.url))
             locklist.append("bots = `{}`".format(locks.bots))
             locklist.append("forward = `{}`".format(locks.forward))
+            locklist.append("forwardchannel = `{}`".format(locks.forwardchannel))
             locklist.append("game = `{}`".format(locks.game))
             locklist.append("location = `{}`".format(locks.location))
             locklist.append("rtl = `{}`".format(locks.rtl))

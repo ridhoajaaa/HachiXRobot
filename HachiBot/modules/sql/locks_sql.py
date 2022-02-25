@@ -40,6 +40,7 @@ class Permissions(BASE):
     url = Column(Boolean, default=False)
     bots = Column(Boolean, default=False)
     forward = Column(Boolean, default=False)
+    forwardchannel = Column(Boolean, default=False)
     game = Column(Boolean, default=False)
     location = Column(Boolean, default=False)
     rtl = Column(Boolean, default=False)
@@ -61,6 +62,7 @@ class Permissions(BASE):
         self.url = False
         self.bots = False
         self.forward = False
+        self.forwardchannel = False
         self.game = False
         self.location = False
         self.rtl = False
@@ -151,6 +153,8 @@ def update_lock(chat_id, lock_type, locked):
             curr_perm.bots = locked
         elif lock_type == "forward":
             curr_perm.forward = locked
+        elif lock_type == "forwardchannel":
+            curr_perm.forwardchannel = locked
         elif lock_type == "game":
             curr_perm.game = locked
         elif lock_type == "location":
@@ -222,6 +226,8 @@ def is_locked(chat_id, lock_type):
         return curr_perm.bots
     if lock_type == "forward":
         return curr_perm.forward
+    if lock_type == "forwardchannel":
+        return curr_perm.forwardchannel
     if lock_type == "game":
         return curr_perm.game
     if lock_type == "location":
