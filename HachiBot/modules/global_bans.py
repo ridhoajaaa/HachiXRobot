@@ -471,6 +471,9 @@ def __chat_settings__(chat_id, _):
     return "This chat is enforcing *gbans*: `{}`.".format(sql.does_chat_gban(chat_id))
 
 
+__mod_name__ = "Global Ban"
+
+
 GBAN_HANDLER = CommandHandler(
     "gban",
     gban,
