@@ -32,6 +32,7 @@ class Permissions(BASE):
     voice = Column(Boolean, default=False)
     contact = Column(Boolean, default=False)
     video = Column(Boolean, default=False)
+    videonote = Column(Boolean, default=False)
     document = Column(Boolean, default=False)
     photo = Column(Boolean, default=False)
     sticker = Column(Boolean, default=False)
@@ -52,6 +53,7 @@ class Permissions(BASE):
         self.voice = False
         self.contact = False
         self.video = False
+        self.videonote = False
         self.document = False
         self.photo = False
         self.sticker = False
@@ -133,6 +135,8 @@ def update_lock(chat_id, lock_type, locked):
             curr_perm.contact = locked
         elif lock_type == "video":
             curr_perm.video = locked
+        elif lock_type == "videonote":
+            curr_perm.videonote = locked
         elif lock_type == "document":
             curr_perm.document = locked
         elif lock_type == "photo":
@@ -206,6 +210,8 @@ def is_locked(chat_id, lock_type):
         return curr_perm.contact
     if lock_type == "video":
         return curr_perm.video
+    if lock_type == "videonote":
+        return curr_perm.videonote
     if lock_type == "document":
         return curr_perm.document
     if lock_type == "gif":

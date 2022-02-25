@@ -104,7 +104,18 @@ buttons = [
 
 
 HELP_STRINGS = """
-This Is Avaliable Commands HachiXRobot"""
+I'm a modular group management bot with a few fun extras! Have a look at the following for an idea of some of the things I can help you with.
+
+*Main commands available:*
+× /start: Starts me, can be used to check I'm alive or not.
+× /help: PM's you this message.
+× /donate: information on how to donate!
+× /settings:
+   • in PM: will send you your settings for all supported modules.
+   • in a group: will redirect you to pm, with all that chat's settings.
+
+
+"""
 
 hachi_IMG = "https://telegra.ph/file/b9fa4e1360d0a872a3cd5.jpg"
 
@@ -323,7 +334,7 @@ def help_button(update, context):
             query.message.edit_text(
                 text=text,
                 parse_mode=ParseMode.MARKDOWN,
-                disable_web_page_preview=True,
+                disable_web_page_preview=False,
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [

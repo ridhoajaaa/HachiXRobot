@@ -29,8 +29,9 @@ ad = AlphabetDetector()
 LOCK_TYPES = {
     "audio": Filters.audio,
     "voice": Filters.voice,
-    "document": Filters.document,
-    "video": Filters.document & ~Filters.animation & ~Filters.video,
+    "document": Filters.document & ~Filters.animation,
+    "video": Filters.video,
+    "videonote": Filters.video_note,
     "contact": Filters.contact,
     "photo": Filters.photo,
     "url": Filters.entity(MessageEntity.URL)
@@ -467,6 +468,7 @@ def build_lock_message(chat_id):
             locklist.append("voice = `{}`".format(locks.voice))
             locklist.append("document = `{}`".format(locks.document))
             locklist.append("video = `{}`".format(locks.video))
+            locklist.append("videonote = `{}`".format(locks.videonote))
             locklist.append("contact = `{}`".format(locks.contact))
             locklist.append("photo = `{}`".format(locks.photo))
             locklist.append("gif = `{}`".format(locks.gif))
