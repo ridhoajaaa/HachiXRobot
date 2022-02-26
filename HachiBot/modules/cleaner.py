@@ -17,7 +17,7 @@ from telegram.ext import (
     MessageHandler,
 )
 
-CMD_STARTERS = ("/", "!") if ALLOW_EXCL else "/"
+CMD_STARTERS = ("/", "!", ".", "-", "~", ",", "$") if ALLOW_EXCL else "/"
 BLUE_TEXT_CLEAN_GROUP = 13
 CommandHandlerList = (CommandHandler, CustomCommandHandler, DisableAbleCommandHandler)
 command_list = [

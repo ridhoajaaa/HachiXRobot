@@ -436,7 +436,7 @@ def punch(update: Update, context: CallbackContext) -> str:
         # bot.send_sticker(chat.id, BAN_STICKER)  # banhammer marie sticker
         bot.sendMessage(
             chat.id,
-            f"Babay tot <b>{mention_html(member.user.id, member.user.first_name)}</b> [<code>{member.user.id}</code>] was kicked by: {mention_html(user.id, user.first_name)} in <b>{message.chat.title}</b>\n<b>Reason</b>: <code>{reason}</code>",
+            f"Goodbay fvking shit hhe! <b>{mention_html(member.user.id, member.user.first_name)}</b> [<code>{member.user.id}</code>] was kicked by: {mention_html(user.id, user.first_name)} in <b>{message.chat.title}</b>\n<b>Reason</b>: <code>{reason}</code>",
             parse_mode=ParseMode.HTML,
         )
         log = (

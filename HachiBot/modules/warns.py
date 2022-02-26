@@ -54,8 +54,12 @@ BAN_STICKER = (
 
 # Not async
 def warn(
-    user: User, chat: Chat, reason: str, message: Message, warner: User = None
+    user: User, chat: Chat, reason: str, message: Message, context: CallbackContext, warner: User = None
 ) -> str:
+
+    args = context.args
+    user_id = extract_user_and_text(message, args)
+    member = chat.get_member(user_id)
 
     if is_user_admin(chat, user.id):
         message.reply_text(
@@ -106,7 +110,7 @@ def warn(
         if soft_warn:  # punch
             chat.unban_member(user.id)
             reply = (
-                f"<code>‼️</code><b>kick Event</b>\n"
+                f"<code>♨️</code><b>kick Event</b>♨️\n\n"
                 f"<code> </code><b>×  User:</b> {mention_html(user.id, user.first_name)}\n"
                 f"<code> </code><b>×  Count:</b> {limit}"
             )
@@ -114,8 +118,8 @@ def warn(
         else:  # ban
             chat.ban_member(user.id)
             reply = (
-                f"<code>‼️</code><b>Ban Event</b>\n"
-                f"<code> </code><b>×  User:</b> {mention_html(user.id, user.first_name)}\n"
+                f"<code>♨️</code><b>Ban Event</b>♨️\n\n"
+                f"<code> </code><b>×  User:</b> {mention_html(user.id, user.first_name)} [<code>{member.user.id}</code>]\n"
                 f"<code> </code><b>×  Count:</b> {limit}"
             )
 
@@ -145,8 +149,8 @@ def warn(
         )
 
         reply = (
-            f"<code>‼️</code><b>Warn Event</b>\n\n"
-            f"<code></code><b>×  User:</b> {mention_html(user.id, user.first_name)}\n"
+            f"<code>♨️</code><b>Warn Event</b>♨️\n\n"
+            f"<code></code><b>×  User:</b> {mention_html(user.id, user.first_name)} [<code>{member.user.id}</code>]\n"
             f"<code></code><b>×  Count:</b> {num_warns}/{limit}"
         )
         if reason:
@@ -273,10 +277,14 @@ def remove_warns(update: Update, context: CallbackContext):
     user = update.effective_user  # type: Optional[User]
     args = context.args
     user_id = extract_user(message, args)
+    member = chat.get_member(user_id)
+
 
     if user_id:
         sql.remove_warn(user_id, chat.id)
-        message.reply_text("Last warn has been removed!")
+        message.reply_text(
+        f"{mention_html(user.id, user.first_name)} [<code>{member.user.id}</code>] Removed -1 warning"
+        )
         warned = chat.get_member(user_id).user
         return (
             "<b>{}:</b>"
@@ -292,7 +300,7 @@ def remove_warns(update: Update, context: CallbackContext):
         )
     message.reply_text(
         f"<u><b>User Not Found</b></u>\n"
-        f"The command /warn must be used specifying user <b>username/id/mention</b> or <b>replying</b> to one of his messages.",
+        f"The command /unwarn must be used specifying user <b>username/id/mention</b> or <b>replying</b> to one of his messages.",
         parse_mode=ParseMode.HTML,
         )
     return ""

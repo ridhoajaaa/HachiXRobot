@@ -9,8 +9,8 @@ from sqlalchemy.sql.expression import false
 from HachiBot.modules.helper_funcs.msg_types import Types
 from HachiBot.modules.sql import BASE, SESSION
 
-DEFAULT_WELCOME = "Halo {first}, Moga betah di sini, /rules untuk melihat aturan group"
-DEFAULT_GOODBYE = "babayy ngentot!"
+DEFAULT_WELCOME = "Helo {first}, good luck here, /rules to see the group rules"
+DEFAULT_GOODBYE = "goodbay fvking shit hhe!"
 
 DEFAULT_WELCOME_MESSAGES = [
     "{first} is here!",  # Discord welcome messages copied

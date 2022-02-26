@@ -104,25 +104,21 @@ buttons = [
 
 
 HELP_STRINGS = """
-I'm a modular group management bot with a few fun extras! Have a look at the following for an idea of some of the things I can help you with.
+✨ I'm a modular group management bot with a few fun extras! Have a look at the following I can help you with.
 
 *Main commands available:*
-× /start: Starts me, can be used to check I'm alive or not.
-× /help: PM's you this message.
-× /donate: information on how to donate!
-× /settings:
-   • in PM: will send you your settings for all supported modules.
-   • in a group: will redirect you to pm, with all that chat's settings.
-
-
+• /start*:* starts me!
+• /help*:* makes me send or redirect you to THIS message.
+• /donate*:* information on how to donate!
+• /settings*:* makes me show the current chat settings.
 """
 
 hachi_IMG = "https://telegra.ph/file/b9fa4e1360d0a872a3cd5.jpg"
 
 DONATE_STRING = """Heya, glad to hear you want to donate!
- You can support the project by contacting @yxdodd \
- Supporting isnt always financial! \
- Those who cannot provide monetary support are welcome to help us develop the bot at ."""
+You can support the project by contacting [Owner Bot](https://t.me/yxdodd) \
+Supporting isnt always financial! \
+Those who cannot provide monetary support are welcome to help us develop the bot at ."""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -400,7 +396,7 @@ def hachi_about_callback(update, context):
             "\n\n_HachiBot's licensed under the GNU General Public License v3.0_"
             "\n\n Click on button bellow to get basic help for HachiBot.",
             parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
+            disable_web_page_preview=False,
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
@@ -429,7 +425,7 @@ def hachi_about_callback(update, context):
                 reply_markup=InlineKeyboardMarkup(buttons),
                 parse_mode=ParseMode.MARKDOWN,
                 timeout=60,
-                disable_web_page_preview=True,
+                disable_web_page_preview=False,
         )
 
     elif query.data == "hachi_admin":
@@ -443,7 +439,7 @@ def hachi_about_callback(update, context):
             "\nLets set a welcome message to welcome new users coming to your group."
             "\nsend `/setwelcome [message]` to set a welcome message!",
             parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
+            disable_web_page_preview=False,
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(text="Go Back", callback_data="hachi_")]]
             ),
@@ -524,7 +520,7 @@ def Source_about_callback(update, context):
             "\n • `/play` or `/ytp` <query> - Playing music via YouTube."
             "\n • `/vplay` <query or reply audio> - Playing video from YouTube.",
             parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
+            disable_web_page_preview=False,
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
@@ -769,13 +765,13 @@ def donate(update: Update, context: CallbackContext):
     bot = context.bot
     if chat.type == "private":
         update.effective_message.reply_text(
-            DONATE_STRING, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
+            DONATE_STRING, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=False
         )
 
         if OWNER_ID != 1606221784:
             update.effective_message.reply_text(
                 "I'm free for everyone ❤️ If you wanna make me smile, just join"
-                "[My Channel]({})".format(DONATION_LINK),
+                " [My Channel](https://t.me/HachiXLog)",
                 parse_mode=ParseMode.MARKDOWN,
             )
     else:
@@ -821,7 +817,7 @@ def main():
         try:
             dispatcher.bot.sendMessage(
                 f"@demonszxx",
-                "*Yamete, watashi wa online desu* ✨",
+                "*Yamete Onichan, watashi wa online desu* ✨",
                 parse_mode=ParseMode.MARKDOWN
             )
         except Unauthorized:

@@ -1,4 +1,5 @@
 import html
+import os
 from typing import Optional
 
 from telegram import ParseMode, Update, InlineKeyboardButton, InlineKeyboardMarkup
@@ -42,12 +43,14 @@ def set_sticker(update: Update, context: CallbackContext):
     if msg.reply_to_message:
         if not msg.reply_to_message.sticker:
             return msg.reply_text(
-                "You need to reply to some sticker to set chat sticker set!"
-            )
+        f"<u><b>Sticker Not Found</b></u>\n"
+        f"You need to reply to some sticker to set chat sticker set!",
+        parse_mode=ParseMode.HTML,
+        )
         stkr = msg.reply_to_message.sticker.set_name
         try:
             context.bot.set_chat_sticker_set(chat.id, stkr)
-            msg.reply_text(f"Successfully set new group stickers in {chat.title}!")
+            msg.reply_text(f"Successfully set new group stickers in <b>{chat.title}</b>!")
         except BadRequest as excp:
             if excp.message == "Participants_too_few":
                 return msg.reply_text(
@@ -55,7 +58,11 @@ def set_sticker(update: Update, context: CallbackContext):
                 )
             msg.reply_text(f"Error! {excp.message}.")
     else:
-        msg.reply_text("You need to reply to some sticker to set chat sticker set!")
+        msg.reply_text(
+        f"<u><b>Sticker Not Found</b></u>\n"
+        f"You need to reply to some sticker to set chat sticker set!",
+        parse_mode=ParseMode.HTML,
+        )
 
 
 @bot_admin
@@ -131,7 +138,10 @@ def set_desc(update: Update, context: CallbackContext):
         if len(desc) > 255:
             return msg.reply_text("Description must needs to be under 255 characters!")
         context.bot.set_chat_description(chat.id, desc)
-        msg.reply_text(f"Successfully updated chat description in {chat.title}!")
+        msg.reply_text(
+            f"Successfully updated chat description in <b>{chat.title}</b>!",
+            parse_mode=ParseMode.HTML,
+        )
     except BadRequest as excp:
         msg.reply_text(f"Error! {excp.message}.")
 
