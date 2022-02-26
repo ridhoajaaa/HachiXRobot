@@ -37,11 +37,16 @@ class Permissions(BASE):
     photo = Column(Boolean, default=False)
     sticker = Column(Boolean, default=False)
     gif = Column(Boolean, default=False)
+    mention = Column(Boolean, default=False)
+    spoiler = Column(Boolean, default=False)
     url = Column(Boolean, default=False)
     bots = Column(Boolean, default=False)
     forward = Column(Boolean, default=False)
     forwardchannel = Column(Boolean, default=False)
     game = Column(Boolean, default=False)
+    poll = Column(Boolean, default=False)
+    text = Column(Boolean, default=False)
+    command = Column(Boolean, default=False)
     location = Column(Boolean, default=False)
     rtl = Column(Boolean, default=False)
     button = Column(Boolean, default=False)
@@ -59,11 +64,16 @@ class Permissions(BASE):
         self.photo = False
         self.sticker = False
         self.gif = False
+        self.mention = False
+        self.spoiler = False
         self.url = False
         self.bots = False
         self.forward = False
         self.forwardchannel = False
         self.game = False
+        self.poll = False
+        self.text = False
+        self.command = False
         self.location = False
         self.rtl = False
         self.button = False
@@ -149,6 +159,10 @@ def update_lock(chat_id, lock_type, locked):
             curr_perm.gif = locked
         elif lock_type == "url":
             curr_perm.url = locked
+        elif lock_type == "mention":
+            curr_perm.mention = locked
+        elif lock_type == "spoiler":
+            curr_perm.spoiler = locked
         elif lock_type == "bots":
             curr_perm.bots = locked
         elif lock_type == "forward":
@@ -157,6 +171,12 @@ def update_lock(chat_id, lock_type, locked):
             curr_perm.forwardchannel = locked
         elif lock_type == "game":
             curr_perm.game = locked
+        elif lock_type == "poll":
+            curr_perm.poll = locked
+        elif lock_type == "text":
+            curr_perm.text = locked
+        elif lock_type == "command":
+            curr_perm.command = locked
         elif lock_type == "location":
             curr_perm.location = locked
         elif lock_type == "rtl":
@@ -220,6 +240,10 @@ def is_locked(chat_id, lock_type):
         return curr_perm.document
     if lock_type == "gif":
         return curr_perm.gif
+    if lock_type == "mention":
+        return curr_perm.mention
+    if lock_type == "spoiler":
+        return curr_perm.spoiler
     if lock_type == "url":
         return curr_perm.url
     if lock_type == "bots":
@@ -230,6 +254,12 @@ def is_locked(chat_id, lock_type):
         return curr_perm.forwardchannel
     if lock_type == "game":
         return curr_perm.game
+    if lock_type == "poll":
+        return curr_perm.poll
+    if lock_type == "text":
+        return curr_perm.text
+    if lock_type == "command":
+        return curr_perm.command
     if lock_type == "location":
         return curr_perm.location
     if lock_type == "rtl":

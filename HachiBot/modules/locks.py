@@ -34,12 +34,17 @@ LOCK_TYPES = {
     "videonote": Filters.video_note,
     "contact": Filters.contact,
     "photo": Filters.photo,
+    "mention": Filters.entity(MessageEntity.MENTION),
+    "spoiler": Filters.entity(MessageEntity.SPOILER),
     "url": Filters.entity(MessageEntity.URL)
     | Filters.caption_entity(MessageEntity.URL),
     "bots": Filters.status_update.new_chat_members,
     "forward": Filters.forwarded,
     "forwardchannel": Filters.chat_type.channel,
     "game": Filters.game,
+    "poll": Filters.poll,
+    "text": Filters.text,
+    "command": Filters.command,
     "location": Filters.location,
     "egame": Filters.dice,
     "rtl": "rtl",
@@ -474,10 +479,15 @@ def build_lock_message(chat_id):
             locklist.append("photo = `{}`".format(locks.photo))
             locklist.append("gif = `{}`".format(locks.gif))
             locklist.append("url = `{}`".format(locks.url))
+            locklist.append("mention = `{}`".format(locks.mention))
+            locklist.append("spiler = `{}`".format(locks.spoiler))
             locklist.append("bots = `{}`".format(locks.bots))
             locklist.append("forward = `{}`".format(locks.forward))
             locklist.append("forwardchannel = `{}`".format(locks.forwardchannel))
             locklist.append("game = `{}`".format(locks.game))
+            locklist.append("poll = `{}`".format(locks.poll))
+            locklist.append("text = `{}`".format(locks.text))
+            locklist.append("command = `{}`".format(locks.command))
             locklist.append("location = `{}`".format(locks.location))
             locklist.append("rtl = `{}`".format(locks.rtl))
             locklist.append("button = `{}`".format(locks.button))
