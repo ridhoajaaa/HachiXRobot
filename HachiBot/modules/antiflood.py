@@ -12,7 +12,7 @@ from telegram import (
     ParseMode,
 )
 
-from HachiBot import DRAGONS, WHITELIST_USERS, dispatcher
+from HachiBot import WOLVES, TIGERS, dispatcher
 from HachiBot.modules.sql.approve_sql import is_approved
 from HachiBot.modules.helper_funcs.chat_status import (
     bot_admin,
@@ -45,8 +45,7 @@ FLOOD_GROUP = -5
 @ddomsg((Filters.all & ~Filters.status_update & Filters.chat_type.groups), group=FLOOD_GROUP)
 @connection_status
 @loggable
-def check_flood(update, context) -> Optional[str]:
-    global execstrings
+def check_flood(update, context) -> str:
     user = update.effective_user  # type: Optional[User]
     chat = update.effective_chat  # type: Optional[Chat]
     msg = update.effective_message  # type: Optional[Message]
@@ -54,18 +53,13 @@ def check_flood(update, context) -> Optional[str]:
         return ""
 
     # ignore admins and whitelists
-    if (
-            is_user_admin(update, user.id)
-            or user.id in WHITELIST_USERS
-            or user.id in DRAGONS
-    ):
+    if is_user_admin(chat, user.id) or user.id in WOLVES or user.id in TIGERS:
         sql.update_flood(chat.id, None)
         return ""
     # ignore approved users
     if is_approved(chat.id, user.id):
         sql.update_flood(chat.id, None)
         return
-
     should_ban = sql.update_flood(chat.id, user.id)
     if not should_ban:
         return ""
@@ -83,7 +77,9 @@ def check_flood(update, context) -> Optional[str]:
             tag = "KICKED"
         elif getmode == 3:
             context.bot.restrict_chat_member(
-                chat.id, user.id, permissions=ChatPermissions(can_send_messages=False)
+                chat.id,
+                user.id,
+                permissions=ChatPermissions(can_send_messages=False),
             )
             execstrings = "Muted"
             tag = "MUTED"
@@ -103,7 +99,8 @@ def check_flood(update, context) -> Optional[str]:
             execstrings = "Muted for {}".format(getvalue)
             tag = "TMUTE"
         send_message(
-            update.effective_message, "Beep Boop! Boop Beep!\n{}!".format(execstrings)
+            update.effective_message,
+            "Beep Boop! Boop Beep!\n{}!".format(execstrings),
         )
 
         return (
@@ -111,20 +108,22 @@ def check_flood(update, context) -> Optional[str]:
             "\n#{}"
             "\n<b>User:</b> {}"
             "\nFlooded the group.".format(
-                tag, html.escape(chat.title), mention_html(user.id, user.first_name)
+                tag,
+                html.escape(chat.title),
+                mention_html(user.id, html.escape(user.first_name)),
             )
         )
 
     except BadRequest:
         msg.reply_text(
-            "I can't restrict people here, give me permissions first! Until then, I'll disable anti-flood."
+            "I can't restrict people here, give me permissions first! Until then, I'll disable anti-flood.",
         )
         sql.set_flood(chat.id, 0)
         return (
             "<b>{}:</b>"
             "\n#INFO"
             "\nDon't have enough permission to restrict users so automatically disabled anti-flood".format(
-                chat.title
+                chat.title,
             )
         )
 
