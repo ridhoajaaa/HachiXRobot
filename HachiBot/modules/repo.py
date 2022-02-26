@@ -23,7 +23,7 @@ async def give_repo(c, m):
         list_of_users += f"•{count}. [{i.login}](https://github.com/{i.login})\n"
     await m.reply_photo(
         photo=HACHI,
-        caption=f"""**Saya HachiXBot**
+        caption=f"""**HachiXBot**
 
 **✪ Owner repo : [ddodxy](https://t.me/ddodxy)**
 **✪ Python Version :** `{y()}`
@@ -39,7 +39,7 @@ async def give_repo(c, m):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Repo", url="https://xnxx.com"),
+                    InlineKeyboardButton("Repo", url="https://github.com/ridhoajaaa/HachiXBot"),
                 ],
                 [
                     InlineKeyboardButton("Support", url="https://t.me/demonszxx"),
