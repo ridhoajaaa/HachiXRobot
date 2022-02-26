@@ -33,7 +33,9 @@ def is_sudo_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
     return user_id in DRAGONS or user_id in DEV_USERS
 
 
-def is_user_admin(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
+def is_user_admin(update: Update, chat: Chat, user_id: int, member: ChatMember = None) -> bool:
+    chat = update.effective_chat
+    msg = update.effective_message
     if (
         chat.type == "private"
         or user_id in DRAGONS
