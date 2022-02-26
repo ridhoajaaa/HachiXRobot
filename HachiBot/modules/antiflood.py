@@ -12,7 +12,7 @@ from telegram import (
     ParseMode,
 )
 
-from HachiBot import SARDEGNA_USERS, WHITELIST_USERS, dispatcher
+from HachiBot import DRAGONS, WHITELIST_USERS, dispatcher
 from HachiBot.modules.sql.approve_sql import is_approved
 from HachiBot.modules.helper_funcs.chat_status import (
     bot_admin,
@@ -37,7 +37,7 @@ from HachiBot.modules.connection import connected
 from HachiBot.modules.helper_funcs.alternate import send_message
 from HachiBot.modules.helper_funcs.decorators import ddocmd, ddomsg, ddocallback
 
-from ..modules.helper_funcs.anonymous import user_admin, AdminPerms
+from HachiBot.modules.helper_funcs.anonymous import user_admin, AdminPerms
 
 FLOOD_GROUP = -5
 
@@ -57,7 +57,7 @@ def check_flood(update, context) -> Optional[str]:
     if (
             is_user_admin(update, user.id)
             or user.id in WHITELIST_USERS
-            or user.id in SARDEGNA_USERS
+            or user.id in DRAGONS
     ):
         sql.update_flood(chat.id, None)
         return ""
