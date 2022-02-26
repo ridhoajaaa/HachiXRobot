@@ -39,7 +39,7 @@ def afk(update, _):
     fname = user.first_name
     try:
         message.reply_text(
-            f"Sampai jumpa gays 👋 <code>{fname}</code>!", parse_mode=ParseMode.HTML
+            f"See you next time tot 👋 <code>{fname}</code>!", parse_mode=ParseMode.HTML
         )
     except BadRequest:
         pass
@@ -68,7 +68,7 @@ def no_longer_afk(update, _):
         firstname = update.effective_user.first_name
         try:
             message.reply_text(
-                f"<code>{firstname}</code> Kombek brader\n\nYou were away for: <code>{end_afk_time}</code>",
+                f"<code>{firstname}</code> im here brader\n\nYou were away for: <code>{end_afk_time}</code>",
                 parse_mode=ParseMode.HTML,
             )
         except BadRequest:
@@ -146,9 +146,9 @@ def check_afk(update, _, user_id: int, fst_name: int, userc_id: int):
         if int(userc_id) == int(user_id):
             return
         if reason == "none":
-            res = f"<code>{fst_name}</code> Lagi AFK tot!\n\nSince: <code>{since_afk}</code>"
+            res = f"<code>{fst_name}</code> AFK tot!\n\nSince: <code>{since_afk}</code>"
         else:
-            res = f"<code>{fst_name}</code> Lagi AFK tot!\n\nReason: <code>{reason}</code>\nSince: <code>{since_afk}</code>"
+            res = f"<code>{fst_name}</code> AFK tot!\n\nReason: <code>{reason}</code>\nSince: <code>{since_afk}</code>"
 
         update.effective_message.reply_text(res, parse_mode=ParseMode.HTML)
 

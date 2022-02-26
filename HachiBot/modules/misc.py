@@ -111,6 +111,18 @@ def src(update, _):
     )
 
 
+def repo(update: Update, context: CallbackContext):
+    message = update.effective_message
+    text = message.text[len('/repo '):]
+    usr = get(f'https://api.github.com/users/{text}/repos?per_page=40').json()
+    reply_text = "*Repo*\n"
+    for i in range(len(usr)):
+        reply_text += f"[{usr[i]['name']}]({usr[i]['html_url']})\n"
+    message.reply_text(reply_text,
+                       parse_mode=ParseMode.MARKDOWN,
+                       disable_web_page_preview=True)
+
+
 @send_action(ChatAction.UPLOAD_PHOTO)
 def rmemes(update, context):
     msg = update.effective_message
@@ -454,16 +466,22 @@ IP_HANDLER = CommandHandler(
 SYS_STATUS_HANDLER = CommandHandler(
     "sysinfo", system_status, filters=CustomFilters.dev_filter, run_async=True
 )
+REPO_HANDLER = DisableAbleCommandHandler("repo",
+                                         repo,
+                                         pass_args=True,
+                                         run_async=True,
+                                         admin_ok=True)
 
 dispatcher.add_handler(ECHO_HANDLER)
 dispatcher.add_handler(MD_HELP_HANDLER)
 dispatcher.add_handler(SRC_HANDLER)
 dispatcher.add_handler(REDDIT_MEMES_HANDLER)
+dispatcher.add_handler(REPO_HANDLER)
 dispatcher.add_handler(SYS_STATUS_HANDLER)
 dispatcher.add_handler(IP_HANDLER)
 
 __mod_name__ = "Extras"
-__command_list__ = ["id", "echo", "source", "rmeme", "ip", "sysinfo"]
+__command_list__ = ["id", "echo", "source", "rmeme", "ip", "sysinfo", "repo"]
 __handlers__ = [
     ECHO_HANDLER,
     MD_HELP_HANDLER,
@@ -471,4 +489,5 @@ __handlers__ = [
     REDDIT_MEMES_HANDLER,
     IP_HANDLER,
     SYS_STATUS_HANDLER,
+    REPO_HANDLER,
 ]
