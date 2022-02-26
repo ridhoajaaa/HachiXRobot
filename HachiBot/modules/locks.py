@@ -42,7 +42,6 @@ LOCK_TYPES = {
     "forward": Filters.forwarded,
     "forwardchannel": Filters.chat_type.channel,
     "game": Filters.game,
-    "poll": Filters.poll,
     "text": Filters.text,
     "command": Filters.command,
     "location": Filters.location,
@@ -480,12 +479,11 @@ def build_lock_message(chat_id):
             locklist.append("gif = `{}`".format(locks.gif))
             locklist.append("url = `{}`".format(locks.url))
             locklist.append("mention = `{}`".format(locks.mention))
-            locklist.append("spiler = `{}`".format(locks.spoiler))
+            locklist.append("spoiler = `{}`".format(locks.spoiler))
             locklist.append("bots = `{}`".format(locks.bots))
             locklist.append("forward = `{}`".format(locks.forward))
             locklist.append("forwardchannel = `{}`".format(locks.forwardchannel))
             locklist.append("game = `{}`".format(locks.game))
-            locklist.append("poll = `{}`".format(locks.poll))
             locklist.append("text = `{}`".format(locks.text))
             locklist.append("command = `{}`".format(locks.command))
             locklist.append("location = `{}`".format(locks.location))
