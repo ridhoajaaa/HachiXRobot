@@ -44,6 +44,7 @@ class Permissions(BASE):
     forward = Column(Boolean, default=False)
     forwardchannel = Column(Boolean, default=False)
     game = Column(Boolean, default=False)
+    poll = Column(Boolean, default=False)
     text = Column(Boolean, default=False)
     command = Column(Boolean, default=False)
     location = Column(Boolean, default=False)
@@ -70,6 +71,7 @@ class Permissions(BASE):
         self.forward = False
         self.forwardchannel = False
         self.game = False
+        self.poll = False
         self.text = False
         self.command = False
         self.location = False
@@ -169,6 +171,8 @@ def update_lock(chat_id, lock_type, locked):
             curr_perm.forwardchannel = locked
         elif lock_type == "game":
             curr_perm.game = locked
+        elif lock_type == "poll":
+            curr_perm.poll = locked
         elif lock_type == "text":
             curr_perm.text = locked
         elif lock_type == "command":
@@ -250,6 +254,8 @@ def is_locked(chat_id, lock_type):
         return curr_perm.forwardchannel
     if lock_type == "game":
         return curr_perm.game
+    if lock_type == "poll":
+        return curr_perm.poll
     if lock_type == "text":
         return curr_perm.text
     if lock_type == "command":
