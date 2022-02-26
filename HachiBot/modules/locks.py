@@ -34,8 +34,6 @@ LOCK_TYPES = {
     "videonote": Filters.video_note,
     "contact": Filters.contact,
     "photo": Filters.photo,
-    "mention": Filters.entity(MessageEntity.MENTION),
-    "spoiler": Filters.entity(MessageEntity.SPOILER),
     "url": Filters.entity(MessageEntity.URL)
     | Filters.caption_entity(MessageEntity.URL),
     "bots": Filters.status_update.new_chat_members,
@@ -478,8 +476,6 @@ def build_lock_message(chat_id):
             locklist.append("photo = `{}`".format(locks.photo))
             locklist.append("gif = `{}`".format(locks.gif))
             locklist.append("url = `{}`".format(locks.url))
-            locklist.append("mention = `{}`".format(locks.mention))
-            locklist.append("spoiler = `{}`".format(locks.spoiler))
             locklist.append("bots = `{}`".format(locks.bots))
             locklist.append("forward = `{}`".format(locks.forward))
             locklist.append("forwardchannel = `{}`".format(locks.forwardchannel))
