@@ -464,14 +464,13 @@ async def evo(c: Client, update: Update):
 @pbot.on_message(filters.command("pixys"))
 async def pixys(c: Client, update: Update):
 
-    chat_id = update.chat.id,
     try:
         device = update.command[1]
     except Exception:
         device = ''
 
     if device == '':
-        reply_text = (chat_id, "Please type your device **codename**!\nFor example, `/{} tissot`").format("pixys")
+        reply_text = ("Please type your device **codename**!\nFor example, `/pixys tissot`")
         await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
@@ -488,13 +487,13 @@ async def pixys(c: Client, update: Update):
         romtype = response['romtype']
         version = response['version']
 
-        reply_text = (chat_id, "**Download:** [{}]({})\n").format(filename, url)
-        reply_text += (chat_id, "**Build Size:** `{}`\n").format(buildsize_b)
-        reply_text += (chat_id, "**Version:** `{}`\n").format(version)
-        reply_text += (chat_id, "**ROM Type:** `{}`\n").format(romtype)
+        reply_text = ("**Download:** [ {} ]( {} )\n").format(filename, url)
+        reply_text += ("**Build Size:** `{}`\n").format(buildsize_b)
+        reply_text += ("**Version:** `{}`\n").format(version)
+        reply_text += ("**ROM Type:** `{}`\n").format(romtype)
 
         keyboard = [[
-            InlineKeyboardButton(text=(chat_id, "Click here to Download"), url=f"{url}")
+            InlineKeyboardButton(text=("Click here to Download"), url=f"{url}")
         ]]
         await update.reply_text(reply_text,
                                 reply_markup=InlineKeyboardMarkup(keyboard),
@@ -503,7 +502,7 @@ async def pixys(c: Client, update: Update):
         return
 
     elif fetch.status_code == 404:
-        reply_text = (chat_id, "Couldn't find any results matching your query.")
+        reply_text = ("Couldn't find any results matching your query.")
     await update.reply_text(reply_text,
                             parse_mode="markdown",
                             disable_web_page_preview=True)
@@ -518,7 +517,7 @@ async def phhmagisk(c: Client, update: Update):
         "https://api.github.com/repos/expressluke/phh-magisk-builder/releases/latest"
     )
     usr = json.loads(fetch.content)
-    reply_text = (chat_id, "**Phh's latest GSI release(s)**\n")
+    reply_text = ("**Phh's latest GSI release(s)**\n")
     for i in range(len(usr)):
         try:
             name = usr['assets'][i]['name']
@@ -528,7 +527,7 @@ async def phhmagisk(c: Client, update: Update):
             size = float("{:.2f}".format((size_bytes/1024)/1024))
             reply_text += f"**Tag:** `{tag}`\n"
             reply_text += f"**Size**: `{size} MB`\n\n"
-            btn = (chat_id, "Click Here To Download")
+            btn = ("Click Here To Download")
             keyboard = [[InlineKeyboardButton(
                 text=btn, url=url)]]
         except IndexError:

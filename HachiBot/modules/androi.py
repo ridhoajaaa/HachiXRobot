@@ -47,7 +47,7 @@ async def pixel_experience(message, strings):
         atype = "twelve"
 
     if device == "":
-        text = strings["cmd_example"].format(cmd=get_cmd(message))
+        text = strings["Please type your device <b>codename</b>!\nFor example, <code>/pe whyred</code>"]
         await message.reply(text)
         return
 
