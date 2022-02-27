@@ -17,7 +17,7 @@
 
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
-from telegram import Update
+from telegram import Update, ParseMode
 from telegram.ext import CommandHandler
 from telegram.ext.callbackcontext import CallbackContext
 
@@ -68,6 +68,7 @@ def keyboard(update: Update, context: CallbackContext):
 
     update.effective_message.reply_text(
         f"Keyboard Update In <b>{chat.title}</b> <b>[{chat.id}]</b>",
+        parse_mode=ParseMode.HTML,
         reply_markup=ReplyKeyboardMarkup([[
             KeyboardButton("/help"),
             KeyboardButton("/notes - {}".format(

@@ -19,7 +19,8 @@
 import time
 
 import rapidjson as json
-from telegram import update
+from telegram import Update
+from telegram.ext import CallbackContext
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import filters
 from babel.dates import format_datetime
@@ -33,7 +34,7 @@ from HachiBot.utils.http import http
 
 
 @pbot.on_message(filters.command(["pixel", "pe"]))
-async def pixel_experience(context, update):
+async def pixel_experience(update: Update, context: CallbackContext):
 
     try:
         message = update.effective_message
@@ -81,7 +82,7 @@ async def pixel_experience(context, update):
 
 
 @pbot.on_message(filters.command(["statix", "sxos"]))
-async def statix(message, update, context):
+async def statix(message, update: Update, context: CallbackContext):
 
     try:
         message = update.effective_message
@@ -122,7 +123,7 @@ async def statix(message, update, context):
 
 
 @pbot.on_message(filters.command(["crdroid", "crd"]))
-async def crdroid(message, update, context):
+async def crdroid(message, update: Update, context: CallbackContext):
 
     try:
         message = update.effective_message
