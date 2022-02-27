@@ -17,11 +17,11 @@
 
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
-from HachiBot import CONFIG
 from telegram import Update
 from telegram.ext import CommandHandler
 from telegram.ext.callbackcontext import CallbackContext
 
+from HachiBot import dispatcher
 import HachiBot.modules.sql.connection_sql as con_sql
 
 
@@ -77,4 +77,4 @@ def keyboard(update: Update, context: CallbackContext):
 
 
 KEYBOARD_HANDLER = CommandHandler(["keyboard"], keyboard)
-CONFIG.dispatcher.add_handler(KEYBOARD_HANDLER)
+dispatcher.add_handler(KEYBOARD_HANDLER)
