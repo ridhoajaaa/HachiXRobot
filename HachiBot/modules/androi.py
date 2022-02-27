@@ -57,6 +57,8 @@ async def pixel_experience(update: Update, context: CallbackContext):
         await message.reply(text)
         return
 
+    asyncio.sleep(delay)
+
     fetch = await http.get(
         f"https://download.pixelexperience.org/ota_v5/{device}/{atype}"
     )
@@ -76,6 +78,8 @@ async def pixel_experience(update: Update, context: CallbackContext):
         reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=buildsize_b)
         reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
         reply_text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
+
+        asyncio.sleep(delay)
 
         keyboard = [
             [InlineKeyboardButton(text="Click Here To Downloads", url=f"{url}")]
