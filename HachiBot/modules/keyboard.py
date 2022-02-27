@@ -67,7 +67,7 @@ def keyboard(update: Update, context: CallbackContext):
         #TODO: Remove except garbage
 
     update.effective_message.reply_text(
-        f"Keyboard Update In {chat.title} [{chat.id}]",
+        f"Keyboard Update In <b>{chat.title}</b> <b>[{chat.id}]</b>",
         reply_markup=ReplyKeyboardMarkup([[
             KeyboardButton("/help"),
             KeyboardButton("/notes - {}".format(

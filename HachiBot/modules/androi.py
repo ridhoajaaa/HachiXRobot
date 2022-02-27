@@ -1,7 +1,7 @@
 # Copyright (C) 2022 HitaloSama.
 # Copyright (C) 2019 Aiogram.
 #
-# This file is part of Hitsuki (Telegram Bot)
+# This file is part of Hachi (Telegram Bot)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -19,6 +19,7 @@
 import time
 
 import rapidjson as json
+from telegram import update
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import filters
 from babel.dates import format_datetime
@@ -29,14 +30,14 @@ from HachiBot import pbot
 
 from .math import convert_size
 from HachiBot.utils.http import http
-from HachiBot.utils.message import get_arg, get_cmd
 
 
 @pbot.on_message(filters.command(["pixel", "pe"]))
-async def pixel_experience(message, strings):
+async def pixel_experience(context, update):
 
     try:
-        args = message.text.split()
+        message = update.effective_message
+        args = context.args
         device = args[1]
     except IndexError:
         device = ""
@@ -47,7 +48,7 @@ async def pixel_experience(message, strings):
         atype = "twelve"
 
     if device == "":
-        text = strings["Please type your device <b>codename</b>!\nFor example, <code>/pe whyred</code>"]
+        text = ("Please type your device <b>codename</b>!\nFor example, <code>/pe whyred</code>")
         await message.reply(text)
         return
 
@@ -57,7 +58,7 @@ async def pixel_experience(message, strings):
     if fetch.status_code == 200:
         response = json.loads(fetch.content)
         if response["error"]:
-            await message.reply(strings["err_query"])
+            await message.reply("Couldn't find any results matching your query.")
             return
         filename = response["filename"]
         url = response["url"]
@@ -66,29 +67,31 @@ async def pixel_experience(message, strings):
         version = response["version"]
         build_time = response["datetime"]
 
-        text = (strings["download"]).format(url=url, filename=filename)
-        text += (strings["build_size"]).format(size=buildsize_b)
-        text += (strings["version"]).format(version=version)
-        text += (strings["release_time"]).format(date=format_datetime(build_time))
+        text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
+        text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=buildsize_b)
+        text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
+        text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
 
-        btn = strings["dl_btn"]
+        btn = ("Click here to download!")
         keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=btn, url=url))
         await message.reply(text, reply_markup=keyboard)
         return
-    text = strings["err_query"]
+    text = ("Couldn't find any results matching your query.")
     await message.reply(text)
 
 
 @pbot.on_message(filters.command(["statix", "sxos"]))
-async def statix(message, strings):
+async def statix(message, update, context):
 
     try:
-        device = get_arg(message)
+        message = update.effective_message
+        args = context.args
+        device = args[1]
     except IndexError:
         device = ""
 
     if device == "":
-        text = strings["cmd_example"].format(cmd=get_cmd(message))
+        text = ("Please type your device <b>codename</b>!\nFor example, <code>/pe whyred</code>")
         await message.reply(text)
         return
 
@@ -104,25 +107,27 @@ async def statix(message, strings):
         build_time = response[0]["datetime"]
         romtype = response[0]["romtype"]
 
-        text = (strings["download"]).format(url=url, filename=filename)
-        text += (strings["build_type"]).format(type=romtype)
-        text += (strings["build_size"]).format(size=buildsize_b)
-        text += (strings["version"]).format(version=version)
-        text += (strings["release_time"]).format(date=format_datetime(build_time))
+        text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
+        text += ("<b>Type:</b> {}\n").format(type=romtype)
+        text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=buildsize_b)
+        text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
+        text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
 
-        btn = strings["dl_btn"]
+        btn = ("Click here to download!")
         keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=btn, url=url))
         await message.reply(text, reply_markup=keyboard, disable_web_page_preview=True)
         return
-    text = strings["err_query"]
+    text = ("Couldn't find any results matching your query.")
     await message.reply(text)
 
 
 @pbot.on_message(filters.command(["crdroid", "crd"]))
-async def crdroid(message, strings):
+async def crdroid(message, update, context):
 
     try:
-        device = get_arg(message)
+        message = update.effective_message
+        args = context.args
+        device = args[1]
     except IndexError:
         device = ""
 
@@ -133,7 +138,7 @@ async def crdroid(message, strings):
         device = "X01BD"
 
     if device == "":
-        text = strings["cmd_example"].format(cmd=get_cmd(message))
+        text = ("Please type your device <b>codename</b>!\nFor example, <code>/pe whyred</code>")
         await message.reply(text)
         return
 
@@ -142,7 +147,7 @@ async def crdroid(message, strings):
     )
 
     if fetch.status_code in [500, 504, 505]:
-        await message.reply(strings["err_github"])
+        await message.reply("Hachi have been trying to connect to GitHub User Content, It seem like GitHub User Content is down")
         return
 
     if fetch.status_code == 200:
@@ -150,7 +155,7 @@ async def crdroid(message, strings):
             usr = json.loads(fetch.content)
             response = usr["response"]
             filename = response[0]["filename"]
-            url = response[0]["download"]
+            url = response[0]["<b>Download:</b> <a href='{url}'>{filename}</a>\n"]
             version = response[0]["version"]
             maintainer = response[0]["maintainer"]
             size_a = response[0]["size"]
@@ -158,14 +163,14 @@ async def crdroid(message, strings):
             build_time = response[0]["timestamp"]
             romtype = response[0]["buildtype"]
 
-            text = (strings["download"]).format(url=url, filename=filename)
-            text += (strings["build_type"]).format(type=romtype)
-            text += (strings["build_size"]).format(size=size_b)
-            text += (strings["version"]).format(version=version)
-            text += (strings["release_time"]).format(date=format_datetime(build_time))
-            text += (strings["maintainer"]).format(name=maintainer)
+            text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
+            text += ("<b>Type:</b> {}\n").format(type=romtype)
+            text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=size_b)
+            text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
+            text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
+            text += ("maintainer").format(name=maintainer)
 
-            btn = strings["dl_btn"]
+            btn = ("Click here to download!")
             keyboard = InlineKeyboardMarkup().add(
                 InlineKeyboardButton(text=btn, url=url)
             )
@@ -175,12 +180,12 @@ async def crdroid(message, strings):
             return
 
         except ValueError:
-            text = strings["err_ota"]
+            text = ("Tell the rom maintainer to fix their OTA json. I'm sure this won't work with OTA and it won't work with this bot too :P")
             await message.reply(text)
             return
 
     elif fetch.status_code == 404:
-        text = strings["err_query"]
+        text = ("Couldn't find any results matching your query.")
         await message.reply(text)
         return
         
