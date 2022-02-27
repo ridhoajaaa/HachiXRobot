@@ -13,6 +13,7 @@ faker
 hachoir
 pykeyboard
 httpx
+h2
 pynewtonmath
 python-rapidjson==1.6
 py-Ultroid==2022.2.10
