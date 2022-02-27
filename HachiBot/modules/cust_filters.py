@@ -622,7 +622,7 @@ doin?
  %%%
  Reply 3`
 
-× /stop <filter keyword>*:* Stop that filter.
+× /rm <filter keyword>*:* Stop that filter.
 
 *Chat creator only:*
 × /removeallfilters*:* Remove all chat filters at once.
@@ -633,7 +633,7 @@ Check /markdownhelp to know more!
 __mod_name__ = "Filters"
 
 FILTER_HANDLER = CommandHandler("filter", filters)
-STOP_HANDLER = CommandHandler("stop", stop_filter)
+STOP_HANDLER = CommandHandler("rm", stop_filter)
 RMALLFILTER_HANDLER = CommandHandler(
     "removeallfilters", rmall_filters, filters=Filters.chat_type.groups, run_async=True
 )

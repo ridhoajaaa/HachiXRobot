@@ -20,9 +20,8 @@ import asyncio
 import time
 
 import rapidjson as json
-from telegram import Update
 from telegram.ext import CallbackContext
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Bot, Update
 from pyrogram import filters
 from babel.dates import format_datetime
 from bs4 import BeautifulSoup
@@ -73,17 +72,26 @@ async def pixel_experience(update: Update, context: CallbackContext):
         version = response["version"]
         build_time = response["datetime"]
 
-        text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
-        text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=buildsize_b)
-        text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
-        text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
+        reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
+        reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=buildsize_b)
+        reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
+        reply_text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
 
-        btn = ("Click here to download!")
-        keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=btn, url=url))
-        await message.reply(text, reply_markup=keyboard)
+        keyboard = [
+            [InlineKeyboardButton(text="Click Here To Downloads", url=f"{url}")]
+        ]
+        message.reply_text(
+            reply_text,
+            reply_markup=InlineKeyboardMarkup(keyboard),
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+        )
         return
-    text = ("Couldn't find any results matching your query.")
-    await message.reply(text)
+    message.reply_text(
+        "`Couldn't find any results matching your query.`",
+        parse_mode=ParseMode.MARKDOWN,
+        disable_web_page_preview=True,
+    )
 
 
 @ddocmd(command="sxos", can_disable=True)
@@ -114,18 +122,27 @@ async def statix(message, update: Update, context: CallbackContext):
         build_time = response[0]["datetime"]
         romtype = response[0]["romtype"]
 
-        text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
-        text += ("<b>Type:</b> {}\n").format(type=romtype)
-        text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=buildsize_b)
-        text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
-        text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
+        reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
+        reply_text += ("<b>Type:</b> {}\n").format(type=romtype)
+        reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=buildsize_b)
+        reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
+        reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
 
-        btn = ("Click here to download!")
-        keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=btn, url=url))
-        await message.reply(text, reply_markup=keyboard, disable_web_page_preview=True)
+        keyboard = [
+            [InlineKeyboardButton(text="Click Here To Downloads", url=f"{url}")]
+        ]
+        message.reply_text(
+            reply_text,
+            reply_markup=InlineKeyboardMarkup(keyboard),
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+        )
         return
-    text = ("Couldn't find any results matching your query.")
-    await message.reply(text)
+    message.reply_text(
+        "`Couldn't find any results matching your query.`",
+        parse_mode=ParseMode.MARKDOWN,
+        disable_web_page_preview=True,
+    )
 
 
 @pbot.on_message(filters.command(["crdroid", "crd"]))
@@ -170,20 +187,22 @@ async def crdroid(message, update: Update, context: CallbackContext):
             build_time = response[0]["timestamp"]
             romtype = response[0]["buildtype"]
 
-            text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
-            text += ("<b>Type:</b> {}\n").format(type=romtype)
-            text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=size_b)
-            text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
-            text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
-            text += ("maintainer").format(name=maintainer)
+            reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
+            reply_text += ("<b>Type:</b> {}\n").format(type=romtype)
+            reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=size_b)
+            reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
+            reply_text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
+            reply_text += ("maintainer").format(name=maintainer)
 
-            btn = ("Click here to download!")
-            keyboard = InlineKeyboardMarkup().add(
-                InlineKeyboardButton(text=btn, url=url)
-            )
-            await message.reply(
-                text, reply_markup=keyboard, disable_web_page_preview=True
-            )
+            keyboard = [
+            [InlineKeyboardButton(text="Click Here To Downloads", url=f"{url}")]
+        ]
+            await message.reply_text(
+            reply_text,
+            reply_markup=InlineKeyboardMarkup(keyboard),
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+        )
             return
 
         except ValueError:
