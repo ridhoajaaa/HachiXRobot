@@ -30,7 +30,7 @@ def keyboard(update: Update, context: CallbackContext):
     user = update.effective_user
     conn_id = con_sql.get_connected_chat(user.id)
     if conn_id and not conn_id == False:
-        btn1 = "/disconnect - {}".format((chat.id, "Disconnect from a chat"))
+        btn1 = "/disconnect - {}".format("Disconnect from a chat")
         btn2 = ""
         btn3 = ""
     else:
@@ -54,7 +54,7 @@ def keyboard(update: Update, context: CallbackContext):
         if chat_name1:
             btn1 = "/connect {} - {}".format(history.chat_id1, chat_name1)
         else:
-            btn1 = "/connect - {}".format((chat.id, "Connect to a chat"))
+            btn1 = "/connect - {}".format("Connect to a chat")
         if chat_name2:
             btn2 = "/connect {} - {}".format(history.chat_id2, chat_name2)
         else:
@@ -67,11 +67,11 @@ def keyboard(update: Update, context: CallbackContext):
         #TODO: Remove except garbage
 
     update.effective_message.reply_text(
-        (chat.id, "Keyboard Updated"),
+        f"Keyboard Update In {chat.title} [{chat.id}]",
         reply_markup=ReplyKeyboardMarkup([[
             KeyboardButton("/help"),
-            KeyboardButton("/notes - {}".format((chat.id,
-                                                    "Notes")))
+            KeyboardButton("/notes - {}".format(
+                "Notes"))
         ], [KeyboardButton(btn1)], [KeyboardButton(btn2)],
                                           [KeyboardButton(btn3)]]))
 

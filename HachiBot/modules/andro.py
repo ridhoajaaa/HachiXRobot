@@ -402,7 +402,7 @@ async def evo(c: Client, update: Update):
         device = ''
 
     if device == "example":
-        reply_text = (chat_id, "Why are you trying to get the example device?")
+        reply_text = ("Why are you trying to get the example device?")
         await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
@@ -413,7 +413,7 @@ async def evo(c: Client, update: Update):
         device = "X01BD"
 
     if device == '':
-        reply_text = (chat_id, "Please type your device **codename**!\nFor example, `/{} tissot`").format("evo")
+        reply_text = ("Please type your device **codename**!\nFor example, `/evo tissot`")
         await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
@@ -438,25 +438,25 @@ async def evo(c: Client, update: Update):
             size_a = usr['size']
             size_b = sizee(int(size_a))
 
-            reply_text = (chat_id, "**Download:** [{}]({})\n").format(filename, url)
-            reply_text += (chat_id, "**Build Size:** `{}`\n").format(size_b)
-            reply_text += (chat_id, "**Android Version:** `{}`\n").format(version)
-            reply_text += (chat_id, "**Maintainer:** {}\n").format(
+            reply_text = ("**Download:** [{}]({})\n").format(filename, url)
+            reply_text += ("**Build Size:** `{}`\n").format(size_b)
+            reply_text += ("**Android Version:** `{}`\n").format(version)
+            reply_text += ("**Maintainer:** {}\n").format(
                 f"[{maintainer}](https://t.me/{maintainer_url})")
 
-            btn = (chat_id, "Click here to Download")
+            btn = ("Click here to Download")
             keyboard = [[InlineKeyboardButton(
                 text=btn, url=url)]]
             await update.reply_text(reply_text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
             return
 
         except ValueError:
-            reply_text = (chat_id, "Tell the rom maintainer to fix their OTA json. I'm sure this won't work with OTA and it won't work with this bot too :P")
+            reply_text = ("Tell the rom maintainer to fix their OTA json. I'm sure this won't work with OTA and it won't work with this bot too :P")
             await update.reply_text(reply_text, disable_web_page_preview=True)
             return
 
     elif fetch.status_code == 404:
-        reply_text = (chat_id, "Couldn't find any results matching your query.")
+        reply_text = ("Couldn't find any results matching your query.")
         await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
