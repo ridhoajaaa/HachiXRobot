@@ -12,6 +12,7 @@ feedparser
 faker
 hachoir
 pykeyboard
+aiogram
 httpx
 h2
 pynewtonmath
