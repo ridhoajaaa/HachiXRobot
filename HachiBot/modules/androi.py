@@ -31,14 +31,16 @@ from HachiBot import pbot
 
 from .math import convert_size
 from HachiBot.utils.http import http
+from HachiBot.modules.helper_funcs.alternate import typing_action
+from HachiBot.modules.helper_funcs.decorators import ddocmd
 
 
-@pbot.on_message(filters.command(["pixel", "pe"]))
+@ddocmd(command="pe", can_disable=True)
+@typing_action
 async def pixel_experience(update: Update, context: CallbackContext):
-
+    message = update.effective_message
+    args = context.args
     try:
-        message = update.effective_message
-        args = context.args
         device = args[1]
     except IndexError:
         device = ""
