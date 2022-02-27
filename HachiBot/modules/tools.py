@@ -28,7 +28,11 @@ __help__ = """
 × /hs <sign> *:* it will show horoscope of daily of your sign. List of all signs - aries, taurus, gemini, cancer, leo, virgo, libra, scorpio, sagittarius, capricorn, aquarius and pisces.
 *AntiVirus*
 × /scanit *:* Scan file or document thats have virus or no
- 
+
+*Keyboard*
+× /keyboard: Got a avaliable keyboard bot
+× /removebotkeyboard: Got a nasty bot keyboard stuck in your group?
+
 *File To Link*
 × /transfersh : reply to a telegram file to upload it on transfersh and get direct download link
 × /tmpninja : reply to a telegram file to upload it on tmpninja and get direct download link

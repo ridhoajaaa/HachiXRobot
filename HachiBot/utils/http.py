@@ -1,3 +1,5 @@
+import httpx
+
 from asyncio import gather
 
 from HachiBot import aiohttpsession as session
@@ -48,3 +50,6 @@ async def resp_get(url: str, *args, **kwargs):
 
 async def resp_post(url: str, *args, **kwargs):
     return await session.post(url, *args, **kwargs)
+
+timeout = httpx.Timeout(40, pool=None)
+http = httpx.AsyncClient(http2=True, timeout=timeout)

@@ -129,6 +129,7 @@ DATA_IMPORT = []
 DATA_EXPORT = []
 CHAT_SETTINGS = {}
 USER_SETTINGS = {}
+GDPR = []
 
 for module_name in ALL_MODULES:
     imported_module = importlib.import_module("HachiBot.modules." + module_name)
@@ -158,6 +159,9 @@ for module_name in ALL_MODULES:
 
     if hasattr(imported_module, "__export_data__"):
         DATA_EXPORT.append(imported_module)
+
+    if hasattr(imported_module, "__gdpr__"):
+        GDPR.append(imported_module)
 
     if hasattr(imported_module, "__chat_settings__"):
         CHAT_SETTINGS[imported_module.__mod_name__.lower()] = imported_module

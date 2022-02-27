@@ -19,6 +19,7 @@ from telegram import (
     ChatAction,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
+    ReplyKeyboardRemove,
     ParseMode,
     Update,
     __version__,
@@ -29,6 +30,7 @@ from telethon import events, Button, types
 
 from HachiBot import OWNER_ID, SUPPORT_CHAT, WALL_API, dispatcher, telethn as Client
 from HachiBot.events import register
+from HachiBot.__main__ import GDPR
 from HachiBot.modules.disable import DisableAbleCommandHandler
 from HachiBot.modules.helper_funcs.alternate import send_action, typing_action
 from HachiBot.modules.helper_funcs.chat_status import user_admin
@@ -102,15 +104,6 @@ def markdown_help_sender(update: Update):
     )
 
 
-@typing_action
-def src(update, _):
-    update.effective_message.reply_text(
-        "Hey there! You can find what makes me click [here](https://github.com/ridhoajaaa/HachiXBot).",
-        parse_mode=ParseMode.MARKDOWN,
-        disable_web_page_preview=True,
-    )
-
-
 def repo(update: Update, context: CallbackContext):
     message = update.effective_message
     text = message.text[len('/repo '):]
@@ -121,6 +114,29 @@ def repo(update: Update, context: CallbackContext):
     message.reply_text(reply_text,
                        parse_mode=ParseMode.MARKDOWN,
                        disable_web_page_preview=True)
+
+
+def gdpr(update: Update, context: CallbackContext):
+    update.effective_message.reply_text(
+        (update.effective_chat.id, "Deleting identifiable data..."))
+    for mod in GDPR:
+        mod.__gdpr__(update.effective_user.id)
+
+    update.effective_message.reply_text("GDPR is done",
+                                        parse_mode=ParseMode.MARKDOWN)
+
+
+def reply_keyboard_remove(update: Update, context: CallbackContext):
+    reply_keyboard = []
+    reply_keyboard.append([ReplyKeyboardRemove(remove_keyboard=True)])
+    reply_markup = ReplyKeyboardRemove(remove_keyboard=True)
+    old_message = context.bot.send_message(
+        chat_id=update.message.chat_id,
+        text='trying',  # This text will not get translated
+        reply_markup=reply_markup,
+        reply_to_message_id=update.message.message_id)
+    context.bot.delete_message(chat_id=update.message.chat_id,
+                               message_id=old_message.message_id)
 
 
 @send_action(ChatAction.UPLOAD_PHOTO)
@@ -456,9 +472,6 @@ ECHO_HANDLER = DisableAbleCommandHandler(
     "echo", echo, filters=Filters.chat_type.groups, run_async=True
 )
 MD_HELP_HANDLER = CommandHandler("markdownhelp", markdown_help, run_async=True)
-SRC_HANDLER = CommandHandler(
-    "source", src, filters=Filters.chat_type.private, run_async=True
-)
 REDDIT_MEMES_HANDLER = DisableAbleCommandHandler("rmeme", rmemes, run_async=True)
 IP_HANDLER = CommandHandler(
     "ip", get_bot_ip, filters=Filters.chat(OWNER_ID), run_async=True
@@ -466,26 +479,32 @@ IP_HANDLER = CommandHandler(
 SYS_STATUS_HANDLER = CommandHandler(
     "sysinfo", system_status, filters=CustomFilters.dev_filter, run_async=True
 )
-REPO_HANDLER = DisableAbleCommandHandler("repo",
+REPO_HANDLER = DisableAbleCommandHandler("repos",
                                          repo,
                                          pass_args=True,
                                          run_async=True,
                                          admin_ok=True)
 
+GDPR_HANDLER = CommandHandler("gdpr",
+                              gdpr,
+                              run_async=True,
+                              filters=Filters.chat_type.private)
+
 dispatcher.add_handler(ECHO_HANDLER)
 dispatcher.add_handler(MD_HELP_HANDLER)
-dispatcher.add_handler(SRC_HANDLER)
+dispatcher.add_handler(GDPR_HANDLER)
 dispatcher.add_handler(REDDIT_MEMES_HANDLER)
 dispatcher.add_handler(REPO_HANDLER)
 dispatcher.add_handler(SYS_STATUS_HANDLER)
 dispatcher.add_handler(IP_HANDLER)
+dispatcher.add_handler(
+    DisableAbleCommandHandler("removebotkeyboard", reply_keyboard_remove))
 
 __mod_name__ = "Extras"
-__command_list__ = ["id", "echo", "source", "rmeme", "ip", "sysinfo", "repo"]
+__command_list__ = ["id", "echo", "rmeme", "ip", "sysinfo", "repos"]
 __handlers__ = [
     ECHO_HANDLER,
     MD_HELP_HANDLER,
-    SRC_HANDLER,
     REDDIT_MEMES_HANDLER,
     IP_HANDLER,
     SYS_STATUS_HANDLER,

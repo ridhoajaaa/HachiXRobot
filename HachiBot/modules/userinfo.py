@@ -688,6 +688,7 @@ When marked as AFK, any mentions will be replied to with a message to say you're
 
 *Overall Information about you:*
 × /info: get information about a user.
+× /gdpr*:* deletes your information from the bot's database. Private chats only.
 
 *What is that health thingy?*
 Come and see ;

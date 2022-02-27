@@ -18,7 +18,6 @@ import re
 import rapidjson as json
 from bs4 import BeautifulSoup
 from HachiBot import pbot
-from HachiBot.modules.tr_engine.strings import tld
 from HachiBot.mwt import MWT
 from hurry.filesize import size as sizee
 from pyrogram import Client, filters
@@ -26,22 +25,6 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from requests import get
 from yaml import Loader, load
 
-# Greeting all bot owners that is using this module,
-# v1 - RealAkito (used to be peaktogoo) [Original module Maker]
-# have spent so much time of their life into making this module better, stable, and well more supports.
-#
-# v2 - Hitalo (@HitaloSama on GitHub) [Pyrogram Adapt]
-# This module was entirely re-written in pyrogram for the HachiBot bot
-# Some commands have been ported/adapted from other bots.
-#
-# Important credits:
-# * The ofox command was originally developed by MrYacha.
-# * The /twrp, /specs, /whatis, /variants, /samcheck and /samget
-# commands were originally developed by KassemSYR.
-#
-# This module was inspired by Android Helper Bot by Vachounet.
-# None of the code is taken from the bot itself, to avoid confusion.
-# Please don't remove these comment, show respect to module contributors.
 
 MIUI_FIRM = "https://raw.githubusercontent.com/XiaomiFirmwareUpdater/miui-updates-tracker/master/data/latest.yml"
 REALME_FIRM = "https://raw.githubusercontent.com/RealmeUpdater/realme-updates-tracker/master/data/latest.yml"
@@ -419,7 +402,7 @@ async def evo(c: Client, update: Update):
         device = ''
 
     if device == "example":
-        reply_text = tld(chat_id, "err_example_device")
+        reply_text = (chat_id, "Why are you trying to get the example device?")
         await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
@@ -430,7 +413,7 @@ async def evo(c: Client, update: Update):
         device = "X01BD"
 
     if device == '':
-        reply_text = tld(chat_id, "cmd_example").format("evo")
+        reply_text = (chat_id, "Please type your device **codename**!\nFor example, `/{} tissot`").format("evo")
         await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
@@ -455,25 +438,25 @@ async def evo(c: Client, update: Update):
             size_a = usr['size']
             size_b = sizee(int(size_a))
 
-            reply_text = tld(chat_id, "download").format(filename, url)
-            reply_text += tld(chat_id, "build_size").format(size_b)
-            reply_text += tld(chat_id, "android_version").format(version)
-            reply_text += tld(chat_id, "maintainer").format(
+            reply_text = (chat_id, "**Download:** [{}]({})\n").format(filename, url)
+            reply_text += (chat_id, "**Build Size:** `{}`\n").format(size_b)
+            reply_text += (chat_id, "**Android Version:** `{}`\n").format(version)
+            reply_text += (chat_id, "**Maintainer:** {}\n").format(
                 f"[{maintainer}](https://t.me/{maintainer_url})")
 
-            btn = tld(chat_id, "btn_dl")
+            btn = (chat_id, "Click here to Download")
             keyboard = [[InlineKeyboardButton(
                 text=btn, url=url)]]
             await update.reply_text(reply_text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
             return
 
         except ValueError:
-            reply_text = tld(chat_id, "err_json")
+            reply_text = (chat_id, "Tell the rom maintainer to fix their OTA json. I'm sure this won't work with OTA and it won't work with this bot too :P")
             await update.reply_text(reply_text, disable_web_page_preview=True)
             return
 
     elif fetch.status_code == 404:
-        reply_text = tld(chat_id, "err_not_found")
+        reply_text = (chat_id, "Couldn't find any results matching your query.")
         await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
@@ -488,7 +471,7 @@ async def pixys(c: Client, update: Update):
         device = ''
 
     if device == '':
-        reply_text = tld(chat_id, "cmd_example").format("pixys")
+        reply_text = (chat_id, "Please type your device **codename**!\nFor example, `/{} tissot`").format("pixys")
         await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
@@ -505,13 +488,13 @@ async def pixys(c: Client, update: Update):
         romtype = response['romtype']
         version = response['version']
 
-        reply_text = tld(chat_id, "download").format(filename, url)
-        reply_text += tld(chat_id, "build_size").format(buildsize_b)
-        reply_text += tld(chat_id, "version").format(version)
-        reply_text += tld(chat_id, "rom_type").format(romtype)
+        reply_text = (chat_id, "**Download:** [{}]({})\n").format(filename, url)
+        reply_text += (chat_id, "**Build Size:** `{}`\n").format(buildsize_b)
+        reply_text += (chat_id, "**Version:** `{}`\n").format(version)
+        reply_text += (chat_id, "**ROM Type:** `{}`\n").format(romtype)
 
         keyboard = [[
-            InlineKeyboardButton(text=tld(chat_id, "btn_dl"), url=f"{url}")
+            InlineKeyboardButton(text=(chat_id, "Click here to Download"), url=f"{url}")
         ]]
         await update.reply_text(reply_text,
                                 reply_markup=InlineKeyboardMarkup(keyboard),
@@ -520,7 +503,7 @@ async def pixys(c: Client, update: Update):
         return
 
     elif fetch.status_code == 404:
-        reply_text = tld(chat_id, "err_not_found")
+        reply_text = (chat_id, "Couldn't find any results matching your query.")
     await update.reply_text(reply_text,
                             parse_mode="markdown",
                             disable_web_page_preview=True)
@@ -535,7 +518,7 @@ async def phhmagisk(c: Client, update: Update):
         "https://api.github.com/repos/expressluke/phh-magisk-builder/releases/latest"
     )
     usr = json.loads(fetch.content)
-    reply_text = tld(chat_id, "phhmagisk_releases")
+    reply_text = (chat_id, "**Phh's latest GSI release(s)**\n")
     for i in range(len(usr)):
         try:
             name = usr['assets'][i]['name']
@@ -545,7 +528,7 @@ async def phhmagisk(c: Client, update: Update):
             size = float("{:.2f}".format((size_bytes/1024)/1024))
             reply_text += f"**Tag:** `{tag}`\n"
             reply_text += f"**Size**: `{size} MB`\n\n"
-            btn = tld(chat_id, "btn_dl")
+            btn = (chat_id, "Click Here To Download")
             keyboard = [[InlineKeyboardButton(
                 text=btn, url=url)]]
         except IndexError:

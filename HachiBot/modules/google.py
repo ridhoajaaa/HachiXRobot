@@ -190,7 +190,7 @@ __help__ = """
 × /reverse: Does a reverse image search of the media which it was replied to.
 × /gps <location>*:* Get gps location.
 × /github <username>*:* Get information about a GitHub user.
-× /repo*:* Return the GitHub user or organization repository list (Limited at 40)
+× /repos <username>*:* Return the GitHub user or organization repository list (Limited at 40)
 × /country <country name>*:* Gathering info about given country
 × /imdb <Movie name>*:* Get full info about a movie with imdb.com
 × /cs *:* Latest live scores from cricinfo

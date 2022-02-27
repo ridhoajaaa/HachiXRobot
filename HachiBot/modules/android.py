@@ -418,23 +418,40 @@ def getfw(update: Update, context: CallbackContext):
 
 
 __help__ = """
-Get the latest Magsik releases or TWRP for your device!
-*Android related commands:*
+*ANDROID RELATED COMMANDS:*
+*Miui*
+× /miui <devicecodename>- Fetches latest firmware info for a given device codename
+
+*Realemui*
+× /realmeui <devicecodename>- Fetches latest firmware info for a given device codename
+
+*Magisk And Bootloader*
 × /magisk - Gets the latest magisk release for Stable/Beta/Canary.
-× /device <codename> - Gets android device basic info from its codename.
 × /twrp <codename> -  Gets latest twrp for the android device using the codename.
 × /orangefox <codename> -  Gets latest orangefox recovery for the android device using the codename.
+
+*Custom Roms*
+× /gsi - Gets gsi build.
 × /los <codename> - Gets Latest los build.
-× /gsi <codename> - Gets Latest gsi build.
-× /miui <devicecodename>- Fetches latest firmware info for a given device codename
-× /realmeui <devicecodename>- Fetches latest firmware info for a given device codename
-× /phh : Get lastest phh builds from github
+× /crdroid <codename> - Gets Latest gsi build.
+× /evo | /evox <codename> - Gets Latest evolutions build.
+× /pixys <codename> - Gets Latest pixys build.
+× /pixel | /pe <codename> - Gets Latest pixel experience build.
+× /statix | /sxos <codename> - Gets Latest statix build.
+
+*Samsung Only*
+× /samget <devicecodename>- get samsung spesification
 × /samspec <devicecodename>- Get samsung spesifikasi
-× /whatis <devicecodename>- to get information from codename
-× /variants <devicecodename>- same yang atas
-× /samget <devicecodename>- get samsung spesifikasi
 × /checkfw <model> <csc> - Samsung only - Shows the latest firmware info for the given device, taken from samsung servers
 × /getfw <model> <csc> - Samsung only - gets firmware download links from samfrew, sammobile and sfirmwares for the given device
+
+*Get Info Anroid*
+× /whatis <devicecodename>- to get information from codename
+× /device <codename> - Gets android device basic info from its codename.
+
+*PHH*
+× /phh : Get lastest phh builds from github
+× /phhmagisk : Get lastest phh builds from github
 """
 
 __mod_name__ = "Android"
