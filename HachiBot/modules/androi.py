@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import asyncio
 import time
 
 import rapidjson as json
@@ -40,11 +41,13 @@ from HachiBot.modules.helper_funcs.decorators import ddocmd
 async def pixel_experience(update: Update, context: CallbackContext):
     message = update.effective_message
     args = context.args
+
+    await asyncio.sleep(2)
+
     try:
         device = args[1]
     except IndexError:
         device = ""
-
     try:
         atype = args[2].lower()
     except IndexError:
@@ -83,12 +86,13 @@ async def pixel_experience(update: Update, context: CallbackContext):
     await message.reply(text)
 
 
-@pbot.on_message(filters.command(["statix", "sxos"]))
+@ddocmd(command="sxos", can_disable=True)
+@typing_action
 async def statix(message, update: Update, context: CallbackContext):
-
+    message = update.effective_message
+    args = context.args
+    
     try:
-        message = update.effective_message
-        args = context.args
         device = args[1]
     except IndexError:
         device = ""
@@ -126,10 +130,10 @@ async def statix(message, update: Update, context: CallbackContext):
 
 @pbot.on_message(filters.command(["crdroid", "crd"]))
 async def crdroid(message, update: Update, context: CallbackContext):
+    message = update.effective_message
+    args = context.args
 
     try:
-        message = update.effective_message
-        args = context.args
         device = args[1]
     except IndexError:
         device = ""
