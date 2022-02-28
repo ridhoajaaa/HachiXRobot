@@ -40,7 +40,7 @@ from HachiBot.modules.helper_funcs.decorators import ddocmd
 
 @pbot.on_message(filters.command("pe"))
 async def pixel_experience(message, c: Client, update: Update):
-
+    message = update.effective_message
     chat_id = update.chat.id,
     try:
         device = update.command[1]
@@ -70,7 +70,7 @@ async def pixel_experience(message, c: Client, update: Update):
         reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
         
         btn = ("Click here to Download")
-        keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=btn, url=url))
+        keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(reply_text=btn, url=url))
         await message.reply(reply_text, reply_markup=keyboard)
         return
     reply_text = ("Couldn't find any results matching your query.")
