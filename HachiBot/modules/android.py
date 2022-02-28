@@ -433,11 +433,8 @@ __help__ = """
 *Custom Roms*
 × /gsi - Gets gsi build.
 × /los <codename> - Gets Latest los build.
-× /crdroid <codename> - Gets Latest gsi build.
 × /evo | /evox <codename> - Gets Latest evolutions build.
 × /pixys <codename> - Gets Latest pixys build.
-× /pixel | /pe <codename> - Gets Latest pixel experience build.
-× /statix | /sxos <codename> - Gets Latest statix build.
 
 *Samsung Only*
 × /samget <devicecodename>- get samsung spesification

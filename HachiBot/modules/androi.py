@@ -168,7 +168,7 @@ async def crdroid(c: Client, update: Update):
 
             btn = ("Click here to Download")
             keyboard = [[InlineKeyboardButton(
-                reply_text=btn, url=url)]]
+                text=btn, url=url)]]
             await update.reply_text(reply_text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
             return
 
