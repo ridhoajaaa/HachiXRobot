@@ -1,6 +1,8 @@
 import html
 import os
+import re
 from typing import Optional
+from HachiBot.events import callbackquery
 
 from telegram import ParseMode, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.error import BadRequest
@@ -269,6 +271,20 @@ def admin(update: Update, context: CallbackContext) -> str:
         chat.id,
         f"Promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
         parse_mode=ParseMode.HTML,
+    )
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    "Demote", callback_data="demote_({})".format(user_member.user.id)
+                )
+                [
+                InlineKeyboardButton(
+                    "Reload", callback_data="reload_"
+                )
+                ]
+            ]
+        ]
     )
 
     log_message = (
@@ -732,7 +748,7 @@ def unpin(update: Update, context: CallbackContext):
         not (unpinner.can_pin_messages or unpinner.status == "creator")
         and user.id not in DRAGONS
     ):
-        message.reply_text("You don't have the necessary rights to do that!")
+        msg.reply_text("You don't have the necessary rights to do that!")
         return
 
     if msg.chat.username:
@@ -965,16 +981,17 @@ def adminlist(update, context):
 @user_admin
 @loggable
 def button(update: Update, context: CallbackContext) -> str:
-    query: Optional[CallbackQuery] = update.callback_query
-    user: Optional[User] = update.effective_user
-    bot: Optional[Bot] = context.bot
+    query = update.callback_query
+    user = update.effective_user
+    bot = context.bot
     match = re.match(r"demote_\((.+?)\)", query.data)
     if match:
         user_id = match.group(1)
-        chat: Optional[Chat] = update.effective_chat
+        chat = update.effective_chat
         member = chat.get_member(user_id)
         bot_member = chat.get_member(bot.id)
-        bot_permissions = promoteChatMember(
+        user_member = chat.get_member(user_id)
+        bot_permissions = bot.promoteChatMember(
             chat.id,
             user_id,
             can_change_info=bot_member.can_change_info,
@@ -1002,8 +1019,8 @@ def button(update: Update, context: CallbackContext) -> str:
         )
         if demoted:
             update.effective_message.edit_text(
-                f"Admin {mention_html(user.id, user.first_name)} Demoted {mention_html(member.user.id, member.user.first_name)}!",
-                parse_mode=ParseMode.HTML,
+                f"Sucessfully demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
+            parse_mode=ParseMode.HTML,
             )
             query.answer("Demoted!")
             return (
@@ -1017,6 +1034,19 @@ def button(update: Update, context: CallbackContext) -> str:
             "This user is not promoted or has left the group!"
         )
         return ""
+
+def button(update: Update, context: CallbackContext) -> str:
+    query = update.callback_query
+    user = update.effective_user
+    bot = context.bot
+    match = re.match(r"reload_\((.+?)\)", query.data)
+    try:
+        ADMIN_CACHE.pop(update.effective_chat.id)
+    except KeyError:
+        pass
+
+    update.effective_message.reply_text("✅ Admins cache refreshed!\n✅ Admin list updated!")
+    query.answer("Reloaded!")
 
 
 __help__ = """
