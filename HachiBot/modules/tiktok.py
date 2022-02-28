@@ -10,6 +10,7 @@ from telethon.tl.functions.contacts import UnblockRequest
 
 from HachiBot.utils.tools import edit_delete, edit_or_reply
 from HachiBot.events import register
+from HachiBot import ubot
 
 # Alvin Gans
 
@@ -28,7 +29,7 @@ async def _(event):
         )
     xx = await edit_or_reply(event, "`Video Sedang Diproses...`")
     chat = "@thisvidbot"
-    async with event.client.conversation(chat) as conv:
+    async with ubot.client.conversation(chat) as conv:
         try:
             msg_start = await conv.send_message("/start")
             r = await conv.get_response()
@@ -36,18 +37,12 @@ async def _(event):
             details = await conv.get_response()
             video = await conv.get_response()
             text = await conv.get_response()
-            await event.client.send_read_acknowledge(conv.chat_id)
+            await ubot.client.send_read_acknowledge(conv.chat_id)
         except YouBlockedUserError:
-            await event.client(UnblockRequest(chat))
-            msg_start = await conv.send_message("/start")
-            r = await conv.get_response()
-            msg = await conv.send_message(d_link)
-            details = await conv.get_response()
-            video = await conv.get_response()
-            text = await conv.get_response()
-            await event.client.send_read_acknowledge(conv.chat_id)
+            await msg.edit("Boss! Please Unblock @thisvidbot ")
+            return
         await event.client.send_file(event.chat_id, video)
-        await event.client.delete_messages(
+        await ubot.client.delete_messages(
             conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id, text.id]
         )
         await xx.delete()
