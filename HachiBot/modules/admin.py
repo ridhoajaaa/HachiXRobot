@@ -189,7 +189,6 @@ def admin(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     chat = update.effective_chat
     user = update.effective_user
-    chat_id = update.chat.id
 
     promoter = chat.get_member(user.id)
 
@@ -277,7 +276,7 @@ def admin(update: Update, context: CallbackContext) -> str:
     btn = ("Demote")
     keyboard = [[InlineKeyboardButton(
                 text=btn, callback_data="demote_({})".format(user_member.user.id))]]
-    update.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
+    message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
 
     log_message = (
         f"<b>{html.escape(chat.title)}:</b>\n"
