@@ -39,8 +39,8 @@ from HachiBot.modules.helper_funcs.decorators import ddocmd
 
 
 @pbot.on_message(filters.command("pe"))
-async def pixel_experience(update: Update, c: Client, message):
-    message = update.effective_message
+async def pixel_experience(_, message, update: Update, c: Client):
+    
     chat_id = update.chat.id,
     try:
         device = update.command[1]
@@ -71,10 +71,10 @@ async def pixel_experience(update: Update, c: Client, message):
         
         btn = ("Click here to Download")
         keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(reply_text=btn, url=url))
-        await message.reply(reply_text, reply_markup=keyboard)
+        await message.reply_text(reply_text, reply_markup=keyboard)
         return
     reply_text = ("Couldn't find any results matching your query.")
-    await message.reply(reply_text)
+    await message.reply_text(reply_text)
 
 
 @pbot.on_message(filters.command(["sxos", "statix"]))
