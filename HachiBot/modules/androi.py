@@ -78,7 +78,7 @@ async def pixel_experience(message, update: Update, c: Client):
 
 
 @pbot.on_message(filters.command(["sxos", "statix"]))
-async def statix(c: Client, update: Update):
+async def statix(Client, update: Update):
     
     try:
         device = update.command[1]
