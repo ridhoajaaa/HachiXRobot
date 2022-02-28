@@ -488,12 +488,12 @@ def hachi_about_callback(update, context):
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
-                    InlineKeyboardButton(text="x-b", url="t.me/t.me/Xbarok"),
+                    InlineKeyboardButton(text="ddxy", url="t.me/yxdodd"),
                     InlineKeyboardButton(text="Tonic", url="t.me/Bukan_guudlooking"),
                  ],
                  [
                     InlineKeyboardButton(text="ddxy", url="t.me/yxdodd"),
-                 ]
+                 ],
                  [
                     InlineKeyboardButton(text="Go Back", callback_data="hachi_"),
                  

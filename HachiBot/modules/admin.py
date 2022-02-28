@@ -283,6 +283,7 @@ def admin(update: Update, context: CallbackContext) -> str:
         ]
     )
     message.reply_text(
+        text,
         reply_markup=keyboard,
         parse_mode=ParseMode.HTML,
     )
