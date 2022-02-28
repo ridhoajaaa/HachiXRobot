@@ -276,7 +276,6 @@ def admin(update: Update, context: CallbackContext) -> str:
     btn = ("Demote")
     keyboard = [[InlineKeyboardButton(
                 text=btn, callback_data="demote_({})".format(user_member.user.id))]]
-    message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
 
     log_message = (
         f"<b>{html.escape(chat.title)}:</b>\n"
