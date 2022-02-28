@@ -189,6 +189,7 @@ def admin(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
     chat = update.effective_chat
     user = update.effective_user
+    chat_id = update.chat.id
 
     promoter = chat.get_member(user.id)
 
