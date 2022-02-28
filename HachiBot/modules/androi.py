@@ -20,12 +20,14 @@ import asyncio
 import time
 
 import rapidjson as json
+from pyrogram import Client, filters
 from telegram.ext import CallbackContext
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Bot, Update
 from pyrogram import filters
 from babel.dates import format_datetime
 from bs4 import BeautifulSoup
-from httpx import TimeoutException
+from hurry.filesize import size as sizee
+from requests import get
 
 from HachiBot import pbot
 
@@ -98,55 +100,53 @@ async def pixel_experience(update: Update, context: CallbackContext):
     )
 
 
-@ddocmd(command="sxos", can_disable=True)
-@typing_action
-async def statix(message, update: Update, context: CallbackContext):
-    message = update.effective_message
-    args = context.args
+@pbot.on_message(filters.command(["sxos", "statix"]))
+async def statix(c: Client, update: Update):
     
     try:
-        device = args[1]
-    except IndexError:
-        device = ""
+        device = update.command[1]
+    except Exception:
+        device = ''
 
-    if device == "":
-        text = ("Please type your device <b>codename</b>!\nFor example, <code>/pe whyred</code>")
-        await message.reply(text)
+    if device == '':
+        reply_text = ("Please type your device **codename**!\nFor example, `/sxos tissot`")
+        await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
-    fetch = await http.get(f"https://downloads.statixos.com/json/{device}.json")
+    fetch = get(
+        f"https://downloads.statixos.com/json/{device}.json"
+        )
     if fetch.status_code == 200 and len(fetch.json()["response"]) != 0:
         usr = json.loads(fetch.content)
-        response = usr["response"]
-        filename = response[0]["filename"]
-        url = response[0]["url"]
-        buildsize_a = response[0]["size"]
-        buildsize_b = convert_size(int(buildsize_a))
-        version = response[0]["version"]
-        build_time = response[0]["datetime"]
-        romtype = response[0]["romtype"]
+        response = usr["response"][0]
+        filename = response["filename"]
+        url = response["url"]
+        buildsize_a = response["size"]
+        buildsize_b = sizee(int(buildsize_a))
+        version = response["version"]
+        build_time = response["datetime"]
+        romtype = response["romtype"]
 
-        reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
+        reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url, filename)
         reply_text += ("<b>Type:</b> {}\n").format(type=romtype)
-        reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=buildsize_b)
-        reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
+        reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(buildsize_b)
+        reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version)
         reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
 
         keyboard = [
             [InlineKeyboardButton(text="Click Here To Downloads", url=f"{url}")]
         ]
-        message.reply_text(
-            reply_text,
-            reply_markup=InlineKeyboardMarkup(keyboard),
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-        )
+        await update.reply_text(reply_text,
+                                reply_markup=InlineKeyboardMarkup(keyboard),
+                                parse_mode="markdown",
+                                disable_web_page_preview=True)
         return
-    message.reply_text(
-        "`Couldn't find any results matching your query.`",
-        parse_mode=ParseMode.MARKDOWN,
-        disable_web_page_preview=True,
-    )
+
+    elif fetch.status_code == 404:
+        reply_text = ("Couldn't find any results matching your query.")
+    await update.reply_text(reply_text,
+                            parse_mode="markdown",
+                            disable_web_page_preview=True)
 
 
 @pbot.on_message(filters.command(["crdroid", "crd"]))
