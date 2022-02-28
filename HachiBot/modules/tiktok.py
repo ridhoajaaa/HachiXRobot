@@ -18,7 +18,7 @@ from HachiBot.services.telethon import tbot
 
 
 @register(pattern="/tiktok(?: |$)(.*)")
-async def _(event, client):
+async def _(event):
     xxnx = event.pattern_match.group(1)
     if xxnx:
         d_link = xxnx
