@@ -51,23 +51,16 @@ async def pixel_experience(c: Client, update: Update):
     except Exception:
         atype = "twelve"
 
-    if device == '':
-        reply_text = ("Please type your device **codename**!\nFor example, `/pe tissot`")
-        await update.reply_text(reply_text, disable_web_page_preview=True)
-        return
-
     fetch = get(
         f"https://download.pixelexperience.org/ota_v5/{device}/{atype}"
     )
     if fetch.status_code == 200:
-        response = json.loads(fetch.content)
-        if response["error"]:
-            update.reply_text("Couldn't find any results matching your query.")
-            return
+        usr = fetch.json()
+        response = usr['response'][0]
         filename = response["filename"]
         url = response["url"]
         buildsize_a = response["size"]
-        buildsize_b = convert_size(int(buildsize_a))
+        buildsize_b = sizee(int(buildsize_a))
         version = response["version"]
         build_time = response["datetime"]
 
@@ -175,22 +168,21 @@ async def crdroid(c: Client, update: Update):
     if fetch.status_code == 200:
         try:
             usr = json.loads(fetch.content)
-            response = usr["response"]
-            filename = response["filename"]
-            url = response["download"]
-            version = response["version"]
-            maintainer = response['maintainer']
-            maintainer_url = response['telegram_username']
-            size_a = response["size"]
+            filename = usr['filename']
+            url = usr['url']
+            version = usr['version']
+            maintainer = usr['maintainer']
+            maintainer_url = usr['telegram_username']
+            size_a = usr['size']
             size_b = sizee(int(size_a))
-            build_time = response["timestamp"]
-            romtype = response["buildtype"]
+            build_time = usr["timestamp"]
+            romtype = usr["buildtype"]
 
-            reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
+            reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url, filename)
             reply_text += ("<b>Type:</b> {}\n").format(type=romtype)
-            reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=size_b)
-            reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
-            reply_text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
+            reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size_b)
+            reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version)
+            reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
             reply_text += ("**Maintainer:** {}\n").format(
                 f"[{maintainer}](https://t.me/{maintainer_url})")
 
