@@ -31,7 +31,7 @@ async def _(event):
         )
     xx = await edit_or_reply(event, "`Video Sedang Diproses...`")
     chat = "@thisvidbot"
-    async with tbot.client.conversation(chat) as conv:
+    async with event.client.conversation(chat) as conv:
         try:
             msg_start = await conv.send_message("/start")
             r = await conv.get_response()
