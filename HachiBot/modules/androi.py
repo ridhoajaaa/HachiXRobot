@@ -39,7 +39,7 @@ from HachiBot.modules.helper_funcs.decorators import ddocmd
 
 
 @pbot.on_message(filters.command("pe"))
-async def pixel_experience(message, update: Update, c: Client):
+async def pixel_experience(message, update: Update, Client):
     
     chat_id = update.chat.id,
     try:
@@ -169,7 +169,7 @@ async def crdroid(c: Client, update: Update):
 
             btn = ("Click here to Download")
             keyboard = [[InlineKeyboardButton(
-                text=btn, url=url)]]
+                reply_text=btn, url=url)]]
             await update.reply_text(reply_text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
             return
 
