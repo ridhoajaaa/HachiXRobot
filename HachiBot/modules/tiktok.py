@@ -7,16 +7,18 @@
 
 from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.contacts import UnblockRequest
+from telethon import TelegramClient
 
 from HachiBot.utils.tools import edit_delete, edit_or_reply
 from HachiBot.events import register
 from HachiBot import ubot
+from HachiBot.services.telethon import tbot
 
 # Alvin Gans
 
 
 @register(pattern="/tiktok(?: |$)(.*)")
-async def _(event):
+async def _(event, client):
     xxnx = event.pattern_match.group(1)
     if xxnx:
         d_link = xxnx
@@ -29,7 +31,7 @@ async def _(event):
         )
     xx = await edit_or_reply(event, "`Video Sedang Diproses...`")
     chat = "@thisvidbot"
-    async with ubot.client.conversation(chat) as conv:
+    async with tbot.client.conversation(chat) as conv:
         try:
             msg_start = await conv.send_message("/start")
             r = await conv.get_response()
