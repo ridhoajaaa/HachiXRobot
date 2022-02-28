@@ -22,7 +22,8 @@ import time
 import rapidjson as json
 from pyrogram import Client, filters
 from telegram.ext import CallbackContext
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Bot, Update
+from telegram import ParseMode, Bot, Update
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import filters
 from babel.dates import format_datetime
 from bs4 import BeautifulSoup
@@ -159,7 +160,7 @@ async def crdroid(c: Client, update: Update):
             romtype = response[0]["buildtype"]
 
             reply_text = ("**Download:** [{}]({})\n").format(filename, url)
-            reply_text += ("<b>Type:</b> {}\n").format(type=romtype)
+            reply_text += ("<b>Type:</b> {}\n").format(romtype)
             reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size_b)
             reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version)
             reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
