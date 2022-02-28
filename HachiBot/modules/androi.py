@@ -37,37 +37,32 @@ from HachiBot.modules.helper_funcs.alternate import typing_action
 from HachiBot.modules.helper_funcs.decorators import ddocmd
 
 
-@ddocmd(command="pe", can_disable=True)
-@typing_action
-async def pixel_experience(update: Update, context: CallbackContext):
-    message = update.effective_message
-    args = context.args
+@pbot.on_message(filters.command("pe"))
+async def pixel_experience(c: Client, update: Update):
 
-    await asyncio.sleep(2)
+    chat_id = update.chat.id,
+    try:
+        device = update.command[1]
+    except Exception:
+        device = ''
 
     try:
-        device = args[1]
-    except IndexError:
-        device = ""
-    try:
-        atype = args[2].lower()
-    except IndexError:
+        atype = update.command[1]
+    except Exception:
         atype = "twelve"
 
-    if device == "":
-        text = ("Please type your device <b>codename</b>!\nFor example, <code>/pe whyred</code>")
-        await message.reply(text)
+    if device == '':
+        reply_text = ("Please type your device **codename**!\nFor example, `/pe tissot`")
+        await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
-    asyncio.sleep(delay)
-
-    fetch = await http.get(
+    fetch = get(
         f"https://download.pixelexperience.org/ota_v5/{device}/{atype}"
     )
     if fetch.status_code == 200:
         response = json.loads(fetch.content)
         if response["error"]:
-            await message.reply("Couldn't find any results matching your query.")
+            update.reply_text("Couldn't find any results matching your query.")
             return
         filename = response["filename"]
         url = response["url"]
@@ -76,28 +71,26 @@ async def pixel_experience(update: Update, context: CallbackContext):
         version = response["version"]
         build_time = response["datetime"]
 
-        reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
-        reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=buildsize_b)
-        reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
-        reply_text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
+        reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url, filename)
+        reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(buildsize_b)
+        reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version)
+        reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
 
-        asyncio.sleep(delay)
 
-        keyboard = [
-            [InlineKeyboardButton(text="Click Here To Downloads", url=f"{url}")]
-        ]
-        message.reply_text(
-            reply_text,
-            reply_markup=InlineKeyboardMarkup(keyboard),
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-        )
+        keyboard = [[
+            InlineKeyboardButton(text=("Click here to Download"), url=f"{url}")
+        ]]
+        await update.reply_text(reply_text,
+                                reply_markup=InlineKeyboardMarkup(keyboard),
+                                parse_mode="markdown",
+                                disable_web_page_preview=True)
         return
-    message.reply_text(
-        "`Couldn't find any results matching your query.`",
-        parse_mode=ParseMode.MARKDOWN,
-        disable_web_page_preview=True,
-    )
+
+    elif fetch.status_code == 404:
+        reply_text = ("Couldn't find any results matching your query.")
+    await update.reply_text(reply_text,
+                            parse_mode="markdown",
+                            disable_web_page_preview=True)
 
 
 @pbot.on_message(filters.command(["sxos", "statix"]))
@@ -150,14 +143,13 @@ async def statix(c: Client, update: Update):
 
 
 @pbot.on_message(filters.command(["crdroid", "crd"]))
-async def crdroid(message, update: Update, context: CallbackContext):
-    message = update.effective_message
-    args = context.args
+async def crdroid(c: Client, update: Update):
 
+    chat_id = update.chat.id,
     try:
-        device = args[1]
-    except IndexError:
-        device = ""
+        device = update.command[1]
+    except Exception:
+        device = ''
 
     if device == "x00t":
         device = "X00T"
@@ -165,9 +157,9 @@ async def crdroid(message, update: Update, context: CallbackContext):
     if device == "x01bd":
         device = "X01BD"
 
-    if device == "":
-        text = ("Please type your device <b>codename</b>!\nFor example, <code>/pe whyred</code>")
-        await message.reply(text)
+    if device == '':
+        reply_text = ("Please type your device **codename**!\nFor example, `/crd tissot`")
+        await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
     fetch = await http.get(
@@ -175,47 +167,46 @@ async def crdroid(message, update: Update, context: CallbackContext):
     )
 
     if fetch.status_code in [500, 504, 505]:
-        await message.reply("Hachi have been trying to connect to GitHub User Content, It seem like GitHub User Content is down")
+        await update.reply_text(
+            "HachiBot have been trying to connect to Github User Content, It seem like Github User Content is down"
+        )
         return
 
     if fetch.status_code == 200:
         try:
             usr = json.loads(fetch.content)
             response = usr["response"]
-            filename = response[0]["filename"]
-            url = response[0]["<b>Download:</b> <a href='{url}'>{filename}</a>\n"]
-            version = response[0]["version"]
-            maintainer = response[0]["maintainer"]
-            size_a = response[0]["size"]
-            size_b = convert_size(int(size_a))
-            build_time = response[0]["timestamp"]
-            romtype = response[0]["buildtype"]
+            filename = response["filename"]
+            url = response["download"]
+            version = response["version"]
+            maintainer = response['maintainer']
+            maintainer_url = response['telegram_username']
+            size_a = response["size"]
+            size_b = sizee(int(size_a))
+            build_time = response["timestamp"]
+            romtype = response["buildtype"]
 
             reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url=url, filename=filename)
             reply_text += ("<b>Type:</b> {}\n").format(type=romtype)
             reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size=size_b)
             reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version=version)
             reply_text += ("<b>Date:</b> <code>{}</code>\n").format(date=format_datetime(build_time))
-            reply_text += ("maintainer").format(name=maintainer)
+            reply_text += ("**Maintainer:** {}\n").format(
+                f"[{maintainer}](https://t.me/{maintainer_url})")
 
-            keyboard = [
-            [InlineKeyboardButton(text="Click Here To Downloads", url=f"{url}")]
-        ]
-            await message.reply_text(
-            reply_text,
-            reply_markup=InlineKeyboardMarkup(keyboard),
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-        )
+            btn = ("Click here to Download")
+            keyboard = [[InlineKeyboardButton(
+                text=btn, url=url)]]
+            await update.reply_text(reply_text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
             return
 
         except ValueError:
-            text = ("Tell the rom maintainer to fix their OTA json. I'm sure this won't work with OTA and it won't work with this bot too :P")
-            await message.reply(text)
+            reply_text = ("Tell the rom maintainer to fix their OTA json. I'm sure this won't work with OTA and it won't work with this bot too :P")
+            await update.reply_text(reply_text, disable_web_page_preview=True)
             return
 
     elif fetch.status_code == 404:
-        text = ("Couldn't find any results matching your query.")
-        await message.reply(text)
+        reply_text = ("Couldn't find any results matching your query.")
+        await update.reply_text(reply_text, disable_web_page_preview=True)
         return
         
