@@ -482,18 +482,18 @@ def hachi_about_callback(update, context):
 
     elif query.data == "hachi_credit":
         query.message.edit_text(
-            text=f"<b>๏ Credis for HachiBot</b>\n"
-            f"\nHere Developers Making The HachiBotRobot",
+            text=f"<b>๏ Credis for HachiXBot</b>\n"
+            f"\nHere Developers Making The Hachi Robot",
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
                 [
-                    InlineKeyboardButton(text="ddodxy", url="t.me/yxdodd"),
-                ],
-                [
                  [
+                    InlineKeyboardButton(text="x-b", url="t.me/t.me/Xbarok"),
                     InlineKeyboardButton(text="Tonic", url="t.me/Bukan_guudlooking"),
-                    InlineKeyboardButton(text="x~b", url="t.me/Xbarok"),
                  ],
+                 [
+                    InlineKeyboardButton(text="ddxy", url="t.me/yxdodd"),
+                 ]
                  [
                     InlineKeyboardButton(text="Go Back", callback_data="hachi_"),
                  

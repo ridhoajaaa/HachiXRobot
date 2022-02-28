@@ -1,3 +1,4 @@
+from cgitb import text
 import html
 import os
 import re
@@ -272,15 +273,19 @@ def admin(update: Update, context: CallbackContext) -> str:
         f"Promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
         parse_mode=ParseMode.HTML,
     )
-    button = InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(
-                            text="Reload 🔃", callback_data="reload_"
-                        )
-                    ]
-                ]
-            ),
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text="Demote", callback_data="demote_({})".format(user_member.user.id)
+                )
+            ]
+        ]
+    )
+    message.reply_text(
+        reply_markup=keyboard,
+        parse_mode=ParseMode.HTML,
+    )
 
     log_message = (
         f"<b>{html.escape(chat.title)}:</b>\n"
@@ -477,12 +482,11 @@ def coadmin(update: Update, context: CallbackContext) -> str:
         f"Fullpromoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Promoter: {mention_html(user.id, user.first_name)}</b>",
         parse_mode=ParseMode.HTML,
     )
-
     keyboard = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton(
-                    "Demote", callback_data="demote_({})".format(user_member.user.id)
+                    text="Demote", callback_data="demote_({})".format(user_member.user.id)
                 )
             ]
         ]
