@@ -67,22 +67,12 @@ async def pixel_experience(c: Client, update: Update):
         reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(buildsize_b)
         reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version)
         reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
-
-
-        keyboard = [[
-            InlineKeyboardButton(text=("Click here to Download"), url=f"{url}")
-        ]]
-        await update.reply_text(reply_text,
-                                reply_markup=InlineKeyboardMarkup(keyboard),
-                                parse_mode="markdown",
-                                disable_web_page_preview=True)
+        
+        btn = ("Click here to Download")
+        keyboard = [[InlineKeyboardButton(
+                text=btn, url=url)]]
+        await update.reply_text(reply_text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
         return
-
-    elif fetch.status_code == 404:
-        reply_text = ("Couldn't find any results matching your query.")
-    await update.reply_text(reply_text,
-                            parse_mode="markdown",
-                            disable_web_page_preview=True)
 
 
 @pbot.on_message(filters.command(["sxos", "statix"]))
@@ -145,7 +135,7 @@ async def crdroid(c: Client, update: Update):
         await update.reply_text(reply_text, disable_web_page_preview=True)
         return
 
-    fetch = await get(
+    fetch = get(
         f"https://raw.githubusercontent.com/crdroidandroid/android_vendor_crDroidOTA/11.0/{device}.json"
     )
 
