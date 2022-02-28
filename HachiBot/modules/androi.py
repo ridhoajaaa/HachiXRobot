@@ -39,7 +39,7 @@ from HachiBot.modules.helper_funcs.decorators import ddocmd
 
 
 @pbot.on_message(filters.command("pe"))
-async def pixel_experience(_, message, update: Update, c: Client):
+async def pixel_experience(message, update: Update):
     
     chat_id = update.chat.id,
     try:
