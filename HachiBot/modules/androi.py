@@ -39,7 +39,7 @@ from HachiBot.modules.helper_funcs.decorators import ddocmd
 
 
 @pbot.on_message(filters.command("pe"))
-async def pixel_experience(message, update: Update, Client):
+async def pixel_experience(message, Client, update: Update):
     
     chat_id = update.chat.id,
     try:
@@ -110,10 +110,9 @@ async def statix(Client, update: Update):
         reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version)
         reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
 
-        btn = ("Click here to Download")
-        keyboard = [[InlineKeyboardButton(
-                text=btn, url=url)]]
-        await update.reply_text(reply_text, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
+        InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="Clixk Here To Download", url=url)]]
+            ),
         return
 
 
