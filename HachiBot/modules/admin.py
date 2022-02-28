@@ -741,7 +741,11 @@ def unpin(update: Update, context: CallbackContext):
         not (unpinner.can_pin_messages or unpinner.status == "creator")
         and user.id not in DRAGONS
     ):
-        msg.reply_text("You don't have the necessary rights to do that!")
+        msg.reply_text(
+        f"<u><b>Permission Not Set</b></u>\n"
+        f"You are missing one permission to do that, CAN_PIN_MESSAGE",
+        parse_mode=ParseMode.HTML,
+        )
         return
 
     if msg.chat.username:
