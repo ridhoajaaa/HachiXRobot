@@ -272,13 +272,15 @@ def admin(update: Update, context: CallbackContext) -> str:
         f"Promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
         parse_mode=ParseMode.HTML,
     )
-    button = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(text="Reload 🔃", callback_data="reload_")
-            ]
-        ]
-    )
+    reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="Reload 🔃", callback_data="reload_"
+                        )
+                    ]
+                ]
+            ),
 
     log_message = (
         f"<b>{html.escape(chat.title)}:</b>\n"
@@ -706,9 +708,9 @@ def pin(update: Update, context: CallbackContext) -> str:
                 chat.id, prev_message.message_id, disable_notification=is_silent
             )
             msg.reply_text(
-                f"Succsesfully pinned a message In Group <b>{chat.title}</b>.",
+                f"✔️ Succesfully pin that messages in <b>{chat.title}</b>.",
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Go To Message", url=f"{message_link}")]]
+                    [[InlineKeyboardButton("Go To Message 👀", url=f"{message_link}")]]
                 ),
                 parse_mode=ParseMode.HTML,
                 disable_web_page_preview=True,
