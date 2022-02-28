@@ -276,11 +276,11 @@ def admin(update: Update, context: CallbackContext) -> str:
         [
             [
                 InlineKeyboardButton(
-                    "Demote", callback_data="demote_({})".format(user_member.user.id)
+                    text="Unadmin ⏬", callback_data="demote_({})".format(user_member.user.id)
                 )
                 [
                 InlineKeyboardButton(
-                    "Reload", callback_data="reload_"
+                    text="Reload 🔃", callback_data="reload_"
                 )
                 ]
             ]
