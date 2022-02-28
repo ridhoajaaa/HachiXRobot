@@ -272,7 +272,7 @@ def admin(update: Update, context: CallbackContext) -> str:
         f"Promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
         parse_mode=ParseMode.HTML,
     )
-    reply_markup=InlineKeyboardMarkup(
+    button = InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
@@ -472,6 +472,12 @@ def coadmin(update: Update, context: CallbackContext) -> str:
             message.reply_text("An error occured while promoting.")
         return
 
+    bot.sendMessage(
+        chat.id,
+        f"Fullpromoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Promoter: {mention_html(user.id, user.first_name)}</b>",
+        parse_mode=ParseMode.HTML,
+    )
+
     keyboard = InlineKeyboardMarkup(
         [
             [
@@ -480,12 +486,6 @@ def coadmin(update: Update, context: CallbackContext) -> str:
                 )
             ]
         ]
-    )
-
-    bot.sendMessage(
-        chat.id,
-        f"Fullpromoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Promoter: {mention_html(user.id, user.first_name)}</b>",
-        parse_mode=ParseMode.HTML,
     )
 
     log_message = (
@@ -566,7 +566,7 @@ def unadmin(update: Update, context: CallbackContext) -> str:
 
         bot.sendMessage(
             chat.id,
-            f"Sucessfully demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
+            f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
             parse_mode=ParseMode.HTML,
         )
 
