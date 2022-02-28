@@ -488,7 +488,7 @@ def hachi_about_callback(update, context):
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
-                    InlineKeyboardButton(text="ddxy", url="t.me/yxdodd"),
+                    InlineKeyboardButton(text="x-b", url="t.me/t.me/Xbarok"),
                     InlineKeyboardButton(text="Tonic", url="t.me/Bukan_guudlooking"),
                  ],
                  [
