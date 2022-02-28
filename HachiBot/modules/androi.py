@@ -56,13 +56,12 @@ async def pixel_experience(c: Client, update: Update):
     )
     if fetch.status_code == 200:
         usr = fetch.json()
-        response = usr['response'][0]
-        filename = response["filename"]
-        url = response["url"]
-        buildsize_a = response["size"]
+        filename = usr["filename"]
+        url = usr["url"]
+        buildsize_a = usr["size"]
         buildsize_b = sizee(int(buildsize_a))
-        version = response["version"]
-        build_time = response["datetime"]
+        version = usr["version"]
+        build_time = usr["datetime"]
 
         reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url, filename)
         reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(buildsize_b)
@@ -178,7 +177,7 @@ async def crdroid(c: Client, update: Update):
             build_time = usr["timestamp"]
             romtype = usr["buildtype"]
 
-            reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url, filename)
+            reply_text = ("**Download:** [{}]({})\n").format(filename, url)
             reply_text += ("<b>Type:</b> {}\n").format(type=romtype)
             reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size_b)
             reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version)
