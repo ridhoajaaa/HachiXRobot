@@ -103,7 +103,7 @@ async def statix(c: Client, update: Update):
         romtype = response["romtype"]
 
         reply_text = ("<b>Download:</b> <a href='{}'>{}</a>\n").format(url, filename)
-        reply_text += ("<b>Type:</b> {}\n").format(type=romtype)
+        reply_text += ("<b>Type:</b> {}\n").format(romtype)
         reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(buildsize_b)
         reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version)
         reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
@@ -152,8 +152,7 @@ async def crdroid(c: Client, update: Update):
             filename = response[0]["filename"]
             url = response[0]["download"]
             version = response[0]["version"]
-            maintainer = usr['maintainer']
-            maintainer_url = usr['telegram_username']
+            maintainer = response[0]["maintainer"]
             size_a = response[0]["size"]
             size_b = convert_size(int(size_a))
             build_time = response[0]["timestamp"]
@@ -164,8 +163,7 @@ async def crdroid(c: Client, update: Update):
             reply_text += ("<b>Build Size:</b> <code>{}</code>\n").format(size_b)
             reply_text += ("<b>Version:</b> <code>{}</code>\n").format(version)
             reply_text += ("<b>Date:</b> <code>{date}</code>\n").format(date=format_datetime(build_time))
-            reply_text += ("**Maintainer:** {}\n").format(
-                f"[{maintainer}](https://t.me/{maintainer_url})")
+            reply_text += ("<b>Maintainer:</b> {}\n").format(maintainer)
 
             btn = ("Click here to Download")
             keyboard = [[InlineKeyboardButton(
