@@ -271,8 +271,7 @@ def admin(update: Update, context: CallbackContext) -> str:
     bot.sendMessage(
         chat.id,
         f"Promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
-        chat.id,
-            reply_markup=InlineKeyboardMarkup(
+        reply_markup=InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
