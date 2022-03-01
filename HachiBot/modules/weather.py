@@ -1,32 +1,15 @@
-# ZeldrisRobot
-# Copyright (C) 2017-2019, Paul Larsen
-# Copyright (c) 2021, IDNCoderX Team, <https://github.com/IDN-C-X/ZeldrisRobot>
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
-import json
-import time
-
-import requests
+import time, requests, json
 from pytz import country_names as cname
 from telegram import ParseMode
 from telegram.error import BadRequest
+from telegram.ext import run_async
 
 from HachiBot import dispatcher, API_WEATHER as APPID
 from HachiBot.modules.disable import DisableAbleCommandHandler
 from HachiBot.modules.helper_funcs.alternate import typing_action
 
 
+@run_async
 @typing_action
 def weather(update, context):
     args = context.args
@@ -42,9 +25,8 @@ def weather(update, context):
             del_msg.delete()
             update.effective_message.delete()
         except BadRequest as err:
-            if err.message in (
-                "Message to delete not found",
-                "Message can't be deleted",
+            if (err.message == "Message to delete not found") or (
+                err.message == "Message can't be deleted"
             ):
                 return
 
@@ -66,9 +48,8 @@ def weather(update, context):
             del_msg.delete()
             update.effective_message.delete()
         except BadRequest as err:
-            if err.message in (
-                "Message to delete not found",
-                "Message can't be deleted",
+            if (err.message == "Message to delete not found") or (
+                err.message == "Message can't be deleted"
             ):
                 return
         return
@@ -111,7 +92,8 @@ def weather(update, context):
     def celsius(c):
         k = 273.15
         c = k if (c > (k - 1)) and (c < k) else c
-        return str(round((c - k)))
+        temp = str(round((c - k)))
+        return temp
 
     def fahr(c):
         c1 = 9 / 5
@@ -119,7 +101,8 @@ def weather(update, context):
         tF = c * c1 - c2
         if tF < 0 and tF > -1:
             tF = 0
-        return str(round(tF))
+        temp = str(round(tF))
+        return temp
 
     reply = f"*Current weather for {cityname}, {country_name} is*:\n\n*Temperature:* `{celsius(curtemp)}°C ({fahr(curtemp)}ºF), feels like {celsius(feels_like)}°C ({fahr(feels_like)}ºF) \n`*Condition:* `{condmain}, {conddet}` {icon}\n*Humidity:* `{humidity}%`\n*Wind:* `{kmph[0]} km/h`\n"
     del_msg = update.effective_message.reply_text(
@@ -130,7 +113,9 @@ def weather(update, context):
         del_msg.delete()
         update.effective_message.delete()
     except BadRequest as err:
-        if err.message in ("Message to delete not found", "Message can't be deleted"):
+        if (err.message == "Message to delete not found") or (
+            err.message == "Message can't be deleted"
+        ):
             return
 
 WEATHER_HANDLER = DisableAbleCommandHandler("weather", weather, pass_args=True)

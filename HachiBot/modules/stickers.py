@@ -98,6 +98,7 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
     user = update.effective_user
     args = context.args
     is_animated = False
+    is_video = False
     file_id = None
     sticker_emoji = "🤔"
     sticker_data = None
@@ -127,11 +128,14 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
                     packnum += 1
                     if is_animated:
                         packname = f"animated{packnum}_{user.id}_by_{context.bot.username}"
+                    if is_video:
+                        packname = f"video{packnum}_{user.id}_by_{context.bot.username}"
                     else:
                         packname = f"a{packnum}_{user.id}_by_{context.bot.username}"
                 else:
                     last_set = True
                 packs += f"[{'animated ' if is_animated else ''}pack{packnum if packnum != 0 else ''}](t.me/addstickers/{packname})\n"
+                packs += f"[{'video ' if is_video else ''}pack{packnum if packnum != 0 else ''}](t.me/addstickers/{packname})\n"
             except TelegramError as e:
                 if e.message == "Stickerset_invalid":
                     last_set = True
@@ -141,17 +145,19 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
 
             # If we're done checking bot animated and non-animated packs
             # exit the loop and send our pack message.
-            if last_set and is_animated:
+            if last_set and is_animated and is_video:
                 break
             elif last_set:
                 # move to checking animated packs. Start with the first pack
                 packname = f"animated_{user.id}_by_{context.bot.username}"
+                packname = f"video{user.id}_by_{context.bot.username}"
                 # reset our counter
                 packnum = 0
                 # Animated packs have a max of 50 stickers
                 max_stickers = 50
                 # tell the loop we're looking at animated stickers now
                 is_animated = True
+                is_video = True
 
         # if they have no packs, change our message
         if not packs:
@@ -168,6 +174,7 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
     if msg.reply_to_message:
         if msg.reply_to_message.sticker:
             is_animated = msg.reply_to_message.sticker.is_animated
+            is_video = msg.reply_to_message.sticker.is_video
             file_id = msg.reply_to_message.sticker.file_id
             # also grab the emoji if the user wishes
             if not args:
@@ -176,9 +183,17 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
             file_id = msg.reply_to_message.photo[-1].file_id
         elif msg.reply_to_message.document:
             file_id = msg.reply_to_message.document.file_id
+        elif msg.reply_to_message.video:
+            file_id = msg.reply_to_message.video.file_id
         else:
             msg.reply_text("Yea, I can't steal that.")
             return
+
+        kang_file = context.bot.get_file(file_id)
+        if not is_video:
+            kang_file.download("kangsticker.png")
+        else:
+            kang_file.download("kangsticker.webm")
 
         # Check if they have an emoji specified.
         if args:
@@ -202,7 +217,7 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
 
             # check the mime-type first, you can't kang a .html file.
             mime = resp.getheader('Content-Type')
-            if mime not in ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/x-tgsticker']:
+            if mime not in ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/x-tgsticker', 'video/webm']:
                 msg.reply_text("I can only kang images m8.")
                 return
 
@@ -230,6 +245,9 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
     if is_animated:
         packname = f"animated_{user.id}_by_{context.bot.username}"
         max_stickers = 50
+    if is_video:
+        packname = f"video{user.id}_by_{context.bot.username}"
+        max_stickers = 30
     else:
         packname = f"a{user.id}_by_{context.bot.username}"
         max_stickers = 120
@@ -242,6 +260,8 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
                 packnum += 1
                 if is_animated:
                     packname = f"animated{packnum}_{user.id}_by_{context.bot.username}"
+                if is_video:
+                    packname = f"video{packnum}_{user.id}_by_{context.bot.username}"
                 else:
                     packname = f"a{packnum}_{user.id}_by_{context.bot.username}"
             else:
@@ -295,6 +315,7 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
             user_id=user.id,
             name=packname,
             png_sticker=sticker_data if not is_animated else None,
+            webm_sticker=sticker_data if is_video else None,
             tgs_sticker=sticker_data if is_animated else None,
             emojis=sticker_emoji,
         )
@@ -317,6 +338,7 @@ def kang(update: Update, context: CallbackContext):  # sourcery no-metrics
                 packnum,
                 tgs_sticker=sticker_data if is_animated else None,
                 png_sticker=sticker_data if not is_animated else None,
+                webm_sticker=sticker_data if is_video else None,
             )
         elif e.message == "Stickers_too_much":
             msg.reply_text("Max packsize reached. Press F to pay respecc.")
@@ -341,6 +363,7 @@ def makepack_internal(
     packnum,
     png_sticker=None,
     tgs_sticker=None,
+    webm_sticker=None,
 ):
     name = user.first_name[:50]
     try:
@@ -351,8 +374,10 @@ def makepack_internal(
             user.id,
             packname,
             f"{name}s {'animated ' if tgs_sticker else ''}kang pack{extra_version}",
+            f"{name}s {'video ' if webm_sticker else ''}kang pack{extra_version}",
             tgs_sticker=tgs_sticker or None,
             png_sticker=png_sticker or None,
+            webm_sticker=png_sticker or None,
             emojis=emoji,
         )
 

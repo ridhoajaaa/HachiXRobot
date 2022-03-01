@@ -271,11 +271,19 @@ def admin(update: Update, context: CallbackContext) -> str:
     bot.sendMessage(
         chat.id,
         f"Promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
-        parse_mode=ParseMode.HTML,
+        chat.id,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="⤵️ Unadmin", callback_data="demote_({})".format(user_member.user.id)
+                        ),
+                        InlineKeyboardButton(text="🔁 Reload", callback_data="reload_"),
+                    ]
+                ]
+            ),
+            parse_mode=ParseMode.HTML,
     )
-    btn = ("Demote")
-    keyboard = [[InlineKeyboardButton(
-                text=btn, callback_data="demote_({})".format(user_member.user.id))]]
 
     log_message = (
         f"<b>{html.escape(chat.title)}:</b>\n"
