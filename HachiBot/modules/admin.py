@@ -28,7 +28,7 @@ from HachiBot.modules.helper_funcs.chat_status import (
     user_can_changeinfo,
     user_can_promote,
 )
-from HachiBot.modules.helper_funcs.decorators import HachiBotcmd
+from HachiBot.modules.helper_funcs.decorators import ddocmd
 from HachiBot.modules.helper_funcs.extraction import (
     extract_user,
     extract_user_and_text,
