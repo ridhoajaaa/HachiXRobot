@@ -221,7 +221,7 @@ def warn_user(update: Update, context: CallbackContext) -> str:
 # @user_can_ban
 @bot_admin
 @loggable
-def reset_warns(update: Update, context: CallbackContext) -> str:
+def remove_warns(update: Update, context: CallbackContext) -> str:
     args = context.args
     message: Optional[Message] = update.effective_message
     chat: Optional[Chat] = update.effective_chat
