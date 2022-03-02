@@ -54,7 +54,7 @@ BAN_STICKER = (
 
 # Not async
 def warn(
-    user: User, chat: Chat, reason: str, message: Message, context: CallbackContext, warner: User = None
+    user: User, chat: Chat, reason: str, message: Message, context, warner: User = None
 ) -> str:
 
     args = context.args
