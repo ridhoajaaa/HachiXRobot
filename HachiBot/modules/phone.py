@@ -1,18 +1,19 @@
 import json
 
 import requests
-from telegram.ext import CommandHandler
+from telegram.ext import CommandHandler, run_async
 
 from HachiBot import dispatcher
 from HachiBot.modules.helper_funcs.alternate import send_message
 from HachiBot.modules.helper_funcs.chat_status import user_admin
 
 
+@run_async
 @user_admin
 def phone(update, context):
 
     args = update.effective_message.text.split(None, 1)
-    information = args[0]
+    information = args[1]
     number = information
     key = "fe65b94e78fc2e3234c1c6ed1b771abd"
     api = (
@@ -42,7 +43,7 @@ def phone(update, context):
     send_message(update.effective_message, g)
 
 
-PHONE_HANDLER = CommandHandler("phone", phone, run_async=True)
+PHONE_HANDLER = CommandHandler("phone", phone)
 
 dispatcher.add_handler(PHONE_HANDLER)
 

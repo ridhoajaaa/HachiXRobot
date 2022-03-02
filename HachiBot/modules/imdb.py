@@ -1,19 +1,46 @@
-from HachiBot import telethn as tbot
-import os
 import re
+
 import bs4
 import requests
 from telethon import types
 from telethon.tl import functions
+
+from HachiBot import telethn
 from HachiBot.events import register
 
 langi = "en"
 
 
+async def is_register_admin(chat, user):
+    if isinstance(chat, (types.InputPeerChannel, types.InputChannel)):
+
+        return isinstance(
+            (
+                await telethn(functions.channels.GetParticipantRequest(chat, user))
+            ).participant,
+            (types.ChannelParticipantAdmin, types.ChannelParticipantCreator),
+        )
+    if isinstance(chat, types.InputPeerChat):
+
+        ui = await telethn.get_peer_id(user)
+        ps = (
+            await telethn(functions.messages.GetFullChatRequest(chat.chat_id))
+        ).full_chat.participants.participants
+        return isinstance(
+            next((p for p in ps if p.user_id == ui), None),
+            (types.ChatParticipantAdmin, types.ChatParticipantCreator),
+        )
+    return None
+
+
 @register(pattern="^/imdb (.*)")
 async def imdb(e):
-    if e.fwd_from:
-        return
+    if e.is_group:
+        if not (await is_register_admin(e.input_chat, e.message.sender_id)):
+            await e.reply(
+                " You are not admin. You can't use this command.. But you can use in my pm"
+            )
+            return
     try:
         movie_name = e.pattern_match.group(1)
         remove_space = movie_name.split(" ")
@@ -22,7 +49,7 @@ async def imdb(e):
             "https://www.imdb.com/find?ref_=nv_sr_fn&q=" + final_name + "&s=all"
         )
         str(page.status_code)
-        soup = bs4.BeautifulSoup(page.content, "html.parser")
+        soup = bs4.BeautifulSoup(page.content, "lxml")
         odds = soup.findAll("tr", "odd")
         mov_title = odds[0].findNext("td").findNext("td").text
         mov_link = (
@@ -106,4 +133,4 @@ async def imdb(e):
             parse_mode="HTML",
         )
     except IndexError:
-        await e.reply("Plox enter **Valid movie name** kthx")
+        await e.reply("Please enter a valid movie name !")

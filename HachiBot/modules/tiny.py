@@ -13,7 +13,7 @@ async def _(event):
            return
     kontol = await event.reply("`Processing tiny...`")
     ik = await tbot.download_media(reply)
-    im1 = Image.open("hachiBot/resources/hachi.png")
+    im1 = Image.open("HachiBot/resources/hachi.png")
     if ik.endswith(".tgs"):
         await tbot.download_media(reply, "hachi.tgs")
         os.system("lottie_convert.py hachi.tgs json.json")

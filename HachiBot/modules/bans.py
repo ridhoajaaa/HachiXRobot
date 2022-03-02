@@ -182,11 +182,11 @@ def ban(
 
         context.bot.send_sticker(chat.id, BAN_STICKER)  # banhammer marie sticker
         reply = (
-            f"Yap! Banned fvcking <b>{mention_html(member.user.id, html.escape(member.user.first_name))}</b> [<code>{member.user.id}</code>] from <b>{chat.title}</b>\n"
-            f"By: {mention_html(user.id, html.escape(user.first_name))}"
+            f"❗️ <b>Banned Fvcking Shit In {chat.title}</b>\n •<b>User: {mention_html(member.user.id, html.escape(member.user.first_name))}</b> [<code>{member.user.id}</code>]\n"
+            f"•<b>By:</b> {mention_html(user.id, html.escape(user.first_name))}"
         )
         if reason:
-            reply += f"\nReason: {html.escape(reason)}"
+            reply += f"\n•<b>Reason:</b> {html.escape(reason)}"
 
         bot.sendMessage(
             chat.id,
@@ -195,7 +195,7 @@ def ban(
                 [
                     [
                         InlineKeyboardButton(
-                            text="Unbanned ✅", callback_data=f"unbanb_unban={user_id}"
+                            text="Unban ✅", callback_data=f"unbanb_unban={user_id}"
                         ),
                         InlineKeyboardButton(text="Delete 🗑️", callback_data="unbanb_del"),
                     ]
@@ -303,7 +303,7 @@ def temp_ban(update: Update, context: CallbackContext) -> str:
                 [
                     [
                         InlineKeyboardButton(
-                            text="Unbanned ✅", callback_data=f"unbanb_unban={user_id}"
+                            text="Unban ✅", callback_data=f"unbanb_unban={user_id}"
                         ),
                         InlineKeyboardButton(text="Delete 🗑️", callback_data="unbanb_del"),
                     ]
