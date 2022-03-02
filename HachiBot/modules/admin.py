@@ -8,7 +8,7 @@ from HachiBot.events import callbackquery
 
 from telegram import ParseMode, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.error import BadRequest
-from telegram.ext import CallbackContext, CommandHandler, Filters, run_async
+from telegram.ext import CallbackContext, CommandHandler, Filters, CallbackQueryHandler
 from telegram.utils.helpers import mention_html
 
 from HachiBot import DRAGONS, dispatcher
@@ -984,7 +984,7 @@ def adminlist(update, context):
 @can_promote
 @user_admin
 @loggable
-def button(update: Update, context: CallbackContext) -> str:
+def demote_btn(update: Update, context: CallbackContext) -> str:
     query: Optional[CallbackQuery] = update.callback_query
     user: Optional[User] = update.effective_user
     bot: Optional[Bot] = context.bot
@@ -992,6 +992,7 @@ def button(update: Update, context: CallbackContext) -> str:
     if match:
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
+        user_member = chat.get_member(user_id)
         member = chat.get_member(user_id)
         bot_member = chat.get_member(bot.id)
         bot_permissions = promoteChatMember(
@@ -1039,7 +1040,7 @@ def button(update: Update, context: CallbackContext) -> str:
         )
         return ""
 
-def button(update: Update, context: CallbackContext) -> str:
+def reload_btn(update: Update, context: CallbackContext) -> str:
     query = update.callback_query
     user = update.effective_user
     bot = context.bot
@@ -1130,6 +1131,12 @@ SET_TITLE_HANDLER = CommandHandler("title", set_title, run_async=True)
 RELOAD_HANDLER = CommandHandler(
     "reload", reload, filters=Filters.chat_type.groups, run_async=True
 )
+demotebtn_callback_handler = CallbackQueryHandler(
+        demote_btn, pattern=r"demote_.*", run_async=True
+    )
+reloadbtn_callback_handler = CallbackQueryHandler(
+        reload_btn, pattern=r"reload_.*", run_async=True
+    )
 
 dispatcher.add_handler(SET_DESC_HANDLER)
 dispatcher.add_handler(SET_STICKER_HANDLER)
