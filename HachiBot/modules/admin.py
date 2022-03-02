@@ -6,7 +6,7 @@ import re
 from typing import Optional
 from HachiBot.events import callbackquery
 
-from telegram import ParseMode, Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import ParseMode, Update, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, User, Bot, Chat
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, CommandHandler, Filters, CallbackQueryHandler, run_async
 from telegram.utils.helpers import mention_html
@@ -336,7 +336,7 @@ def admin(update: Update, context: CallbackContext) -> Optional[str]:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Cache", callback_data="reload_"),
+                InlineKeyboardButton(text="🔄 Cache", callback_data="close2"),
             ]
         ]
     )
@@ -1053,7 +1053,7 @@ def adminlist(update, context):
 @can_promote
 @user_admin
 @loggable
-def demote_btn(update: Update, context: CallbackContext) -> str:
+def button(update: Update, context: CallbackContext) -> str:
     query: Optional[CallbackQuery] = update.callback_query
     user: Optional[User] = update.effective_user
     bot: Optional[Bot] = context.bot
@@ -1064,20 +1064,7 @@ def demote_btn(update: Update, context: CallbackContext) -> str:
         user_member = chat.get_member(user_id)
         member = chat.get_member(user_id)
         bot_member = chat.get_member(bot.id)
-        bot_permissions = promoteChatMember(
-            chat.id,
-            user_id,
-            can_change_info=bot_member.can_change_info,
-            can_post_messages=bot_member.can_post_messages,
-            can_edit_messages=bot_member.can_edit_messages,
-            can_delete_messages=bot_member.can_delete_messages,
-            can_invite_users=bot_member.can_invite_users,
-            can_promote_members=bot_member.can_promote_members,
-            can_restrict_members=bot_member.can_restrict_members,
-            can_pin_messages=bot_member.can_pin_messages,
-            can_manage_voice_chats=bot_member.can_manage_voice_chats,
-        )
-        demoted = bot.promoteChatMember(
+        bot_permissions = promoteChatMember (
             chat.id,
             user_id,
             can_change_info=False,
@@ -1090,6 +1077,7 @@ def demote_btn(update: Update, context: CallbackContext) -> str:
             can_promote_members=False,
             can_manage_voice_chats=False,
         )
+        demoted = bot.promoteChatMember(chat.id, int(user_id), bot_permissions)
         if demoted:
             update.effective_message.edit_text(
                 f"Yep! {mention_html(user_member.user.id, user_member.user.first_name)} has been demoted in {chat.title}!"
@@ -1097,6 +1085,7 @@ def demote_btn(update: Update, context: CallbackContext) -> str:
                 parse_mode=ParseMode.HTML,
             )
             query.answer("Demoted!")
+            context.bot.answer_callback_query(query.id)
             return (
                 f"<b>{html.escape(chat.title)}:</b>\n"
                 f"#DEMOTE\n"
@@ -1109,7 +1098,6 @@ def demote_btn(update: Update, context: CallbackContext) -> str:
         )
         return ""
 
-    context.bot.answer_callback_query(query.id)
 
 def reload_btn(update: Update, context: CallbackContext) -> str:
     query = update.callback_query
@@ -1202,8 +1190,8 @@ SET_TITLE_HANDLER = CommandHandler("title", set_title, run_async=True)
 RELOAD_HANDLER = CommandHandler(
     "reload", reload, filters=Filters.chat_type.groups, run_async=True
 )
-demotebtn_callback_handler = CallbackQueryHandler(
-        demote_btn, pattern=r"demote_.*", run_async=True
+DEMOTE_BUTTON_HANDLER = CallbackQueryHandler(
+        button, pattern=r"demote_", run_async=True
     )
 reloadbtn_callback_handler = CallbackQueryHandler(
         reload_btn, pattern=r"reload_.*", run_async=True
