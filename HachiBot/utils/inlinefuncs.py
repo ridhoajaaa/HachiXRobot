@@ -126,7 +126,7 @@ async def alive_function(answers):
     )
 
     msg = f"""
-**[ᴘʀɪᴍᴇ ᴍᴇɢᴀ](https://t.me/HachiBotBot):**
+**[HachiXRobot](https://t.me/HachiXBot):**
 **MainBot:** `{bot_state}`
 **UserBot:** `{ubot_state}`
 **Python:** `{pyver.split()[0]}`

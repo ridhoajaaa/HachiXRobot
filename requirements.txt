@@ -30,7 +30,6 @@ zalgo-text
 geopy
 nltk
 psutil
-html_telegraph_poster
 aiohttp
 Pillow
 CurrencyConverter

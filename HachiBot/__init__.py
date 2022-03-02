@@ -22,6 +22,7 @@ from pyrogram.types import Message
 from pyrogram import Client, errors
 from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid, ChannelInvalid
 from pyrogram.types import Chat, User
+from telegraph import Telegraph
 from ptbcontrib.postgres_persistence import PostgresPersistence
 
 StartTime = time.time()
@@ -292,6 +293,11 @@ else:
 
 from HachiBot.modules.sql import SESSION
 
+
+print("[HachiXBot]: Telegraph Installing")
+telegraph = Telegraph()
+print("[HachiXBot]: Telegraph Account Creating")
+telegraph.create_account(short_name='HachiXBot')
 defaults = tg.Defaults(run_async=True)
 updater = tg.Updater(TOKEN, workers=WORKERS, use_context=True)
 telethn = TelegramClient(MemorySession(), API_ID, API_HASH)
