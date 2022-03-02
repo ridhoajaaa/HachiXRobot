@@ -3,6 +3,7 @@
 import html
 import re
 from typing import Optional
+from HachiBot.modules.helper_funcs.alternate import typing_action
 
 import telegram
 from HachiBot import TIGERS, WOLVES, dispatcher
@@ -213,7 +214,11 @@ def warn_user(update: Update, context: CallbackContext) -> str:
         else:
             return warn(chat.get_member(user_id).user, chat, reason, message, warner)
     else:
-        message.reply_text("That looks like an invalid User ID to me.")
+        message.reply_text(
+        f"<u><b>Warn Users Not Found</b></u>\n"
+        f"The command /warn must be used specifying user <b>username/id/mention</b> or <b>replying</b> to one of his messages.",
+        parse_mode=ParseMode.HTML,
+        )
     return ""
 
 
@@ -271,6 +276,41 @@ def warns(update: Update, context: CallbackContext):
             )
     else:
         update.effective_message.reply_text("This user doesn't have any warns!")
+    
+
+@user_admin
+@bot_admin
+@loggable
+@typing_action
+def remove_warns(update: Update, context: CallbackContext):
+    message = update.effective_message  # type: Optional[Message]
+    chat = update.effective_chat  # type: Optional[Chat]
+    user = update.effective_user  # type: Optional[User]
+    args = context.args
+    user_id = extract_user(message, args)
+
+    if user_id:
+        sql.remove_warn(user_id, chat.id)
+        message.reply_text("Last warn has been removed!")
+        warned = chat.get_member(user_id).user
+        return (
+            "<b>{}:</b>"
+            "\n#UNWARN"
+            "\n<b>• Admin:</b> {}"
+            "\n<b>• User:</b> {}"
+            "\n<b>• ID:</b> <code>{}</code>".format(
+                html.escape(chat.title),
+                mention_html(user.id, user.first_name),
+                mention_html(warned.id, warned.first_name),
+                warned.id,
+            )
+        )
+    message.reply_text(
+        f"<u><b>The user is part of the group staff</b></u>\n"
+        f"The command /unwarn must be used specifying user <b>username/id/mention</b> or <b>replying</b> to one of his messages.",
+        parse_mode=ParseMode.HTML,
+        )
+    return ""
 
 
 # Dispatcher handler stop - do not async
@@ -536,6 +576,13 @@ ADD_WARN_HANDLER = CommandHandler(
 RM_WARN_HANDLER = CommandHandler(
     ["nowarn", "stopwarn"], remove_warn_filter, filters=Filters.chat_type.groups
 )
+REMOVE_WARNS_HANDLER = CommandHandler(
+    ["rmwarn", "unwarn"],
+    remove_warns,
+    pass_args=True,
+    filters=Filters.chat_type.groups,
+    run_async=True,
+)
 LIST_WARN_HANDLER = DisableAbleCommandHandler(
     ["warnlist", "warnfilters"],
     list_warn_filters,
@@ -557,6 +604,7 @@ dispatcher.add_handler(WARN_HANDLER)
 dispatcher.add_handler(CALLBACK_QUERY_HANDLER)
 dispatcher.add_handler(RESET_WARN_HANDLER)
 dispatcher.add_handler(MYWARNS_HANDLER)
+dispatcher.add_handler(REMOVE_WARNS_HANDLER)
 dispatcher.add_handler(ADD_WARN_HANDLER)
 dispatcher.add_handler(RM_WARN_HANDLER)
 dispatcher.add_handler(LIST_WARN_HANDLER)
