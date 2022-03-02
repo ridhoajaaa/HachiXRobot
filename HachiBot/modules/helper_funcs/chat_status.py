@@ -29,6 +29,8 @@ def is_whitelist_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bo
 def is_support_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
     return user_id in DEMONS or user_id in DRAGONS or user_id in DEV_USERS
 
+def user_can_changeinfo(chat: Chat, user: User, bot_id: int) -> bool:
+    return chat.get_member(user.id).can_change_info
 
 def is_sudo_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
     return user_id in DRAGONS or user_id in DEV_USERS
