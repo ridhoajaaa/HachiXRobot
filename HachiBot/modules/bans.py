@@ -182,8 +182,8 @@ def ban(
 
         context.bot.send_sticker(chat.id, BAN_STICKER)  # banhammer marie sticker
         reply = (
-            f"❗️ <b>Banned Fvcking Shit In {chat.title}</b>\n •<b>User: {mention_html(member.user.id, html.escape(member.user.first_name))}</b> [<code>{member.user.id}</code>]\n"
-            f"•<b>By:</b> {mention_html(user.id, html.escape(user.first_name))}"
+            f"❗️ <b>Banned Fvcking Shit In {chat.title}</b>\n\n× <b>User: {mention_html(member.user.id, html.escape(member.user.first_name))}</b> [<code>{member.user.id}</code>]\n"
+            f"× <b>By: {mention_html(user.id, html.escape(user.first_name))}</b>"
         )
         if reason:
             reply += f"\n•<b>Reason:</b> {html.escape(reason)}"
