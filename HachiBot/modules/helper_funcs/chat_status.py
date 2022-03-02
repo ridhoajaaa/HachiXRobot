@@ -14,7 +14,7 @@ from HachiBot import (
     dispatcher,
 )
 
-from telegram import Chat, ChatMember, ParseMode, Update
+from telegram import Chat, ChatMember, ParseMode, Update, User
 from telegram.ext import CallbackContext
 
 # stores admemes in memory for 10 min.
