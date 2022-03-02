@@ -184,7 +184,7 @@ def setchat_title(update: Update, context: CallbackContext):
 @user_admin
 @loggable
 @typing_action
-def promote(update: Update, context: CallbackContext) -> Optional[str]:
+def admin(update: Update, context: CallbackContext) -> Optional[str]:
     chat_id = update.effective_chat.id
     message = update.effective_message
     chat = update.effective_chat
