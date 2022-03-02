@@ -4,9 +4,9 @@ from traceback import format_exc
 from pyrogram import filters
 from pyrogram.types import Message
 
-from SiestaRobot import arq
-from SiestaRobot.utils.errors import capture_err
-from SiestaRobot import pbot as app
+from HachiBot import arq
+from HachiBot.utils.errors import capture_err
+from HachiBot import pbot as app
 
 
 async def quotify(messages: list):
