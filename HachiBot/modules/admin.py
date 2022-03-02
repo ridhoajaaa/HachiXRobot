@@ -1,5 +1,6 @@
 from cgitb import text
 import html
+from nis import match
 import os
 import re
 from typing import Optional
@@ -17,6 +18,7 @@ from HachiBot.modules.helper_funcs.chat_status import (
     can_pin,
     can_promote,
     connection_status,
+    is_user_admin,
     user_admin,
     ADMIN_CACHE,
 )
@@ -271,13 +273,14 @@ def admin(update: Update, context: CallbackContext) -> str:
     bot.sendMessage(
         chat.id,
         f"Promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
+
         reply_markup=InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
-                            text="⤵️ Unadmin", callback_data="demote_({})".format(user_member.user.id)
+                            text="⤵️ Unadmin", callback_data=f"demote_={user_member.user.id}"
                         ),
-                        InlineKeyboardButton(text="🔁 Reload", callback_data="reload_"),
+                        InlineKeyboardButton(text="🔁 Reload", callback_data=f"reload_"),
                     ]
                 ]
             ),
@@ -980,13 +983,24 @@ def adminlist(update, context):
 @can_promote
 @user_admin
 @loggable
-def button(update: Update, context: CallbackContext) -> str:
-    query = update.callback_query
-    user = update.effective_user
+def demote_btn(update: Update, context: CallbackContext) -> str:
     bot = context.bot
-    match = re.match(r"demote_\((.+?)\)", query.data)
-    if match:
-        user_id = match.group(1)
+    query = update.callback_query
+    chat = update.effective_chat
+    user = update.effective_user
+    if query.data != "reload_":
+        splitter = query.data.split("=")
+        query_match = splitter[0]
+        if query_match == "demote_":
+            user_id = splitter[1]
+            if not is_user_admin(chat, int(user.id)):
+                bot.answer_callback_query(
+                    query.id,
+                    text="You don't have enough rights to unmute people",
+                    show_alert=True,
+                )
+                return ""
+
         chat = update.effective_chat
         member = chat.get_member(user_id)
         bot_member = chat.get_member(bot.id)
@@ -1020,9 +1034,12 @@ def button(update: Update, context: CallbackContext) -> str:
         if demoted:
             update.effective_message.edit_text(
                 f"Sucessfully demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
-            parse_mode=ParseMode.HTML,
             )
-            query.answer("Demoted!")
+            chat.unban_member(user_id)
+            query.message.edit_text(
+                parse_mode=ParseMode.HTML,
+            )
+            bot.answer_callback_query(query.id, text="unadmin succsess!")
             return (
                 f"<b>{html.escape(chat.title)}:</b>\n"
                 f"#DEMOTE\n"
@@ -1033,7 +1050,11 @@ def button(update: Update, context: CallbackContext) -> str:
         update.effective_message.edit_text(
             "This user is not promoted or has left the group!"
         )
-        return ""
+        return ""      
+    try:
+        ADMIN_CACHE.pop(update.effective_chat.id)
+    except KeyError:
+        pass
 
 def button(update: Update, context: CallbackContext) -> str:
     query = update.callback_query
