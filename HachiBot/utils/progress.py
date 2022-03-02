@@ -29,7 +29,7 @@ SOFTWARE.
 import math
 import time
 
-from .tools import humanbytes, time_formatter
+from HachiBot.utils.uputils import humanbytes, time_formatter
 
 class CancelProcess(Exception):
     """
