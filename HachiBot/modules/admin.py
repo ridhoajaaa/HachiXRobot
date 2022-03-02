@@ -1064,9 +1064,7 @@ def button(update: Update, context: CallbackContext) -> str:
         user_member = chat.get_member(user_id)
         member = chat.get_member(user_id)
         bot_member = chat.get_member(bot.id)
-        bot_permissions = promoteChatMember (
-            chat.id,
-            user_id,
+        bot_permissions = bot.promoteChatMember (
             can_change_info=False,
             can_post_messages=False,
             can_edit_messages=False,
@@ -1079,13 +1077,14 @@ def button(update: Update, context: CallbackContext) -> str:
         )
         demoted = bot.promoteChatMember(chat.id, int(user_id), bot_permissions)
         if demoted:
+            context.bot.answer_callback_query(query.id)
             update.effective_message.edit_text(
                 f"Yep! {mention_html(user_member.user.id, user_member.user.first_name)} has been demoted in {chat.title}!"
                 f"By {mention_html(user.id, user.first_name)}",
                 parse_mode=ParseMode.HTML,
             )
             query.answer("Demoted!")
-            context.bot.answer_callback_query(query.id)
+            
             return (
                 f"<b>{html.escape(chat.title)}:</b>\n"
                 f"#DEMOTE\n"
