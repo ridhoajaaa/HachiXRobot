@@ -221,7 +221,7 @@ def warn_user(update: Update, context: CallbackContext) -> str:
 # @user_can_ban
 @bot_admin
 @loggable
-def remove_warns(update: Update, context: CallbackContext) -> str:
+def reset_warns(update: Update, context: CallbackContext) -> str:
     args = context.args
     message: Optional[Message] = update.effective_message
     chat: Optional[Chat] = update.effective_chat
@@ -521,13 +521,6 @@ WARN_HANDLER = CommandHandler(
 RESET_WARN_HANDLER = CommandHandler(
     ["resetwarn", "resetwarns"],
     reset_warns,
-    filters=Filters.chat_type.groups,
-    run_async=True,
-)
-REMOVE_WARNS_HANDLER = CommandHandler(
-    ["rmwarn", "unwarn"],
-    remove_warns,
-    pass_args=True,
     filters=Filters.chat_type.groups,
     run_async=True,
 )
