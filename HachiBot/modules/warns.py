@@ -60,7 +60,11 @@ def warn(user: User,
          message: Message,
          warner: User = None) -> str:
     if is_user_admin(chat, user.id):
-        # message.reply_text("Damn admins, They are too far to be One Punched!")
+        message.reply_text(
+        f"<u><b>The user is part of the group staff</b></u>\n"
+        f"Damn admins, They are too far to be One Punched! gblk",
+        parse_mode=ParseMode.HTML,
+        )
         return
 
     if user.id in TIGERS:
