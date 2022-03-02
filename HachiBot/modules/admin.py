@@ -191,7 +191,12 @@ def admin(update: Update, context: CallbackContext) -> Optional[str]:
     user = update.effective_user
     bot, args = context.bot, context.args
 
-    if user_can_promote(chat, user, bot.id) is False:
+    promoter = chat.get_member(user.id)
+
+    if (
+        not (promoter.can_promote_members or promoter.status == "creator")
+        and user.id not in DRAGONS
+    ):
         message.reply_text(
         f"<u><b>Permission Not Set</b></u>\n"
         f"You are missing one permission to do that, CAN_PROMOTE_MEMBER",
