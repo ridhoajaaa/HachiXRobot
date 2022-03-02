@@ -197,6 +197,7 @@ def ban(
                         InlineKeyboardButton(
                             text="Unbanned ✅", callback_data=f"unbanb_unban={user_id}"
                         ),
+                        InlineKeyboardButton(text="Delete 🗑️", callback_data="unbanb_del"),
                     ]
                 ]
             ),

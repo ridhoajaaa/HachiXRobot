@@ -179,34 +179,26 @@ def setchat_title(update: Update, context: CallbackContext):
         return
 
 
-@connection_status
 @bot_admin
 @can_promote
 @user_admin
 @loggable
-def admin(update: Update, context: CallbackContext) -> str:
-    bot = context.bot
-    args = context.args
-
+@typing_action
+def promote(update: Update, context: CallbackContext) -> Optional[str]:
+    chat_id = update.effective_chat.id
     message = update.effective_message
     chat = update.effective_chat
     user = update.effective_user
+    bot, args = context.bot, context.args
 
-    promoter = chat.get_member(user.id)
-
-    if (
-        not (promoter.can_promote_members or promoter.status == "creator")
-        and user.id not in DRAGONS
-    ):
+    if user_can_promote(chat, user, bot.id) is False:
         message.reply_text(
         f"<u><b>Permission Not Set</b></u>\n"
         f"You are missing one permission to do that, CAN_PROMOTE_MEMBER",
         parse_mode=ParseMode.HTML,
         )
-        return
 
     user_id = extract_user(message, args)
-
     if not user_id:
         message.reply_text(
         f"<u><b>User Not Found</b></u>\n"
@@ -215,11 +207,7 @@ def admin(update: Update, context: CallbackContext) -> str:
         )
         return
 
-    try:
-        user_member = chat.get_member(user_id)
-    except:
-        return
-
+    user_member = chat.get_member(user_id)
     if user_member.status in ("administrator", "creator"):
         message.reply_text(
         f"<u><b>User Already Has Admin</b></u>\n"
@@ -240,18 +228,17 @@ def admin(update: Update, context: CallbackContext) -> str:
     bot_member = chat.get_member(bot.id)
 
     bot.promoteChatMember(
-            chat.id,
-            user_id,
-            can_change_info=bot_member.can_change_info,
-            can_post_messages=bot_member.can_post_messages,
-            can_edit_messages=bot_member.can_edit_messages,
-            can_delete_messages=bot_member.can_delete_messages,
-            can_invite_users=bot_member.can_invite_users,
-            # can_promote_members=bot_member.can_promote_members,
-            can_restrict_members=bot_member.can_restrict_members,
-            can_pin_messages=bot_member.can_pin_messages,
+        chat_id,
+        user_id,
+        can_change_info=bot_member.can_change_info,
+        can_post_messages=bot_member.can_post_messages,
+        can_edit_messages=bot_member.can_edit_messages,
+        can_delete_messages=bot_member.can_delete_messages,
+        can_invite_users=bot_member.can_invite_users,
+        can_restrict_members=bot_member.can_restrict_members,
+        can_pin_messages=bot_member.can_pin_messages,
     )
-    
+
     title = "babu"
     if " " in message.text:
         title = message.text.split(" ", 1)[1]
@@ -265,36 +252,45 @@ def admin(update: Update, context: CallbackContext) -> str:
 
         except BadRequest:
             message.reply_text(
-        f"<u><b>Invalid Admin</b></u>\n"
-        f"I can't set custom title for admins that I didn't promote!",
-        parse_mode=ParseMode.HTML,
-        )
+                "I can't set custom title for admins that I didn't promote!"
+            )
 
-    bot.sendMessage(
-        chat.id,
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text="⏬ Demote",
+                    callback_data="demote_({})".format(user_member.user.id),
+                ),
+                InlineKeyboardButton(text="🔄 Cache", callback_data="close2"),
+            ]
+        ]
+    )
+    message.reply_text(
         f"Promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
-
-        reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(
-                            text="⤵️ Unadmin", callback_data=f"demote_={user_member.user.id}"
-                        ),
-                        InlineKeyboardButton(text="🔁 Reload", callback_data=f"reload_"),
-                    ]
-                ]
-            ),
-            parse_mode=ParseMode.HTML,
+        reply_markup=keyboard,
+        parse_mode=ParseMode.HTML,
+    )
+    # refresh admin cache
+    try:
+        ADMIN_CACHE.pop(update.effective_chat.id)
+    except KeyError:
+        pass
+    return (
+        "<b>{}:</b>"
+        "\n#PROMOTED"
+        "\n<b>Admin:</b> {}"
+        "\n<b>User:</b> {}".format(
+            html.escape(chat.title),
+            mention_html(user.id, user.first_name),
+            mention_html(user_member.user.id, user_member.user.first_name),
+        )
     )
 
-    log_message = (
-        f"<b>{html.escape(chat.title)}:</b>\n"
-        f"#PROMOTED\n"
-        f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-        f"<b>User:</b> {mention_html(user_member.user.id, user_member.user.first_name)}"
-    )
 
-    return log_message
+close_keyboard = InlineKeyboardMarkup(
+    [[InlineKeyboardButton("🔄 Cache", callback_data="close2")]]
+)
 
 
 @connection_status
@@ -983,29 +979,17 @@ def adminlist(update, context):
 @can_promote
 @user_admin
 @loggable
-def demote_btn(update: Update, context: CallbackContext) -> str:
-    bot = context.bot
-    query = update.callback_query
-    chat = update.effective_chat
-    user = update.effective_user
-    if query.data != "reload_":
-        splitter = query.data.split("=")
-        query_match = splitter[0]
-        if query_match == "demote_":
-            user_id = splitter[1]
-            if not is_user_admin(chat, int(user.id)):
-                bot.answer_callback_query(
-                    query.id,
-                    text="You don't have enough rights to unmute people",
-                    show_alert=True,
-                )
-                return ""
-
-        chat = update.effective_chat
+def button(update: Update, context: CallbackContext) -> str:
+    query: Optional[CallbackQuery] = update.callback_query
+    user: Optional[User] = update.effective_user
+    bot: Optional[Bot] = context.bot
+    match = re.match(r"demote_\((.+?)\)", query.data)
+    if match:
+        user_id = match.group(1)
+        chat: Optional[Chat] = update.effective_chat
         member = chat.get_member(user_id)
         bot_member = chat.get_member(bot.id)
-        user_member = chat.get_member(user_id)
-        bot_permissions = bot.promoteChatMember(
+        bot_permissions = promoteChatMember(
             chat.id,
             user_id,
             can_change_info=bot_member.can_change_info,
@@ -1033,13 +1017,11 @@ def demote_btn(update: Update, context: CallbackContext) -> str:
         )
         if demoted:
             update.effective_message.edit_text(
-                f"Sucessfully demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
-            )
-            chat.unban_member(user_id)
-            query.message.edit_text(
+                f"Yep! {mention_html(user_member.user.id, user_member.user.first_name)} has been demoted in {chat.title}!"
+                f"By {mention_html(user.id, user.first_name)}",
                 parse_mode=ParseMode.HTML,
             )
-            bot.answer_callback_query(query.id, text="unadmin succsess!")
+            query.answer("Demoted!")
             return (
                 f"<b>{html.escape(chat.title)}:</b>\n"
                 f"#DEMOTE\n"
@@ -1050,11 +1032,7 @@ def demote_btn(update: Update, context: CallbackContext) -> str:
         update.effective_message.edit_text(
             "This user is not promoted or has left the group!"
         )
-        return ""      
-    try:
-        ADMIN_CACHE.pop(update.effective_chat.id)
-    except KeyError:
-        pass
+        return ""
 
 def button(update: Update, context: CallbackContext) -> str:
     query = update.callback_query
