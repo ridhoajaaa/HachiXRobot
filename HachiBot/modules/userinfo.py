@@ -236,7 +236,7 @@ def gifid(update: Update, context: CallbackContext):
         update.effective_message.reply_text("Please reply to a gif to get its ID.")
 
 
-@ddocmd(command=["info", "book"])
+@ddocmd(command=["info", "ingfo"])
 def info(update: Update, context: CallbackContext):
     bot, args = context.bot, context.args
     message = update.effective_message
@@ -372,9 +372,6 @@ def info(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 "Health", url="https://t.me/HachiXLog/3"
                             ),
-                            InlineKeyboardButton(
-                                "Disaster", url="https://t.me/HachiXLog/4"
-                            ),
                         ],
                     ]
                 ),
@@ -391,14 +388,11 @@ def info(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 "Health", url="https://t.me/HachiXLog/3"
                             ),
-                            InlineKeyboardButton(
-                                "Disaster", url="https://t.me/HachiXLog/4"
-                            ),
                         ],
                     ]
                 ),
                 parse_mode=ParseMode.HTML,
-                disable_web_page_preview=False,
+                disable_web_page_preview=True,
             )
 
     else:

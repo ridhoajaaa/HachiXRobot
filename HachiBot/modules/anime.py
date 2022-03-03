@@ -798,6 +798,18 @@ def site_search(update: Update, context: CallbackContext, site: str):
         message.reply_text(
             result, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
+@pgram.on_message(filters.command('watchorder'))
+def watchorderx(_,message):
+	anime =  message.text.replace(message.text.split(' ')[0], '')
+	res = requests.get(f'https://chiaki.site/?/tools/autocomplete_series&term={anime}').json()
+	data = None
+	id_ = res[0]['id']
+	res_ = requests.get(f'https://chiaki.site/?/tools/watch_order/id/{id_}').text
+	soup = BeautifulSoup(res_ , 'html.parser')
+	anime_names = soup.find_all('span' , class_='wo_title')
+	for x in anime_names:
+		data = f"{data}\n{x.text}" if data else x.text
+	message.reply_text(f'Watchorder of {anime}: \n```{data}```')
 
 def kaizoku(update: Update, context: CallbackContext):
     site_search(update, context, "kaizoku")

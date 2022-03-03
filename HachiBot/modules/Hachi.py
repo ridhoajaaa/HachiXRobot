@@ -223,6 +223,7 @@ __help__ = """
  × /devian <search query> ; <no of pics> *:* Devian-Art Image Search.
  × /joke*:* To get random joke.
  × /inslut*:* Insult someone.
+ × /book <book name>*:* Gets Instant Download Link Of Given Book.
  × /bugil*:*nbuat yang sangean kek mas almin.
  × /url <long url>*:* To get a shorten link of long link.
  × /carbon <text> [or reply] *:* Beautify your code using carbon.now.sh

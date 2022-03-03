@@ -68,7 +68,7 @@ def no_longer_afk(update, _):
         firstname = update.effective_user.first_name
         try:
             message.reply_text(
-                f"<b>{firstname}</b> im here brader\n\nYou were away for: <b>{end_afk_time}</b>",
+                f"<b>{firstname}</b> im here brader\n\nYou were away for: <code>{end_afk_time}</code>",
                 parse_mode=ParseMode.HTML,
             )
         except BadRequest:
@@ -146,9 +146,9 @@ def check_afk(update, _, user_id: int, fst_name: int, userc_id: int):
         if int(userc_id) == int(user_id):
             return
         if reason == "none":
-            res = f"<b>{fst_name}</b> AFK tot!\n\nSince: <b>{since_afk}</b>"
+            res = f"<b>{fst_name}</b> AFK tot!\n\n<b>Since:</b> <code>{since_afk}</code>"
         else:
-            res = f"<b>{fst_name}</b> AFK tot!\n\nReason: <b>{reason}</b>\nSince: <b>{since_afk}</b>"
+            res = f"<b>{fst_name}</b> AFK tot!\n\n<b>Reason:</b> <code>{reason}</code>\n<b>Since:</b> <code>{since_afk}</code>"
 
         update.effective_message.reply_text(res, parse_mode=ParseMode.HTML)
 

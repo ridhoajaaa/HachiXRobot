@@ -37,9 +37,9 @@ def content(msg: Message) -> [None, str]:
 @capture_err
 async def bug(_, msg: Message):
     if msg.chat.username:
-        chat_username = (f"@{msg.chat.username} / `{msg.chat.id}`")
+        chat_username = (f"@{msg.chat.username}")
     else:
-        chat_username = (f"Private Group / `{msg.chat.id}`")
+        chat_username = (f"Private Group")
 
     bugs = content(msg)
     user_id = msg.from_user.id
@@ -50,13 +50,15 @@ async def bug(_, msg: Message):
     thumb = "https://telegra.ph/file/e9e0cc43bfba8ecb02b7f.jpg"
     
     bug_report = f"""
-**#BUG : ** **[Lord](https://t.me/yxdodd)**
+📣 **New bug reported.**
 
-**From User : ** **{mention}**
-**User ID : ** **{user_id}**
-**Group : ** **{chat_username}**
-**Bug Report : ** **{bugs}**
-**Event Stamp : ** **{datetimes}**"""
+**Chat:** `{chat_username}`
+**Name:** `{mention}`
+**User ID:** `{user_id}`
+**Chat ID:** `{msg.chat.id}`
+
+**Content Bug Reports:** `{bugs}`
+"""
 
     
     if msg.chat.type == "private":
@@ -76,13 +78,13 @@ async def bug(_, msg: Message):
     elif user_id != owner:
         if bugs:
             await msg.reply_text(
-                f"<b>Bug Report : {bugs}</b>\n\n"
+                f"<b>Bug Report:</b> <code>{bugs}</code>\n\n"
                 "✅ <b>The bug was successfully reported to the support group!</b>",
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [
                             InlineKeyboardButton(
-                                "ᴄʟᴏsᴇ", callback_data=f"close_reply")
+                                "Close", callback_data=f"close_reply")
                         ]
                     ]
                 )
@@ -95,11 +97,11 @@ async def bug(_, msg: Message):
                     [
                         [
                             InlineKeyboardButton(
-                                "➡ ᴠɪᴇᴡ ʙᴜɢ", url=f"{msg.link}")
+                                "Go To Message", url=f"{msg.link}")
                         ],
                         [
                             InlineKeyboardButton(
-                                "ᴄʟᴏsᴇ", callback_data=f"close_send_photo")
+                                "Close", callback_data=f"close_send_photo")
                         ]
                     ]
                 )

@@ -315,7 +315,7 @@ def ud(update, context):
         msg.reply_text(f"Error! {err.message}")
 
 
-@register(pattern="^/t(gm|gt) ?(.*)")
+@register(pattern="^/t(egm|egt) ?(.*)")
 async def telegrap(event):
     optional_title = event.pattern_match.group(2)
     if event.reply_to_msg_id:
@@ -418,7 +418,7 @@ Available commands:
 *Markdown*:
 × /markdownhelp: quick summary of how markdown works in telegram - can only be called in private chats
 
-*Currency converter*:
+*Currency converter:*
 × /cash: currency converter
 Example:
 × /cash 1 USD INR
@@ -426,7 +426,16 @@ Example:
 × /cash 1 usd inr
 » Output: 1.0 USD = 75.505 INR
 
-*Translator*:
+*CC Checker:*
+× /au [cc]: Stripe Auth given CC
+× /pp [cc]: Paypal 1$ Guest Charge
+× /ss [cc]: Speedy Stripe Auth
+× /ch [cc]: Check If CC is Live
+× /bin [bin]: Gather's Info About the bin
+× /gen [bin]: Generates CC with given bin
+× /key [sk]: Checks if Stripe key is Live
+
+*Translator:*
 × /tr or /tl (language code) as reply to a long message
 × /langs : lists all the language codes
 Example:

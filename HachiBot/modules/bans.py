@@ -186,7 +186,7 @@ def ban(
             f"× <b>By: {mention_html(user.id, html.escape(user.first_name))}</b>"
         )
         if reason:
-            reply += f"\n•<b>Reason:</b> {html.escape(reason)}"
+            reply += f"\n× <b>Reason:</b> {html.escape(reason)}"
 
         bot.sendMessage(
             chat.id,
@@ -195,9 +195,9 @@ def ban(
                 [
                     [
                         InlineKeyboardButton(
-                            text="Unban ✅", callback_data=f"unbanb_unban={user_id}"
+                            text="Unbannned ✅", callback_data=f"unbanb_unban={user_id}"
                         ),
-                        InlineKeyboardButton(text="Delete 🗑️", callback_data="unbanb_del"),
+                        InlineKeyboardButton(text="Deleted 🗑️", callback_data="unbanb_del"),
                     ]
                 ]
             ),
@@ -364,8 +364,8 @@ def unbanb_btn(update: Update, context: CallbackContext) -> str:
                 pass
 
             dick = (
-                f"Yep! Unbanned <b>{mention_html(member.user.id, html.escape(member.user.first_name))}</b> [<code>{member.user.id}</code>] from <b>{chat.title}</b>\n"
-                f"Unbanned By: <b>{mention_html(user.id, html.escape(user.first_name))}</b>"
+                f"Yep! Unbanned <b>{mention_html(member.user.id, html.escape(member.user.first_name))}</b> [<code>{member.user.id}</code>] from <b>{chat.title}</b>\n\n"
+                f"<b>Unbanned By: {mention_html(user.id, html.escape(user.first_name))}</b>"
             )
             chat.unban_member(user_id)
             query.message.edit_text(
