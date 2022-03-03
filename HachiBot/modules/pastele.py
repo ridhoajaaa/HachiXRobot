@@ -69,7 +69,7 @@ async def paste_funcs(_, message: Message):
         await m.edit("Here's your paste", reply_markup=kb)
 
 
-@ddocmd(command="hpaste")
+@ddocmd(command="paste")
 def paste(update, context):
     msg = update.effective_message
 
