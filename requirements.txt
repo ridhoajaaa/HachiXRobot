@@ -54,7 +54,7 @@ pycrypto
 pyYAML>=5.1.2
 telegraph
 heroku3
-pysqlite
+pysqlite3==2.8.3
 spamwatch
 alphabet_detector
 pyrate-limiter
