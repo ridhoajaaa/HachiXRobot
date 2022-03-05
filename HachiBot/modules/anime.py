@@ -798,7 +798,6 @@ def site_search(update: Update, context: CallbackContext, site: str):
         message.reply_text(
             result, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
-@pgram.on_message(filters.command('watchorder'))
 def watchorderx(_,message):
 	anime =  message.text.replace(message.text.split(' ')[0], '')
 	res = requests.get(f'https://chiaki.site/?/tools/autocomplete_series&term={anime}').json()
@@ -863,6 +862,7 @@ USER_HANDLER = DisableAbleCommandHandler("user", user, run_async=True)
 UPCOMING_HANDLER = DisableAbleCommandHandler("upcoming", upcoming, run_async=True)
 KAIZOKU_SEARCH_HANDLER = DisableAbleCommandHandler("kaizoku", kaizoku, run_async=True)
 KAYO_SEARCH_HANDLER = DisableAbleCommandHandler("kayo", kayo, run_async=True)
+WATCHORDER_HANDLER = DisableAbleCommandHandler("watchorder", watchorderx, run_async=True)
 BUTTON_HANDLER = CallbackQueryHandler(button, pattern='anime_.*')
 
 dispatcher.add_handler(BUTTON_HANDLER)
@@ -877,11 +877,11 @@ dispatcher.add_handler(UPCOMING_HANDLER)
 
 __mod_name__ = "Anime"
 __command_list__ = [
-    "anime", "manga", "character", "user", "upcoming", "kaizoku", "airing",
+    "anime", "manga", "character", "user", "upcoming", "kaizoku", "airing", "watchorder",
     "kayo"
 ]
 __handlers__ = [
     ANIME_HANDLER, CHARACTER_HANDLER, MANGA_HANDLER, USER_HANDLER,
     UPCOMING_HANDLER, KAIZOKU_SEARCH_HANDLER, KAYO_SEARCH_HANDLER,
-    BUTTON_HANDLER, AIRING_HANDLER
+    BUTTON_HANDLER, AIRING_HANDLER, WATCHORDER_HANDLER
 ]

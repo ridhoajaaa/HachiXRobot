@@ -4,7 +4,7 @@ from pyrogram import filters
 from pyrogram.errors import ChatAdminRequired, RightForbidden, RPCError
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-from HachiBot import pgram
+from HachiBot import pgram, pbot
 from HachiBot.modules.no_sql import db
 from HachiBot.utils.pluginhelp import member_permissions
 
@@ -338,7 +338,7 @@ async def clean_linked(_, m: Message):
     return
 
 
-@pgram.on_message(filters.command("permapin") & ~filters.private)
+@pbot.on_message(filters.command("permapin") & ~filters.private)
 async def perma_pin(_, m: Message):
     chat_id = m.chat.id
     user_id = m.from_user.id

@@ -333,7 +333,6 @@ pbot = Client(
     workers=min(32, os.cpu_count() + 4),
 )
 apps = []
-apps = [pgram]
 apps.append(pbot)
 loop = asyncio.get_event_loop()
 mongo_client = MongoClient(MONGO_DB_URI)
@@ -352,18 +351,18 @@ async def get_entity(client, entity):
         try:
             entity = await client.get_chat(entity)
         except (PeerIdInvalid, ChannelInvalid):
-            for kp in apps:
-                if kp != client:
+            for pgram in apps:
+                if pgram != client:
                     try:
-                        entity = await kp.get_chat(entity)
+                        entity = await pgram.get_chat(entity)
                     except (PeerIdInvalid, ChannelInvalid):
                         pass
                     else:
-                        entity_client = kp
+                        entity_client = pgram
                         break
             else:
-                entity = await kp.get_chat(entity)
-                entity_client = kp
+                entity = await pgram.get_chat(entity)
+                entity_client = pgram
     return entity, entity_client
 
 
@@ -372,7 +371,7 @@ async def eor(msg: Message, **kwargs):
     spec = getfullargspec(func.__wrapped__).args
     return await func(**{k: v for k, v in kwargs.items() if k in spec})
 
-
+apps = [pgram]
 DRAGONS = list(DRAGONS) + list(DEV_USERS)
 DEV_USERS = list(DEV_USERS)
 WOLVES = list(WOLVES)

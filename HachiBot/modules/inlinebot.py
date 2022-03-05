@@ -26,7 +26,7 @@ from youtubesearchpython import VideosSearch
 
 from HachiBot.utils.inlinefuncs import *
 from HachiBot.utils.pluginhelper import fetch, json_prettify
-from HachiBot import pgram, OPENWEATHERMAP_ID, TIME_API_KEY, BOT_USERNAME, SUPPORT_CHAT
+from HachiBot import pgram, pbot, OPENWEATHERMAP_ID, TIME_API_KEY, BOT_USERNAME, SUPPORT_CHAT
 
 dictionary = PyDictionary()
 
@@ -48,12 +48,12 @@ class AioHttp:
             return await resp.read()
 
 
-@pgram.on_message(filters.command("inline"))
+@pbot.on_message(filters.command("inline"))
 async def inline_help(_, message):
-    await pgram.send_message(message.chat.id, text=__HELP__)
+    await pbot.send_message(message.chat.id, text=__HELP__)
 
 
-@pgram.on_inline_query()
+@pbot.on_inline_query()
 async def inline_query_handler(client, query):
     try:
         text = query.query.lower()

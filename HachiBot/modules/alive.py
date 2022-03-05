@@ -57,7 +57,7 @@ async def hmm(yes):
     pm_caption = "**✪ HachiXBot **\n\n"
     pm_caption += f"**✪ Uptime :** `{uptime}`\n\n"
     pm_caption += f"**✪ Telethon Version :** `{version.__version__}`\n\n"
-    pm_caption += "**✪ My Team :** [There is not any](https://xnxx.com)\n"
+    pm_caption += "**✪ Owner :** [ddodxy](https://t.me/yxdodd)\n"
     BUTTON = [[Button.url("Support", "https://t.me/demonszxx"), Button.url("Updates", "https://t.me/hachixlog")]]
     on = await aasf.send_file(yes.chat_id, file=file1,caption=pm_caption, buttons=BUTTON)
     
