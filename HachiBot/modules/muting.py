@@ -303,10 +303,11 @@ def button(update: Update, context: CallbackContext) -> str:
         unmuted = bot.restrict_chat_member(chat.id, int(user_id), chat_permissions)
         if unmuted:
         	update.effective_message.edit_text(
-        	    f"{mention_html(member.user.id, member.user.first_name)} [<code>{member.user.id}</code>] Now can 🔊 speak again.",
+        	    f"{mention_html(member.user.id, member.user.first_name)} [<code>{member.user.id}</code>] Now can speak again. 🔊",
         	    parse_mode=ParseMode.HTML,
         	)
         	query.answer("Unmuted!")
+
         	return (
                     f"<b>{html.escape(chat.title)}:</b>\n" 
                     f"#UNMUTE\n" 

@@ -24,6 +24,7 @@ from HachiBot.modules.helper_funcs.chat_status import (
     connection_status,
     is_user_admin,
     user_admin,
+    user_admin_no_reply,
     user_can_changeinfo,
     user_can_promote,
     ADMIN_CACHE,
@@ -1048,7 +1049,7 @@ def adminlist(update, context):
     except BadRequest:  # if original message is deleted
         return
 
-
+@user_admin_no_reply
 @bot_admin
 @can_promote
 @user_admin
@@ -1057,14 +1058,13 @@ def button(update: Update, context: CallbackContext) -> str:
     query: Optional[CallbackQuery] = update.callback_query
     user: Optional[User] = update.effective_user
     bot: Optional[Bot] = context.bot
-    match = re.match(r"demote_\((.+?)\)", query.data)
+    match = re.match(r"unmute_\((.+?)\)", query.data)
     if match:
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
-        user_member = chat.get_member(user_id)
         member = chat.get_member(user_id)
-        bot_member = chat.get_member(bot.id)
-        bot_permissions = bot.promoteChatMember (
+        user_member = chat.get_member(user_id)
+        demoted = bot.promoteChatMember(
             can_change_info=False,
             can_post_messages=False,
             can_edit_messages=False,
@@ -1075,25 +1075,23 @@ def button(update: Update, context: CallbackContext) -> str:
             can_promote_members=False,
             can_manage_voice_chats=False,
         )
-        demoted = bot.promoteChatMember(chat.id, int(user_id), bot_permissions)
         if demoted:
-            context.bot.answer_callback_query(query.id)
             update.effective_message.edit_text(
                 f"Yep! {mention_html(user_member.user.id, user_member.user.first_name)} has been demoted in {chat.title}!"
                 f"By {mention_html(user.id, user.first_name)}",
                 parse_mode=ParseMode.HTML,
             )
-            query.answer("Demoted!")
-            
-            return (
-                f"<b>{html.escape(chat.title)}:</b>\n"
-                f"#DEMOTE\n"
-                f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}"
-            )
+        	query.answer("Unmuted!")
+
+        	return (
+                    f"<b>{html.escape(chat.title)}:</b>\n" 
+                    f"#UNMUTE\n" 
+                    f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
+                    f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}"
+                )
     else:
         update.effective_message.edit_text(
-            "This user is not promoted or has left the group!"
+            "⚠️ This user is not muted or has left the group!"
         )
         return ""
 
