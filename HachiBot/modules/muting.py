@@ -285,7 +285,7 @@ def button(update: Update, context: CallbackContext) -> str:
     query: Optional[CallbackQuery] = update.callback_query
     user: Optional[User] = update.effective_user
     bot: Optional[Bot] = context.bot
-    match = re.match(r"unmute_\((.+?)\)", query.data)
+    match = re.match(r"demote_\((.+?)\)", query.data)
     if match:
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
