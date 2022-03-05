@@ -1176,9 +1176,6 @@ RELOAD_HANDLER = CommandHandler(
 DEMOTE_BUTTON_HANDLER = CallbackQueryHandler(
         button, pattern=r"demote_", run_async=True
     )
-reloadbtn_callback_handler = CallbackQueryHandler(
-        reload_btn, pattern=r"reload_.*", run_async=True
-    )
 
 dispatcher.add_handler(SET_DESC_HANDLER)
 dispatcher.add_handler(SET_STICKER_HANDLER)
