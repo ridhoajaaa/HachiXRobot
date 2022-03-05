@@ -1058,7 +1058,7 @@ def button(update: Update, context: CallbackContext) -> str:
     query: Optional[CallbackQuery] = update.callback_query
     user: Optional[User] = update.effective_user
     bot: Optional[Bot] = context.bot
-    match = re.match(r"unmute_\((.+?)\)", query.data)
+    match = re.match(r"demote_\((.+?)\)", query.data)
     if match:
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
@@ -1081,9 +1081,9 @@ def button(update: Update, context: CallbackContext) -> str:
                 f"By {mention_html(user.id, user.first_name)}",
                 parse_mode=ParseMode.HTML,
             )
-        	query.answer("Unmuted!")
-
-        	return (
+            query.answer("Unmuted!")
+            
+            return (
                     f"<b>{html.escape(chat.title)}:</b>\n" 
                     f"#UNMUTE\n" 
                     f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
@@ -1094,20 +1094,6 @@ def button(update: Update, context: CallbackContext) -> str:
             "⚠️ This user is not muted or has left the group!"
         )
         return ""
-
-
-def reload_btn(update: Update, context: CallbackContext) -> str:
-    query = update.callback_query
-    user = update.effective_user
-    bot = context.bot
-    match = re.match(r"reload_\((.+?)\)", query.data)
-    try:
-        ADMIN_CACHE.pop(update.effective_chat.id)
-    except KeyError:
-        pass
-
-    update.effective_message.reply_text("✅ Admins cache refreshed!\n✅ Admin list updated!")
-    query.answer("Reloaded!")
 
 
 __help__ = """
