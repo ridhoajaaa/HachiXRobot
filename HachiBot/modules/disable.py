@@ -288,11 +288,9 @@ if is_module_loaded(FILENAME):
     @user_admin
     def list_cmds(update: Update, context: CallbackContext):
         if DISABLE_CMDS + DISABLE_OTHER:
-            result = "".join(
-                f" - {escape_markdown(cmd)}\n"
-                for cmd in set(DISABLE_CMDS + DISABLE_OTHER)
-            )
-
+            result = ""
+            for cmd in set(DISABLE_CMDS + DISABLE_OTHER):
+                result += f" - `{escape_markdown(cmd)}`\n"
             update.effective_message.reply_text(
                 f"The following commands are toggleable:\n{result}",
                 parse_mode=ParseMode.MARKDOWN,
@@ -306,14 +304,17 @@ if is_module_loaded(FILENAME):
         if not disabled:
             return "No commands are disabled!"
 
-        result = "".join(" - {}\n".format(escape_markdown(cmd)) for cmd in disabled)
+        result = ""
+        for cmd in disabled:
+            result += " - `{}`\n".format(escape_markdown(cmd))
         return "The following commands are currently restricted:\n{}".format(result)
-    
+
     @connection_status
     def commands(update: Update, context: CallbackContext):
         chat = update.effective_chat
         update.effective_message.reply_text(
-            build_curr_disabled(chat.id), parse_mode=ParseMode.MARKDOWN,
+            build_curr_disabled(chat.id),
+            parse_mode=ParseMode.MARKDOWN,
         )
 
     def __stats__():
