@@ -290,7 +290,7 @@ if is_module_loaded(FILENAME):
         if DISABLE_CMDS + DISABLE_OTHER:
             result = ""
             for cmd in set(DISABLE_CMDS + DISABLE_OTHER):
-                result += f" - `{escape_markdown(cmd)}`\n"
+                result += " - `{}`\n".format(escape_markdown(cmd))
             update.effective_message.reply_text(
                 f"The following commands are toggleable:\n{result}",
                 parse_mode=ParseMode.MARKDOWN,
