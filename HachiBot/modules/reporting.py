@@ -1,3 +1,4 @@
+from asyncio import log
 import html
 
 from HachiBot import LOGGER, DRAGONS, WHITELIST_USERS
