@@ -52,7 +52,7 @@ async def bug(_, msg: Message):
     bug_report = f"""
 📣 **New bug reported.**
 
-**Chat:** `{chat_username}`
+**Chat:** {chat_username}
 **Name:** `{mention}`
 **User ID:** `{user_id}`
 **Chat ID:** `{msg.chat.id}`
