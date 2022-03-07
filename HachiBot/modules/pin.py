@@ -1,6 +1,6 @@
 from re import compile
 
-from pyrogram import filters
+from pyrogram import filters, Client
 from pyrogram.errors import ChatAdminRequired, RightForbidden, RPCError
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
