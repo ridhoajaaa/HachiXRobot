@@ -53,6 +53,7 @@ from telegram.ext import (
     MessageHandler,
 )
 from telegram.ext.dispatcher import DispatcherHandlerStop, run_async
+from pyrogram import Client, idle
 from telegram.utils.helpers import escape_markdown
 
 
@@ -892,8 +893,9 @@ def main():
     updater.idle()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
     telethn.start(bot_token=TOKEN)
-    pbot.start()
+    pgram.start()
     main()
+    idle()
