@@ -334,6 +334,7 @@ pbot = Client(
 )
 apps = []
 apps.append(pbot)
+apps.append(pgram)
 loop = asyncio.get_event_loop()
 mongo_client = MongoClient(MONGO_DB_URI)
 db = mongo_client.hachi
@@ -371,7 +372,6 @@ async def eor(msg: Message, **kwargs):
     spec = getfullargspec(func.__wrapped__).args
     return await func(**{k: v for k, v in kwargs.items() if k in spec})
 
-apps = [pgram]
 DRAGONS = list(DRAGONS) + list(DEV_USERS)
 DEV_USERS = list(DEV_USERS)
 WOLVES = list(WOLVES)
