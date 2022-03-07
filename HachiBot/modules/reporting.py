@@ -1,4 +1,3 @@
-from asyncio import log
 import html
 
 from HachiBot import LOGGER, DRAGONS, WHITELIST_USERS
@@ -92,7 +91,7 @@ def report(update: Update, context: CallbackContext) -> str:
             try:
                 reported += f"<a href=\"tg://user?id={admin.user.id}\">\u2063</a>"
             except BadRequest:
-                log.exception("Exception while reporting user")
+                LOGGER.exception("Exception while reporting user")
         message.reply_text(reported, parse_mode=ParseMode.HTML)
 
     if chat and message.reply_to_message and sql.chat_should_report(chat.id):
@@ -213,7 +212,7 @@ def report(update: Update, context: CallbackContext) -> str:
                 except Unauthorized:
                     pass
                 except BadRequest as excp:  # TODO: cleanup exceptions
-                    log.exception("Exception while reporting user\n{}".format(excp))
+                    LOGGER.exception("Exception while reporting user\n{}".format(excp))
 
         try:
             update.effective_message.reply_sticker(
