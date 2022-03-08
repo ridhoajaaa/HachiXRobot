@@ -1064,6 +1064,7 @@ def button(update: Update, context: CallbackContext) -> str:
         splitter = query.data.split("=")
         query_match = splitter[0]
         if query_match == "demote_":
+            user_member = chat.get_member(user_id)
             user_id = splitter[1]
             if not is_user_admin(chat, int(user.id)):
                 bot.answer_callback_query(
@@ -1074,7 +1075,6 @@ def button(update: Update, context: CallbackContext) -> str:
                 return ""
     if splitter:
         chat = update.effective_chat
-        user_member = chat.get_member(user_id)
         demoted = bot.promoteChatMember(
             can_change_info=False,
             can_post_messages=False,
