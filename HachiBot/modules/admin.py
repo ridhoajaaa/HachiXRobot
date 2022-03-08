@@ -1054,14 +1054,15 @@ def adminlist(update, context):
 @can_promote
 @user_admin
 @loggable
+@ddocallback(pattern=r"demote_")
 def button(update: Update, context: CallbackContext) -> str:
-    query: Optional[CallbackQuery] = update.callback_query
-    user: Optional[User] = update.effective_user
-    bot: Optional[Bot] = context.bot
-    match = re.match(r"demote_\((.+?)\)", query.data)
-    if match:
+    query = update.callback_query
+    user = update.effective_user
+    bot = context.bot
+    splitter = query.data.replace("demote_", "").split("=")
+    if splitter:
         user_id = match.group(1)
-        chat: Optional[Chat] = update.effective_chat
+        chat = update.effective_chat
         member = chat.get_member(user_id)
         user_member = chat.get_member(user_id)
         demoted = bot.promoteChatMember(
