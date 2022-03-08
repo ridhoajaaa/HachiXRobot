@@ -1073,7 +1073,6 @@ def button(update: Update, context: CallbackContext) -> str:
                 )
                 return ""
     if splitter:
-        user_id = splitter.group(1)
         chat = update.effective_chat
         member = chat.get_member(user_id)
         user_member = chat.get_member(user_id)
