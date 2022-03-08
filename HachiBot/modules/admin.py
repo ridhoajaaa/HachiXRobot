@@ -1074,7 +1074,6 @@ def button(update: Update, context: CallbackContext) -> str:
                 return ""
     if splitter:
         chat = update.effective_chat
-        member = chat.get_member(user_id)
         user_member = chat.get_member(user_id)
         demoted = bot.promoteChatMember(
             can_change_info=False,
@@ -1099,7 +1098,7 @@ def button(update: Update, context: CallbackContext) -> str:
                     f"<b>{html.escape(chat.title)}:</b>\n" 
                     f"#UNMUTE\n" 
                     f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                    f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}"
+                    f"<b>User:</b> {mention_html(user_member.user.id, user_member.user.first_name)}"
                 )
     else:
         update.effective_message.edit_text(
