@@ -15,6 +15,7 @@ from telethon import events
 from telethon.tl import *
 from telethon.tl import functions, types
 
+from HachiBot.modules.helper_funcs.decorators import ddocallback
 from HachiBot import DRAGONS, dispatcher, telethn as bot, pgram
 from HachiBot.modules.disable import DisableAbleCommandHandler
 from HachiBot.modules.helper_funcs.chat_status import (

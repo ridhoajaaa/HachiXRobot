@@ -1,6 +1,6 @@
 import html
 
-from HachiBot import log, SUDO_USERS, SARDEGNA_USERS, WHITELIST_USERS
+from HachiBot import DRAGONS, log, DEMONS, SARDEGNA_USERS, WHITELIST_USERS
 from HachiBot.modules.helper_funcs.chat_status import user_not_admin
 from HachiBot.modules.log_channel import loggable
 from HachiBot.modules.sql import reporting_sql as sql
@@ -17,7 +17,7 @@ from HachiBot.modules.helper_funcs.decorators import ddocmd, ddomsg, ddocallback
 from ..modules.helper_funcs.anonymous import user_admin, AdminPerms
 
 REPORT_GROUP = 12
-REPORT_IMMUNE_USERS = SUDO_USERS + SARDEGNA_USERS + WHITELIST_USERS
+REPORT_IMMUNE_USERS = DEMONS + DRAGONS + WHITELIST_USERS
 
 
 @ddocmd(command='reports')
@@ -216,7 +216,7 @@ def report(update: Update, context: CallbackContext) -> str:
 
         try:
             update.effective_message.reply_sticker(
-                "CAACAgUAAx0CRSKHWwABAXGoYB2UJauytkH4RJWSStz9DTlxQg0AAlcHAAKAUF41_sNx9Y1z2DQeBA")
+                "CAACAgUAAx0CWkjQNgACK2diJx3UqBFO4kqIqA5c3vLLgKSQfgACHwMAAuwtOVWyDrfo6vuntCME")
         except:
             pass
         message.reply_to_message.reply_text(
