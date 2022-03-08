@@ -1060,9 +1060,20 @@ def button(update: Update, context: CallbackContext) -> str:
     query = update.callback_query
     user = update.effective_user
     bot = context.bot
-    splitter = query.data.replace("demote_", "").split("=")
+    if query.data != "reload":
+        splitter = query.data.split("=")
+        query_match = splitter[0]
+        if query_match == "demote_":
+            user_id = splitter[1]
+            if not is_user_admin(chat, int(user.id)):
+                bot.answer_callback_query(
+                    query.id,
+                    text="You don't have enough rights to demote people",
+                    show_alert=True,
+                )
+                return ""
     if splitter:
-        user_id = match.group(1)
+        user_id = splitter.group(1)
         chat = update.effective_chat
         member = chat.get_member(user_id)
         user_member = chat.get_member(user_id)
