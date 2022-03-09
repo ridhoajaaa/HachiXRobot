@@ -7,7 +7,6 @@ import time
 import re
 import sys
 import traceback
-from aiohttp import ClientSession
 import HachiBot.modules.sql.users_sql as sql
 from sys import argv
 from typing import Optional
@@ -898,3 +897,4 @@ if __name__ == "__main__":
     LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
     telethn.start(bot_token=TOKEN)
     pbot.start()
+    main()
