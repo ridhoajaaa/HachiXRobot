@@ -448,9 +448,22 @@ def lowpromote(update: Update, context: CallbackContext) -> str:
             message.reply_text("An error occured while promoting.")
         return
 
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text="⏬ Demote",
+                    callback_data="demote_({})".format(user_member.user.id),
+                ),
+                InlineKeyboardButton(text="🔄 Cache", callback_data="close2"),
+            ]
+        ]
+    )
+
     bot.sendMessage(
         chat.id,
         f"Lowpromoting a user in <b>{chat.title}<b>\n\nUser: {mention_html(user_member.user.id, user_member.user.first_name)}\nAdmin: {mention_html(user.id, user.first_name)}",
+        reply_markup=keyboard,
         parse_mode=ParseMode.HTML,
     )
 
@@ -549,19 +562,23 @@ def coadmin(update: Update, context: CallbackContext) -> str:
             message.reply_text("An error occured while promoting.")
         return
 
-    bot.sendMessage(
-        chat.id,
-        f"Sycsessfully fullpromoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Promoter: {mention_html(user.id, user.first_name)}</b>",
-        parse_mode=ParseMode.HTML,
-    )
     keyboard = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton(
-                    text="Demote", callback_data="demote_({})".format(user_member.user.id)
-                )
+                    text="⏬ Demote",
+                    callback_data="demote_({})".format(user_member.user.id),
+                ),
+                InlineKeyboardButton(text="🔄 Cache", callback_data="close2"),
             ]
         ]
+    )
+
+    bot.sendMessage(
+        chat.id,
+        f"Sycsessfully fullpromoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Promoter: {mention_html(user.id, user.first_name)}</b>",
+        reply_markup=keyboard,
+        parse_mode=ParseMode.HTML,
     )
 
     log_message = (
@@ -1094,9 +1111,8 @@ def button(update: Update, context: CallbackContext) -> str:
         )
         if demoted:
             update.effective_message.edit_text(
-                f"Yep! {mention_html(member.user.id, member.user.first_name)} has been demoted in {chat.title}!"
-                f"By {mention_html(user.id, user.first_name)}",
-                parse_mode=ParseMode.HTML,
+            f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(member.user.id, member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
+            parse_mode=ParseMode.HTML,
             )
             query.answer("Demoted!")
             return (
