@@ -1060,22 +1060,28 @@ def button(update: Update, context: CallbackContext) -> str:
     query = update.callback_query
     user = update.effective_user
     bot = context.bot
-    if query.data != "reload":
-        splitter = query.data.split("=")
-        query_match = splitter[0]
-        if query_match == "demote_":
-            user_member = chat.get_member(user_id)
-            user_id = splitter[1]
-            if not is_user_admin(chat, int(user.id)):
-                bot.answer_callback_query(
-                    query.id,
-                    text="You don't have enough rights to demote people",
-                    show_alert=True,
-                )
-                return ""
-    if splitter:
-        chat = update.effective_chat
+    match = re.match(r"demote_\((.+?)\)", query.data)
+    if match:
+        user_id = match.group(1)
+        chat: Optional[Chat] = update.effective_chat
+        member = chat.get_member(user_id)
+        bot_member = chat.get_member(bot.id)
+        bot_permissions = promoteChatMember(
+            chat.id,
+            user_id,
+            can_change_info=bot_member.can_change_info,
+            can_post_messages=bot_member.can_post_messages,
+            can_edit_messages=bot_member.can_edit_messages,
+            can_delete_messages=bot_member.can_delete_messages,
+            can_invite_users=bot_member.can_invite_users,
+            can_promote_members=bot_member.can_promote_members,
+            can_restrict_members=bot_member.can_restrict_members,
+            can_pin_messages=bot_member.can_pin_messages,
+            can_manage_voice_chats=bot_member.can_manage_voice_chats,
+        )
         demoted = bot.promoteChatMember(
+            chat.id,
+            user_id,
             can_change_info=False,
             can_post_messages=False,
             can_edit_messages=False,
@@ -1088,21 +1094,20 @@ def button(update: Update, context: CallbackContext) -> str:
         )
         if demoted:
             update.effective_message.edit_text(
-                f"Yep! {mention_html(user_member.user.id, user_member.user.first_name)} has been demoted in {chat.title}!"
+                f"Yep! {mention_html(member.user.id, member.user.first_name)} has been demoted in {chat.title}!"
                 f"By {mention_html(user.id, user.first_name)}",
                 parse_mode=ParseMode.HTML,
             )
-            query.answer("Unmuted!")
-            
+            query.answer("Demoted!")
             return (
-                    f"<b>{html.escape(chat.title)}:</b>\n" 
-                    f"#UNMUTE\n" 
-                    f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                    f"<b>User:</b> {mention_html(user_member.user.id, user_member.user.first_name)}"
-                )
+                f"<b>{html.escape(chat.title)}:</b>\n"
+                f"#DEMOTE\n"
+                f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
+                f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}"
+            )
     else:
         update.effective_message.edit_text(
-            "⚠️ This user is not muted or has left the group!"
+            "This user is not promoted or has left the group!"
         )
         return ""
 
