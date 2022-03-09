@@ -28,6 +28,7 @@ SOFTWARE.
 
 import os
 import requests
+from ShazamAPI import Shazam
 
 from pyrogram import filters
 from json import JSONDecodeError

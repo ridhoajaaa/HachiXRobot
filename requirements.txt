@@ -8,8 +8,6 @@ requests
 python-telegram-bot==13.11.0
 SQLAlchemy==1.4.31
 psycopg2-binary
-feedparser
-faker
 hachoir
 pykeyboard
 aiogram
@@ -23,10 +21,7 @@ pytimeparse
 aiofiles
 pyaztro
 faker
-rapidjson
 ffmpeg-python
-spongemock
-zalgo-text
 geopy
 nltk
 psutil
@@ -39,7 +34,6 @@ google-trans-new
 jikanpy
 speedtest-cli
 coffeehouse
-pornhub_api
 regex
 bleach
 wikipedia
@@ -70,8 +64,6 @@ youtube_search_python
 youtube_search
 lyrics_extractor
 asyncio
-cloudscraper
-dateparser
 pymongo
 dnspython
 secureme
@@ -83,20 +75,14 @@ bs4
 redis
 hiredis==2.0.0
 aioredis==2.0.1
-pySmartDL
 bing_image_downloader
 search_engine_parser
 pytz
 pyjokes
-jikanpy
 tswift
 python-arq
 base58
 envparse
-#profanity (Credits to Julia)
-better_profanity
-textblob 
-nudepy
 nekos.py
 motor
 gpytranslate
@@ -104,7 +90,6 @@ fontTools
 opencv-python-headless
 odmantic
 tzlocal
-pendulum
 fuzzysearch
 img2pdf
 multicolorcaptcha
@@ -113,4 +98,3 @@ pretty_errors
 requests_html
 ShazamAPI
 html-telegraph-poster
-qrcode
