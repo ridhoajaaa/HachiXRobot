@@ -96,6 +96,9 @@ if ENV:
         TIGERS = {int(x) for x in os.environ.get("TIGERS", "").split()}
     except ValueError:
         raise Exception("Your tiger users list does not contain valid integers.")
+    SUPPORT_STAFF = list(
+    set([int(OWNER_ID)] + DEMONS + DEV_USERS + WHITELIST_USERS),
+)
 
     INFOPIC = bool(os.environ.get("INFOPIC", True))
     OWNER = os.environ.get("OWNER", "ddodxy")
@@ -160,7 +163,7 @@ if ENV:
         raise Exception("Your blacklisted chats list does not contain valid integers.")
 
 else:
-    from HachiBot.config import Development as Config
+    from HachiBot.sample_config import Development as Config
 
     TOKEN = Config.TOKEN
 
