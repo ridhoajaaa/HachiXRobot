@@ -7,6 +7,7 @@ import time
 import re
 import sys
 import traceback
+from aiohttp import ClientSession
 import HachiBot.modules.sql.users_sql as sql
 from sys import argv
 from typing import Optional
