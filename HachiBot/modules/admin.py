@@ -1066,7 +1066,7 @@ def button(update: Update, context: CallbackContext) -> str:
         chat: Optional[Chat] = update.effective_chat
         member = chat.get_member(user_id)
         bot_member = chat.get_member(bot.id)
-        bot_permissions = promoteChatMember(
+        bot_permissions = bot.promoteChatMember(
             chat.id,
             user_id,
             can_change_info=bot_member.can_change_info,
