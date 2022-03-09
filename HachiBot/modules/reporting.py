@@ -10,7 +10,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackContex
 
 from HachiBot.modules.helper_funcs.decorators import ddocallback
 from HachiBot import pbot
-from HachiBot import LOGGER, SUPPORT_STAFF
+from HachiBot import LOGGER, DEMONS
 from HachiBot.modules.mongo.reporting_db import Reporting
 from HachiBot.services.keyboard import ikb
 
@@ -83,7 +83,7 @@ async def report_watcher(c: Client, m: Message):
             await m.reply_text("Nice try.")
             return
 
-        if reported_user.id in SUPPORT_STAFF:
+        if reported_user.id in DEMONS:
             await m.reply_text("Uh? You reporting my support team?")
             return
 

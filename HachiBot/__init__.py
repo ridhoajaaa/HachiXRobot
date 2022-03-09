@@ -96,7 +96,6 @@ if ENV:
         TIGERS = {int(x) for x in os.environ.get("TIGERS", "").split()}
     except ValueError:
         raise Exception("Your tiger users list does not contain valid integers.")
-    SUPPORT_STAFF = ([int(OWNER_ID)] + DEMONS + DEV_USERS + WHITELIST_USERS)
 
     INFOPIC = bool(os.environ.get("INFOPIC", True))
     OWNER = os.environ.get("OWNER", "ddodxy")
