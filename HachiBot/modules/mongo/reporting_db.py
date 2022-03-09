@@ -2,7 +2,7 @@ from threading import RLock
 from time import time
 
 from HachiBot import LOGGER
-from HachiBot.database import MongoDB
+from HachiBot.modules.pin import MongoDB
 
 INSERTION_LOCK = RLock()
 
