@@ -19,6 +19,7 @@ python-rapidjson==1.6
 py-Ultroid==2022.2.10
 pytimeparse
 aiofiles
+https://codeload.github.com/MiyukiKun/FastTelethonhelper/zip/refs/heads/main
 pyaztro
 faker
 ffmpeg-python
@@ -26,6 +27,7 @@ geopy
 nltk
 psutil
 aiohttp
+cloudscraper
 Pillow
 CurrencyConverter
 googletrans
