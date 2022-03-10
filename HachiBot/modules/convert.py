@@ -51,10 +51,10 @@ def vidsticker(in_filename):
      print(e.stderr.decode())
   return out_filename
   
-@bot.on(events.NewMessage(pattern=r'/vs'))
+@bot.on(events.NewMessage(pattern=r'/convert'))
 async def stickervid(event):
   video = await event.get_reply_message()
-  if video.file.duration > 3:
+  if video.file.duration > 10:
     return await event.reply('Should be smaller than 3 secs as per Telegram video-sticker guideline.')
   m = await event.reply('Downloading...')
   dl = await fast_download(bot, video)
