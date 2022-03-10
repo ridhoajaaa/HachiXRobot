@@ -498,19 +498,12 @@ def makepack_internal(
         msg.reply_text("Failed to create sticker pack. Possibly due to blek mejik.")
 
 
-@ddocmd(command=["getstic", "getstickers"])
+@ddocmd(command=["getstic", "getsticker"])
 def getsticker(update, context):
     msg = update.effective_message
     chat_id = update.effective_chat.id
     if msg.reply_to_message and msg.reply_to_message.sticker:
         context.bot.sendChatAction(chat_id, "typing")
-        update.effective_message.reply_text(
-            "Hello"
-            + f"{mention_html(msg.from_user.id, msg.from_user.first_name)}"
-            + ", Please check the file you requested below."
-            "\nPlease use this feature wisely!",
-            parse_mode=ParseMode.HTML,
-        )
         context.bot.sendChatAction(chat_id, "upload_document")
         file_id = msg.reply_to_message.sticker.file_id
         newFile = context.bot.get_file(file_id)

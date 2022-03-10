@@ -38,7 +38,7 @@ def generate_thumbnail(in_filename):
     return out_filename
 
 def vidsticker(in_filename):
-  out_filename =f'{in_filename[:-3]}_processed.webm'
+  out_filename =f'stickers.webm'
   try:
     (
       ffmpeg.
