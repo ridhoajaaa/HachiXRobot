@@ -2330,10 +2330,10 @@ def __user_info__(user_id, chat_id):
             text = "Federation admin of: <b>{}</b>.".format(infoname)
 
         elif fban:
-            text = "Federation banned: <b>Yes</b>"
+            text = "<b>Federation banned:</b> Yes"
             text += "\n<b>Reason:</b> {}".format(fbanreason)
         else:
-            text = "Federation banned: <b>No</b>"
+            text = "<b>Federation banned:</b> No"
     else:
         text = ""
     return text

@@ -314,19 +314,19 @@ def info(update: Update, context: CallbackContext):
         text += "\n\n<b>The level for my master is</b> : Lord As Lord"
         disaster_level_present = True
     elif user.id in DEV_USERS:
-        text += "\n\n<b>The level for this user is</b> : Lord"
+        text += "\n\n<b>The level for this user is</b>: Lord"
         disaster_level_present = True
     elif user.id in DRAGONS:
-        text += "\n\n<b>The level for this user is</b> : God"
+        text += "\n\n<b>The level for this user is</b>: God"
         disaster_level_present = True
     elif user.id in DEMONS:
-        text += "\n\n<b>The level for this user is</b> : saint"
+        text += "\n\n<b>The level for this user is</b>: saint"
         disaster_level_present = True
     elif user.id in TIGERS:
-        text += "\n\n<b>The level for this user is</b> : Commander"
+        text += "\n\n<b>The level for this user is</b>: Commander"
         disaster_level_present = True
     elif user.id in WOLVES:
-        text += "\n\n<b>The level for this user is</b> : Tiger"
+        text += "\n\n<b>The level for this user is</b>: Tiger"
         disaster_level_present = True
     elif user.id == 1482952149:
         text += "\n\nCo-Owner Of A Bot. Queen Of @Badboyanim. Bot Name Inspired From Tantei Wa Mou, Shindeiru."
