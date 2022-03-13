@@ -18,6 +18,7 @@ chatsdb = db.chats
 usersdb = db.users
 gbansdb = db.gban
 coupledb = db.couple
+nsfwdb = db.nsfw
 captchadb = db.captcha
 solved_captcha_db = db.solved_captcha
 captcha_cachedb = db.captcha_cache
@@ -99,6 +100,26 @@ async def delete_note(chat_id: int, name: str) -> bool:
         )
         return True
     return False
+
+async def is_nsfw_on(chat_id: int) -> bool:
+    chat = nsfwdb.find_one({"chat_id": chat_id})
+    if not chat:
+        return True
+    return False
+
+
+async def nsfw_on(chat_id: int):
+    is_nsfw = await is_nsfw_on(chat_id)
+    if is_nsfw:
+        return
+    return nsfwdb.delete_one({"chat_id": chat_id})
+
+
+async def nsfw_off(chat_id: int):
+    is_nsfw = await is_nsfw_on(chat_id)
+    if not is_nsfw:
+        return
+    return nsfwdb.insert_one({"chat_id": chat_id})
 
 
 async def get_filters_count() -> dict:
