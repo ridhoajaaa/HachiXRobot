@@ -599,7 +599,8 @@ def coadmin(update: Update, context: CallbackContext) -> str:
 @can_promote
 @user_admin
 @loggable
-@ddomsg(Filters.regex("(?i)^.unetmin", "(?i)^.unadmin"))
+@ddomsg(Filters.regex("(?i)^.unetmin"))
+@ddomsg(Filters.regex("(?i)^.unadmin"))
 def unadmin(update: Update, context: CallbackContext) -> str:
     bot = context.bot
     args = context.args
