@@ -287,7 +287,7 @@ CLOCKANIMATION_HANDLER = DisableAbleCommandHandler(
     "clock", clockanimation, run_async=True
 )
 BLOCKANIMATION_HANDLER = DisableAbleCommandHandler(
-    "block", blockanimation, run_async=True
+    "blocks", blockanimation, run_async=True
 )
 EARTHANIMATION_HANDLER = DisableAbleCommandHandler(
     "earth", earthanimation, run_async=True
