@@ -17,6 +17,7 @@ from HachiBot.modules.helper_funcs.extraction import (
 )
 from HachiBot.modules.helper_funcs.string_handling import extract_time
 from HachiBot.modules.log_channel import loggable
+from HachiBot.modules.helper_funcs.decorators import ddomsg
 from telegram import (
     Bot, 
     Chat, 
@@ -80,6 +81,7 @@ def check_user(user_id: int, bot: Bot, chat: Chat, update: Update) -> Optional[s
 @bot_admin
 @user_admin
 @loggable
+@ddomsg(Filters.regex("(?i)^.mute"))
 def mute(update: Update, context: CallbackContext) -> str:
     bot, args = context.bot, context.args
     chat = update.effective_chat
@@ -136,6 +138,7 @@ def mute(update: Update, context: CallbackContext) -> str:
 @bot_admin
 @user_admin
 @loggable
+@ddomsg(Filters.regex("(?i)^.unmute"))
 def unmute(update: Update, context: CallbackContext) -> str:
     bot, args = context.bot, context.args
     chat = update.effective_chat

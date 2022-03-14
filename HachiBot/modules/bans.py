@@ -45,6 +45,7 @@ from HachiBot.modules.helper_funcs.chat_status import user_admin as u_admin
 from HachiBot.modules.helper_funcs.anonymous import AdminPerms, user_admin
 from HachiBot.modules.helper_funcs.string_handling import extract_time
 from HachiBot.modules.log_channel import gloggable, loggable
+from HachiBot.modules.helper_funcs.decorators import ddomsg
 
 
 BAN_STICKER = (
@@ -56,6 +57,7 @@ BAN_STICKER = (
 @can_restrict
 @user_admin(AdminPerms.CAN_RESTRICT_MEMBERS)
 @loggable
+@ddomsg(Filters.regex("(?i)^.ban"))
 def ban(
     update: Update, context: CallbackContext
 ) -> Optional[str]:  # sourcery no-metrics
@@ -398,6 +400,7 @@ def unbanb_btn(update: Update, context: CallbackContext) -> str:
 @can_restrict
 @user_admin(AdminPerms.CAN_RESTRICT_MEMBERS)
 @loggable
+@ddomsg(Filters.regex("(?i)^.kick"))
 def punch(update: Update, context: CallbackContext) -> str:
     chat = update.effective_chat
     user = update.effective_user
@@ -485,6 +488,7 @@ def punchme(update: Update, _: CallbackContext):
 @u_admin
 @user_can_ban
 @loggable
+@ddomsg(Filters.regex("(?i)^.unban"))
 def unban(update: Update, context: CallbackContext) -> Optional[str]:
     message = update.effective_message
     user = update.effective_user

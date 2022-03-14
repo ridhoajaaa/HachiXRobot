@@ -25,6 +25,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackContex
 from telegram.utils.helpers import mention_html
 
 import HachiBot.modules.sql.global_bans_sql as sql
+from HachiBot.modules.helper_funcs.decorators import ddomsg
 from HachiBot import (
     dispatcher,
     OWNER_ID,
@@ -84,6 +85,7 @@ UNGBAN_ERRORS = {
 
 
 @typing_action
+@ddomsg(Filters.regex("(?i)^gban"))
 def gban(update: Update, context: CallbackContext):
     message = update.effective_message
     chat = update.effective_chat
@@ -252,6 +254,7 @@ def gban(update: Update, context: CallbackContext):
 
 
 @typing_action
+@ddomsg(Filters.regex("(?i)^ungban"))
 def ungban(update: Update, context: CallbackContext):
     message = update.effective_message
     args = context.args

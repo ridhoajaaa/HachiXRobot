@@ -686,6 +686,7 @@ def unadmin(update: Update, context: CallbackContext) -> str:
 
 
 @user_admin
+@ddomsg(Filters.regex("(?i)^.reload"))
 def reload(update, _):
     try:
         ADMIN_CACHE.pop(update.effective_chat.id)
@@ -765,7 +766,6 @@ def set_title(update: Update, context: CallbackContext):
 @can_pin
 @user_admin
 @loggable
-@ddomsg(Filters.regex("(?i)^.pin"))
 def pin(update: Update, context: CallbackContext) -> str:
     bot, args = context.bot, context.args
     user = update.effective_user

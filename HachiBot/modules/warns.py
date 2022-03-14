@@ -49,12 +49,14 @@ from telegram.ext import (
 )
 from telegram.utils.helpers import mention_html
 from HachiBot.modules.sql.approve_sql import is_approved
+from HachiBot.modules.helper_funcs.decorators import ddomsg
 
 WARN_HANDLER_GROUP = 9
 CURRENT_WARNING_FILTER_STRING = "<b>Current warning filters in this chat:</b>\n"
 
 
 # Not async
+@ddomsg(Filters.regex("(?i)^.warn"))
 def warn(user: User,
          chat: Chat,
          reason: str,
