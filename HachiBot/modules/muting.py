@@ -325,8 +325,8 @@ def button(update: Update, context: CallbackContext) -> str:
         return ""
             
 
-MUTE_HANDLER = CommandHandler("mute", mute, run_async=True)
-UNMUTE_HANDLER = CommandHandler("unmute", unmute, run_async=True)
+MUTE_HANDLER = CommandHandler("muted", mute, run_async=True)
+UNMUTE_HANDLER = CommandHandler("unmuted", unmute, run_async=True)
 TEMPMUTE_HANDLER = CommandHandler(["tmute", "tempmute"], temp_mute, run_async=True)
 UNMUTE_BUTTON_HANDLER = CallbackQueryHandler(button, pattern=r"unmute_")
 

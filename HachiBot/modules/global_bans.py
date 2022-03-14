@@ -478,13 +478,13 @@ __mod_name__ = "Global Ban"
 
 
 GBAN_HANDLER = CommandHandler(
-    "gban",
+    "gbanned",
     gban,
     pass_args=True,
     filters=CustomFilters.dev_filter | CustomFilters.support_filter,
 )
 UNGBAN_HANDLER = CommandHandler(
-    "ungban",
+    "ungbanned",
     ungban,
     pass_args=True,
     filters=CustomFilters.dev_filter | CustomFilters.support_filter,
