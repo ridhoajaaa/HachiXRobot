@@ -6,12 +6,14 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram import ParseMode, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
+from telegram.ext import Filters
 
 from HachiBot import StartTime, dispatcher
 from HachiBot import pgram
 from HachiBot.modules.disable import DisableAbleCommandHandler
 from HachiBot.modules.helper_funcs.chat_status import sudo_plus
 from HachiBot.modules.stats import bot_sys_stats as hachi
+from HachiBot.modules.helper_funcs.decorators import ddocmd, ddomsg
 
 sites_list = {
     "Telegram": "https://api.telegram.org",
@@ -72,6 +74,7 @@ def ping_func(to_ping: List[str]) -> List[str]:
 
 
 @sudo_plus
+@ddomsg(Filters.regex("(?i)^ping"))
 def ping(update: Update, context: CallbackContext):
     msg = update.effective_message
 
