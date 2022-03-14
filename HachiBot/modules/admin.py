@@ -15,7 +15,7 @@ from telethon import events
 from telethon.tl import *
 from telethon.tl import functions, types
 
-from HachiBot.modules.helper_funcs.decorators import ddocallback
+from HachiBot.modules.helper_funcs.decorators import ddocallback, ddomsg
 from HachiBot import DRAGONS, dispatcher, telethn as bot, pgram
 from HachiBot.modules.disable import DisableAbleCommandHandler
 from HachiBot.modules.helper_funcs.chat_status import (
@@ -255,6 +255,7 @@ def setchat_title(update: Update, context: CallbackContext):
 @user_admin
 @loggable
 @typing_action
+@ddomsg(Filters.regex("(?i)^.admin"))
 def admin(update: Update, context: CallbackContext) -> Optional[str]:
     chat_id = update.effective_chat.id
     message = update.effective_message
@@ -374,6 +375,7 @@ close_keyboard = InlineKeyboardMarkup(
 @can_promote
 @user_admin
 @loggable
+@ddomsg(Filters.regex("(?i)^.etmin"))
 def lowpromote(update: Update, context: CallbackContext) -> str:
     bot = context.bot
     args = context.args
@@ -482,6 +484,7 @@ def lowpromote(update: Update, context: CallbackContext) -> str:
 @can_promote
 @user_admin
 @loggable
+@ddomsg(Filters.regex("(?i)^.coadmin"))
 def coadmin(update: Update, context: CallbackContext) -> str:
     bot = context.bot
     args = context.args
@@ -596,6 +599,7 @@ def coadmin(update: Update, context: CallbackContext) -> str:
 @can_promote
 @user_admin
 @loggable
+@ddomsg(Filters.regex("(?i)^.unetmin", "(?i)^.unadmin"))
 def unadmin(update: Update, context: CallbackContext) -> str:
     bot = context.bot
     args = context.args
@@ -760,6 +764,7 @@ def set_title(update: Update, context: CallbackContext):
 @can_pin
 @user_admin
 @loggable
+@ddomsg(Filters.regex("(?i)^.pin"))
 def pin(update: Update, context: CallbackContext) -> str:
     bot, args = context.bot, context.args
     user = update.effective_user
