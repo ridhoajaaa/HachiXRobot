@@ -18,6 +18,7 @@ from HachiBot.modules.helper_funcs.extraction import (
 from HachiBot.modules.helper_funcs.string_handling import extract_time
 from HachiBot.modules.log_channel import loggable
 from HachiBot.modules.helper_funcs.decorators import ddomsg
+from telegram.ext import Filters
 from telegram import (
     Bot, 
     Chat, 
