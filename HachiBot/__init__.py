@@ -146,7 +146,7 @@ if ENV:
     BACKUP_PASS = os.environ.get("BACKUP_PASS", None)
     WELCOME_DELAY_KICK_SEC = os.environ.get("WELCOME_DELAY_KICL_SEC", None)
     BOT_ID = int(os.environ.get("BOT_ID", None))
-    ARQ_API_URL = "https://thearq.tech/"
+    ARQ_API_URL = "https://arq.hamker.in"
     ARQ_API_KEY = "BCYKVF-KYQWFM-JCMORU-RZWOFQ-ARQ"
     ERROR_LOG = os.environ.get("ERROR_LOG", -1001590897564)
     RSS_DELAY = int(os.environ.get("RSS_DELAY", 300))
