@@ -74,7 +74,6 @@ def ping_func(to_ping: List[str]) -> List[str]:
 
 
 @sudo_plus
-@ddomsg(Filters.regex("(?i)^.ping"))
 def ping(update: Update, context: CallbackContext):
     msg = update.effective_message
 

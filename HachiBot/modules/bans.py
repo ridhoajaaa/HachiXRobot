@@ -57,7 +57,7 @@ BAN_STICKER = (
 @can_restrict
 @user_admin(AdminPerms.CAN_RESTRICT_MEMBERS)
 @loggable
-@ddomsg(Filters.regex("(?i)^.ban"))
+
 def ban(
     update: Update, context: CallbackContext
 ) -> Optional[str]:  # sourcery no-metrics
@@ -400,7 +400,6 @@ def unbanb_btn(update: Update, context: CallbackContext) -> str:
 @can_restrict
 @user_admin(AdminPerms.CAN_RESTRICT_MEMBERS)
 @loggable
-@ddomsg(Filters.regex("(?i)^.kick"))
 def punch(update: Update, context: CallbackContext) -> str:
     chat = update.effective_chat
     user = update.effective_user
@@ -488,7 +487,6 @@ def punchme(update: Update, _: CallbackContext):
 @u_admin
 @user_can_ban
 @loggable
-@ddomsg(Filters.regex("(?i)^.unban"))
 def unban(update: Update, context: CallbackContext) -> Optional[str]:
     message = update.effective_message
     user = update.effective_user
@@ -688,13 +686,13 @@ __help__ = """
 
 __mod_name__ = "Bans/Mutes"
 
-BAN_HANDLER = CommandHandler(["block", "sban"], ban, run_async=True)
-BAN_HANDLER = DisableAbleCommandHandler("block", ban, run_async=True)
+BAN_HANDLER = CommandHandler(["ban", "sban"], ban, run_async=True)
+BAN_HANDLER = DisableAbleCommandHandler("ban", ban, run_async=True)
 TEMPBAN_HANDLER = CommandHandler(["tban"], temp_ban, run_async=True)
-KICK_HANDLER = CommandHandler(["tendang", "punch"], punch, run_async=True)
-KICK_HANDLER = DisableAbleCommandHandler(["tendang", "punch"], punch, run_async=True)
-UNBAN_HANDLER = CommandHandler("unblock", unban, run_async=True)
-UNBAN_HANDLER = DisableAbleCommandHandler("unblock", unban, run_async=True)
+KICK_HANDLER = CommandHandler(["kick", "punch"], punch, run_async=True)
+KICK_HANDLER = DisableAbleCommandHandler(["kick", "punch"], punch, run_async=True)
+UNBAN_HANDLER = CommandHandler("unban", unban, run_async=True)
+UNBAN_HANDLER = DisableAbleCommandHandler("unban", unban, run_async=True)
 ROAR_HANDLER = CommandHandler("roar", selfunban, run_async=True)
 UNBAN_BUTTON_HANDLER = CallbackQueryHandler(unbanb_btn, pattern=r"unbanb_")
 KICKME_HANDLER = DisableAbleCommandHandler(["kickme", "punchme"], punchme, filters=Filters.chat_type.groups, run_async=True)

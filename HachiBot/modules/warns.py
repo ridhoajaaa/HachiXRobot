@@ -56,7 +56,6 @@ CURRENT_WARNING_FILTER_STRING = "<b>Current warning filters in this chat:</b>\n"
 
 
 # Not async
-@ddomsg(Filters.regex("(?i)^.warn"))
 def warn(user: User,
          chat: Chat,
          reason: str,
@@ -558,7 +557,7 @@ be a sentence, encompass it with quotes, as such: /addwarn "very angry" This is 
 __mod_name__ = "Warnings"
 
 WARN_HANDLER = CommandHandler(
-    ["warning", "dwarn"], warn_user, filters=Filters.chat_type.groups, run_async=True
+    ["warn", "dwarn"], warn_user, filters=Filters.chat_type.groups, run_async=True
 )
 RESET_WARN_HANDLER = CommandHandler(
     ["resetwarn", "resetwarns"],

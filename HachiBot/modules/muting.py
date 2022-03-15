@@ -82,7 +82,6 @@ def check_user(user_id: int, bot: Bot, chat: Chat, update: Update) -> Optional[s
 @bot_admin
 @user_admin
 @loggable
-@ddomsg(Filters.regex("(?i)^.mute"))
 def mute(update: Update, context: CallbackContext) -> str:
     bot, args = context.bot, context.args
     chat = update.effective_chat
@@ -139,7 +138,6 @@ def mute(update: Update, context: CallbackContext) -> str:
 @bot_admin
 @user_admin
 @loggable
-@ddomsg(Filters.regex("(?i)^.unmute"))
 def unmute(update: Update, context: CallbackContext) -> str:
     bot, args = context.bot, context.args
     chat = update.effective_chat
@@ -325,8 +323,8 @@ def button(update: Update, context: CallbackContext) -> str:
         return ""
             
 
-MUTE_HANDLER = CommandHandler("muted", mute, run_async=True)
-UNMUTE_HANDLER = CommandHandler("unmuted", unmute, run_async=True)
+MUTE_HANDLER = CommandHandler("mute", mute, run_async=True)
+UNMUTE_HANDLER = CommandHandler("unmute", unmute, run_async=True)
 TEMPMUTE_HANDLER = CommandHandler(["tmute", "tempmute"], temp_mute, run_async=True)
 UNMUTE_BUTTON_HANDLER = CallbackQueryHandler(button, pattern=r"unmute_")
 

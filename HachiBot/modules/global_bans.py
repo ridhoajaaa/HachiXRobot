@@ -85,7 +85,6 @@ UNGBAN_ERRORS = {
 
 
 @typing_action
-@ddomsg(Filters.regex("(?i)^.gban"))
 def gban(update: Update, context: CallbackContext):
     message = update.effective_message
     chat = update.effective_chat
@@ -254,7 +253,6 @@ def gban(update: Update, context: CallbackContext):
 
 
 @typing_action
-@ddomsg(Filters.regex("(?i)^.ungban"))
 def ungban(update: Update, context: CallbackContext):
     message = update.effective_message
     args = context.args
@@ -478,13 +476,13 @@ __mod_name__ = "Global Ban"
 
 
 GBAN_HANDLER = CommandHandler(
-    "globalban",
+    "gban",
     gban,
     pass_args=True,
     filters=CustomFilters.dev_filter | CustomFilters.support_filter,
 )
 UNGBAN_HANDLER = CommandHandler(
-    "unglobalban",
+    "ungban",
     ungban,
     pass_args=True,
     filters=CustomFilters.dev_filter | CustomFilters.support_filter,

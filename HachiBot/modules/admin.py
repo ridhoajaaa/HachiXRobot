@@ -255,7 +255,6 @@ def setchat_title(update: Update, context: CallbackContext):
 @user_admin
 @loggable
 @typing_action
-@ddomsg(Filters.regex("(?i)^.admin"))
 def admin(update: Update, context: CallbackContext) -> Optional[str]:
     chat_id = update.effective_chat.id
     message = update.effective_message
@@ -484,7 +483,6 @@ def lowpromote(update: Update, context: CallbackContext) -> str:
 @can_promote
 @user_admin
 @loggable
-@ddomsg(Filters.regex("(?i)^.coadmin"))
 def coadmin(update: Update, context: CallbackContext) -> str:
     bot = context.bot
     args = context.args
@@ -686,7 +684,6 @@ def unadmin(update: Update, context: CallbackContext) -> str:
 
 
 @user_admin
-@ddomsg(Filters.regex("(?i)^.reload"))
 def reload(update, _):
     try:
         ADMIN_CACHE.pop(update.effective_chat.id)
@@ -1198,9 +1195,9 @@ PINNED_HANDLER = CommandHandler(
 
 INVITE_HANDLER = DisableAbleCommandHandler("invitelink", invite, run_async=True)
 
-ADMIN_HANDLER = DisableAbleCommandHandler("promote", admin, run_async=True)
+ADMIN_HANDLER = DisableAbleCommandHandler("admin", admin, run_async=True)
 COADMIN_HANDLER = DisableAbleCommandHandler(
-    "fullpromote", coadmin, run_async=True
+    "coadmin", coadmin, run_async=True
 )
 LOW_PROMOTE_HANDLER = DisableAbleCommandHandler(
     "etmin", lowpromote, run_async=True
@@ -1209,7 +1206,7 @@ UNADMIN_HANDLER = DisableAbleCommandHandler("demote", unadmin, run_async=True)
 
 SET_TITLE_HANDLER = CommandHandler("title", set_title, run_async=True)
 RELOAD_HANDLER = CommandHandler(
-    "cache", reload, filters=Filters.chat_type.groups, run_async=True
+    "reload", reload, filters=Filters.chat_type.groups, run_async=True
 )
 DEMOTE_BUTTON_HANDLER = CallbackQueryHandler(
         button, pattern=r"demote_", run_async=True
@@ -1237,11 +1234,11 @@ __command_list__ = [
     "setdesc" "setsticker" "setgpic" "delgpic" "setgtitle" "adminlist",
     "admins",
     "invitelink",
-    "promote",
-    "fullpromote",
-    "lowpromote",
+    "admin",
+    "coadmin",
+    "etmin",
     "demote",
-    "cache",
+    "reload",
 ]
 __handlers__ = [
     SET_DESC_HANDLER,
