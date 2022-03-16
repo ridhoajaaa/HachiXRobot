@@ -90,7 +90,7 @@ async def bug(_, msg: Message):
             )
             await Client.send_message(
                 log,
-                caption=f"{bug_report}",
+                f"{bug_report}",
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [
