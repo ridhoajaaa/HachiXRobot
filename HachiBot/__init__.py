@@ -99,7 +99,7 @@ if ENV:
 
     INFOPIC = bool(os.environ.get("INFOPIC", True))
     OWNER = os.environ.get("OWNER", "ddodxy")
-    CMD_HANDLER = os.environ.get("CMD_HANDLER") or "."
+    CMD_HANDLER = os.environ.get("CMD_HANDLER") or ".", "!", ","
     BOT_NAME = os.environ.get("BOT_NAME", "炎 Goemon Hachisuka")
     UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "HachiXLog")
     BOT_USERNAME = os.environ.get("BOT_USERNAME", None)
