@@ -338,7 +338,7 @@ def admin(update: Update, context: CallbackContext) -> Optional[str]:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Cache", callback_data="close2"),
+                InlineKeyboardButton(text="🔄 Cache", callback_data="cache_"),
             ]
         ]
     )
@@ -456,7 +456,7 @@ def lowpromote(update: Update, context: CallbackContext) -> str:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Cache", callback_data="close2"),
+                InlineKeyboardButton(text="🔄 Cache", callback_data="cache_"),
             ]
         ]
     )
@@ -570,14 +570,14 @@ def coadmin(update: Update, context: CallbackContext) -> str:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Cache", callback_data="close2"),
+                InlineKeyboardButton(text="🔄 Cache", callback_data="cache_"),
             ]
         ]
     )
 
     bot.sendMessage(
         chat.id,
-        f"Sycsessfully fullpromoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Promoter: {mention_html(user.id, user.first_name)}</b>",
+        f"Sucsessfully fullpromoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Promoter: {mention_html(user.id, user.first_name)}</b>",
         reply_markup=keyboard,
         parse_mode=ParseMode.HTML,
     )
@@ -1129,6 +1129,16 @@ def button(update: Update, context: CallbackContext) -> str:
             "This user is not promoted or has left the group!"
         )
         return ""
+
+@ddocallback(pattern=r"^cache_")
+def pingCallback(update: Update, context: CallbackContext):
+    query = update.callback_query
+    try:
+        ADMIN_CACHE.pop(update.effective_chat.id)
+    except KeyError:
+        pass
+
+    query.answer("✅ Admins cache refreshed And admin list updated!")
 
 
 __help__ = """

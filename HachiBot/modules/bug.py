@@ -46,8 +46,6 @@ async def bug(_, msg: Message):
     mention = "["+msg.from_user.first_name+"]"
     datetimes_fmt = "%d-%m-%Y"
     datetimes = datetime.utcnow().strftime(datetimes_fmt)
-
-    thumb = "https://telegra.ph/file/e9e0cc43bfba8ecb02b7f.jpg"
     
     bug_report = f"""
 📣 **New bug reported.**
@@ -57,7 +55,8 @@ async def bug(_, msg: Message):
 **User ID:** `{user_id}`
 **Chat ID:** `{msg.chat.id}`
 
-**Content Bug Reports:** `{bugs}`
+**Content Bug Reports:**
+`{bugs}`
 """
 
     
@@ -89,9 +88,8 @@ async def bug(_, msg: Message):
                     ]
                 )
             )
-            await Client.send_photo(
+            await Client.send_message(
                 log,
-                photo=thumb,
                 caption=f"{bug_report}",
                 reply_markup=InlineKeyboardMarkup(
                     [

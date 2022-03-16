@@ -38,7 +38,7 @@ def generate_thumbnail(in_filename):
     return out_filename
 
 def vidsticker(in_filename):
-  out_filename =f'stickers.webm'
+  out_filename =f'{in_filename[:-3]}_processed.webm'
   try:
     (
       ffmpeg.
@@ -55,7 +55,7 @@ def vidsticker(in_filename):
 async def stickervid(event):
   video = await event.get_reply_message()
   if not video:
-    return await event.reply("**Please reply to gift or video stic media!)**")
+    return await event.reply("**Please reply to gift or video media!**")
   if video.file.duration > 500:
     return await event.reply('Should be smaller than 3 secs as per Telegram video-sticker guideline.')
   m = await event.reply('Downloading...')

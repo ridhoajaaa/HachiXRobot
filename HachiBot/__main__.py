@@ -82,8 +82,8 @@ def get_readable_time(seconds: int) -> str:
     return ping_time
 
 
-GROUP_START_IMG = (
-    "CAACAgUAAx0CXGNFKwABB2vuYeJV4mvj5q4dVoiiSoeWKUlMBQcAAlEAA8sM3DrNp9j83PxDhSME"
+HACHI_IMG = (
+    "https://telegra.ph/file/f2a033fd4e10fbee49551.jpg"
 )
 
 
@@ -237,9 +237,9 @@ def start(update: Update, context: CallbackContext):
                 disable_web_page_preview=False,
             )
     else:
-        update.effective_message.reply_animation(
-            GROUP_START_IMG,
-            caption="<code> HachiRobot Online \nAktif sejak</code>: <code>{}</code>".format(
+        update.message.reply_photo(
+            HACHI_IMG,
+            caption="<b>Yes, I'm alive!\nHaven't sleep since</b>: <code>{}</code>".format(
                 uptime
             ),
             parse_mode=ParseMode.HTML,
@@ -247,13 +247,18 @@ def start(update: Update, context: CallbackContext):
                 [
                     [
                         InlineKeyboardButton(
-                            text="Support", url=f"https://telegram.dog/demonszxx"
+                            text="☎️ Supports",
+                            url="https://t.me/demonszxx",
                         ),
-                        InlineKeyboardButton(text="Updates", url="https://nhentai.to/"),
-                    ],
+                        InlineKeyboardButton(
+                            text="Loggings 📡",
+                            url="https://t.me/HachiXLog",
+                        ),
+                    ]
                 ]
             ),
         )
+            
 
 
 def error_handler(update, context):

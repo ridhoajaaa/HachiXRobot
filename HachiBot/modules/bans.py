@@ -74,11 +74,10 @@ def ban(
         )
         if r:
             message.reply_text(
-                "Finally! Channel {} was banned successfully from {}\n\n💡 He can only write with his profile but not through other channels.".format(
-                    html.escape(message.reply_to_message.sender_chat.title),
-                    html.escape(chat.title),
-                ),
-                parse_mode="html",
+                f"Banned channel <b>{html.escape(message.reply_to_message.sender_chat.title)}</b> "
+                f"from <b>{html.escape(chat.title)}</b>\n\n💡 He can only write with his profile "
+                f"but not through other channels.",
+                parse_mode=ParseMode.HTML,
             )
             return (
                 f"<b>{html.escape(chat.title)}:</b>\n"
@@ -153,13 +152,13 @@ def ban(
         parse_mode=ParseMode.HTML,
         )
         return log_message
-
-    if message.text.startswith("/d") and message.reply_to_message:
+        
+    if message.text.startswith(("/d", "!d")) and message.reply_to_message:
         message.reply_to_message.delete()
 
-    if message.text.startswith("/s"):
+    if message.text.startswith(("/s", "!s")):
         silent = True
-        if not can_delete(chat, context.bot.id):
+        if not can_delete(chat, bot.id):
             return ""
     else:
         silent = False
@@ -496,11 +495,11 @@ def unban(update: Update, context: CallbackContext) -> Optional[str]:
     if message.reply_to_message and message.reply_to_message.sender_chat:
         r = bot.unban_chat_sender_chat(chat_id=chat.id, sender_chat_id=message.reply_to_message.sender_chat.id)
         if r:
-            message.reply_text("Channel {} was unbanned successfully from {}".format(
-                html.escape(message.reply_to_message.sender_chat.title),
-                html.escape(chat.title)
-            ),
-                parse_mode="html"
+           message.reply_text(
+                f"Unbanned channel <b>{html.escape(message.reply_to_message.sender_chat.title)}</b> "
+                f"from <b>{html.escape(chat.title)}</b>\n\n💡 Now this users can send the messages "
+                f"with they channel again",
+                parse_mode=ParseMode.HTML,
             )
         else:
             message.reply_text("Failed to unban channel")
