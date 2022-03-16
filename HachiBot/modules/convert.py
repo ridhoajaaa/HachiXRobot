@@ -54,7 +54,9 @@ def vidsticker(in_filename):
 @bot.on(events.NewMessage(pattern=r'/convert'))
 async def stickervid(event):
   video = await event.get_reply_message()
-  if video.file.duration > 10:
+  if not video:
+    return await event.reply("**Please reply to gift or video stic media!)**")
+  if video.file.duration > 500:
     return await event.reply('Should be smaller than 3 secs as per Telegram video-sticker guideline.')
   m = await event.reply('Downloading...')
   dl = await fast_download(bot, video)
