@@ -56,6 +56,8 @@ async def stickervid(event):
   video = await event.get_reply_message()
   if not video:
     return await event.reply("**Please reply to gift or video media!**")
+  if not video.file.duration:
+    return await event.reply("**I can convert video and gif only**")
   if video.file.duration > 500:
     return await event.reply('Should be smaller than 3 secs as per Telegram video-sticker guideline.')
   m = await event.reply('Downloading...')
