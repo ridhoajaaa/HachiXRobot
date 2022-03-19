@@ -2325,9 +2325,9 @@ def __user_info__(user_id, chat_id):
         infoname = info["fname"]
 
         if int(info["owner"]) == user_id:
-            text = "Federation owner of: <b>{}</b>.".format(infoname)
+            text = "<b>Federation owner of:</b> {}.".format(infoname)
         elif is_user_fed_admin(fed_id, user_id):
-            text = "Federation admin of: <b>{}</b>.".format(infoname)
+            text = "<b>Federation admin of:</b> {}.".format(infoname)
 
         elif fban:
             text = "<b>Federation banned:</b> Yes"

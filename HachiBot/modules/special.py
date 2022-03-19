@@ -23,7 +23,6 @@ def escape_html(word):
     return escape(word)
 
 
-@run_async
 def quickscope(bot: Bot, update: Update, args: List[int]):
     if args:
         chat_id = str(args[1])
@@ -37,7 +36,6 @@ def quickscope(bot: Bot, update: Update, args: List[int]):
         update.effective_message.reply_text(excp.message + " " + to_kick)
 
 
-@run_async
 def quickunban(bot: Bot, update: Update, args: List[int]):
     if args:
         chat_id = str(args[1])
@@ -51,7 +49,6 @@ def quickunban(bot: Bot, update: Update, args: List[int]):
         update.effective_message.reply_text(excp.message + " " + to_kick)
 
 
-@run_async
 def banall(bot: Bot, update: Update, args: List[int]):
     if args:
         chat_id = str(args[0])
@@ -68,7 +65,6 @@ def banall(bot: Bot, update: Update, args: List[int]):
             update.effective_message.reply_text(excp.message + " " + str(mems.user))
             continue
 
-@run_async
 def slist(bot: Bot, update: Update):
     message = update.effective_message
     text1 = "My Sudo Users are❤:"
@@ -122,10 +118,10 @@ def slist(bot: Bot, update: Update):
 #__mod_name__ = "SPECIAL COMMANDS"
 
 
-BANALL_HANDLER = CommandHandler("banall", banall, pass_args=True, filters=Filters.user(OWNER_ID))
-QUICKSCOPE_HANDLER = CommandHandler("quickscope", quickscope, pass_args=True, filters=CustomFilters.sudo_filter)
-QUICKUNBAN_HANDLER = CommandHandler("quickunban", quickunban, pass_args=True, filters=CustomFilters.sudo_filter)
-SLIST_HANDLER = CommandHandler("slist", slist,
+BANALL_HANDLER = CommandHandler("banall", banall, pass_args=True, run_async=True, filters=Filters.user(OWNER_ID))
+QUICKSCOPE_HANDLER = CommandHandler("quickscope", quickscope, pass_args=True, run_async=True, filters=CustomFilters.sudo_filter)
+QUICKUNBAN_HANDLER = CommandHandler("quickunban", quickunban, pass_args=True, run_async=True, filters=CustomFilters.sudo_filter)
+SLIST_HANDLER = CommandHandler("slist", slist, run_async=True,
                            filters=CustomFilters.sudo_filter | CustomFilters.support_filter)
 
 dispatcher.add_handler(BANALL_HANDLER)

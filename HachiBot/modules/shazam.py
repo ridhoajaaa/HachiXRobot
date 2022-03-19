@@ -34,10 +34,10 @@ from pyrogram import filters
 from json import JSONDecodeError
 
 from HachiBot.utils.pluginhelper import admins_only, edit_or_reply, fetch_audio
-from HachiBot import pgram, BOT_USERNAME, SUPPORT_CHAT, BOT_NAME
+from HachiBot import pbot, BOT_USERNAME, SUPPORT_CHAT, BOT_NAME
 
 
-@pgram.on_message(filters.command(["identify", "shazam", f"shazam@{BOT_USERNAME}"]))
+@pbot.on_message(filters.command(["identify", "shazam", f"shazam@{BOT_USERNAME}"]))
 @admins_only
 async def shazamm(client, message):
     kek = await edit_or_reply(message, "`Shazaming In Progress!`")

@@ -247,11 +247,11 @@ def start(update: Update, context: CallbackContext):
                 [
                     [
                         InlineKeyboardButton(
-                            text="☎️ Supports",
+                            text="☎️ Sups",
                             url="https://t.me/demonszxx",
                         ),
                         InlineKeyboardButton(
-                            text="Loggings 📡",
+                            text="Logs 📡",
                             url="https://t.me/HachiXLog",
                         ),
                     ]

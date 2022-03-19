@@ -486,6 +486,7 @@ __help__ = """
 × /kang /steal or /addsticker*:* reply to a sticker to add it to your pack.
 × /delsticker or /delstic*:* Reply to your anime exist sticker to your pack to delete it.
 × /stickers*:* Find stickers for given term on combot sticker catalogue
+× /convert*:* convert video or gif to webm
 × /tiny*:* To make small sticker
 × /kamuii <1-8> *:* To deepefying stiker
 × /mmf <reply with text>*:* To draw a text for sticker or pohots

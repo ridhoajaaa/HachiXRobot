@@ -4,7 +4,7 @@ from pyrogram import filters, Client
 from pyrogram.errors import ChatAdminRequired, RightForbidden, RPCError
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-from HachiBot import pgram, pbot
+from HachiBot import pbot, pbot
 from HachiBot.modules.no_sql import db
 from HachiBot.utils.pluginhelp import member_permissions
 
@@ -28,7 +28,7 @@ async def parse_button(text: str):
         # if even, not escaped -> create button
         if n_escapes % 2 == 0:
             # create a thruple with button label, url, and newline status
-            buttons.pgramend((match.group(2), match.group(3), bool(match.group(4))))
+            buttons.pbotend((match.group(2), match.group(3), bool(match.group(4))))
             note_data += markdown_note[prev : match.start(1)]
             prev = match.end(1)
         # if odd, escaped -> move along
@@ -46,9 +46,9 @@ async def build_keyboard(buttons):
     keyb = []
     for btn in buttons:
         if btn[-1] and keyb:
-            keyb[-1].pgramend(InlineKeyboardButton(btn[0], url=btn[1]))
+            keyb[-1].pbotend(InlineKeyboardButton(btn[0], url=btn[1]))
         else:
-            keyb.pgramend([InlineKeyboardButton(btn[0], url=btn[1])])
+            keyb.pbotend([InlineKeyboardButton(btn[0], url=btn[1])])
 
     return keyb
 
@@ -77,7 +77,7 @@ class MongoDB:
             query = {}
         lst = []
         for document in self.collection.find(query):
-            lst.pgramend(document)
+            lst.pbotend(document)
         return lst
 
     # Count entries from collection
@@ -119,7 +119,7 @@ def __connect_first():
 __connect_first()
 
 
-@pgram.on_message(filters.command("unpinall") & ~filters.private)
+@pbot.on_message(filters.command("unpinall") & ~filters.private)
 async def unpinall_message(_, m: Message):
     try:
         chat_id = m.chat.id
@@ -261,7 +261,7 @@ def __pre_req_pins_chats():
     Pins.repair_db(collection)
 
 
-@pgram.on_message(filters.command("antichannelpin") & ~filters.private)
+@pbot.on_message(filters.command("antichannelpin") & ~filters.private)
 async def anti_channel_pin(_, m: Message):
     chat_id = m.chat.id
     user_id = m.from_user.id
@@ -299,7 +299,7 @@ async def anti_channel_pin(_, m: Message):
     return
 
 
-@pgram.on_message(filters.command("cleanlinked") & ~filters.private)
+@pbot.on_message(filters.command("cleanlinked") & ~filters.private)
 async def clean_linked(_, m: Message):
     chat_id = m.chat.id
     user_id = m.from_user.id
@@ -371,7 +371,7 @@ async def perma_pin(_, m: Message):
     return
 
 
-@pgram.on_message(filters.linked_channel)
+@pbot.on_message(filters.linked_channel)
 async def antichanpin_cleanlinked(c, m: Message):
     try:
         msg_id = m.message_id

@@ -37,10 +37,10 @@ from pyrogram import filters
 
 from HachiBot.utils.pluginhelper import admins_only
 from HachiBot.utils.progress import progress
-from HachiBot import pgram
+from HachiBot import pbot
 
 
-@pgram.on_message(filters.command("mod") & ~filters.edited & ~filters.bot)
+@pbot.on_message(filters.command("mod") & ~filters.edited & ~filters.bot)
 @admins_only
 async def mudapk(client, message):
     pablo = await client.send_message(message.chat.id, "`Searching For Mod App.....`")

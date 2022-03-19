@@ -9,7 +9,6 @@ from HachiBot.modules.disable import DisableAbleCommandHandler
 from HachiBot.modules.helper_funcs.alternate import typing_action
 
 
-@run_async
 @typing_action
 def weather(update, context):
     args = context.args
@@ -118,6 +117,6 @@ def weather(update, context):
         ):
             return
 
-WEATHER_HANDLER = DisableAbleCommandHandler("weather", weather, pass_args=True)
+WEATHER_HANDLER = DisableAbleCommandHandler("weather", weather, pass_args=True, run_async=True)
 
 dispatcher.add_handler(WEATHER_HANDLER)

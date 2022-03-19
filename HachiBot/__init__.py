@@ -314,7 +314,7 @@ pgram = Client(
     bot_token=TOKEN,
 )
 
-app = Client("HachiXBot", bot_token=TOKEN, api_id=API_ID, api_hash=API_HASH)
+pbot = Client("HachiXBot", bot_token=TOKEN, api_id=API_ID, api_hash=API_HASH)
 
 ubot2 = TelegramClient(StringSession(STRING_SESSION), API_ID, API_HASH)
 try:
@@ -323,7 +323,7 @@ except BaseException:
     print("Userbot Error! Have you added a STRING_SESSION in deploying??")
     sys.exit(1)
 
-pbot = Client(
+app = Client(
     ":memory:",
     api_id=API_ID,
     api_hash=API_HASH,
