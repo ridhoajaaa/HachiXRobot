@@ -24,7 +24,7 @@ SOFTWARE.
 
 from pyrogram import filters
 
-from HachiBot import BOT_NAME, DEV_USERS, pbot as app
+from HachiBot import BOT_NAME, pbot
 from HachiBot.modules import ALL_MODULES
 from HachiBot.ex_plugins.dbfunctions import (get_blacklist_filters_count,
                                    get_filters_count, get_gbans_count,
@@ -36,12 +36,12 @@ from HachiBot.utils.inlinefuncs import keywords_list
 from HachiBot.utils.errors import capture_err
 
 
-@app.on_message(
-    filters.command("gstats") & ~filters.edited & DEV_USERS
+@pbot.on_message(
+    filters.command("gstats") & ~filters.edited
 )
 @capture_err
 async def global_stats(_, message):
-    m = await app.send_message(
+    m = await pbot.send_message(
         message.chat.id,
         text="__**Analysing Stats...**__",
         disable_web_page_preview=True,

@@ -338,12 +338,12 @@ def admin(update: Update, context: CallbackContext) -> Optional[str]:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Cache", callback_data="cache_"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
             ]
         ]
     )
     message.reply_text(
-        f"Sucsessfully promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
+        f"Sucsessfully promoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b> [<code>{user_member.user.id}</code>]\n<b>Admin: {mention_html(user.id, user.first_name)}</b>\n\n<b>With Title: {title[:16]}</b>",
         reply_markup=keyboard,
         parse_mode=ParseMode.HTML,
     )
@@ -365,7 +365,7 @@ def admin(update: Update, context: CallbackContext) -> Optional[str]:
 
 
 close_keyboard = InlineKeyboardMarkup(
-    [[InlineKeyboardButton("🔄 Cache", callback_data="close2")]]
+    [[InlineKeyboardButton("🔄 Refresh", callback_data="close2")]]
 )
 
 
@@ -456,14 +456,14 @@ def lowpromote(update: Update, context: CallbackContext) -> str:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Cache", callback_data="cache_"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
             ]
         ]
     )
 
     bot.sendMessage(
         chat.id,
-        f"Lowpromoting a user in <b>{chat.title}<b>\n\nUser: {mention_html(user_member.user.id, user_member.user.first_name)}\nAdmin: {mention_html(user.id, user.first_name)}",
+        f"Lowpromoting a user in <b>{chat.title}<b>\n\nUser: {mention_html(user_member.user.id, user_member.user.first_name)} [<code>{user_member.user.id}</code>]\nAdmin: {mention_html(user.id, user.first_name)}",
         reply_markup=keyboard,
         parse_mode=ParseMode.HTML,
     )
@@ -570,14 +570,14 @@ def coadmin(update: Update, context: CallbackContext) -> str:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Cache", callback_data="cache_"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
             ]
         ]
     )
 
     bot.sendMessage(
         chat.id,
-        f"Sucsessfully fullpromoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Promoter: {mention_html(user.id, user.first_name)}</b>",
+        f"Sucsessfully fullpromoting a user in <b>{chat.title}</b>\n\n<b>User: {mention_html(user_member.user.id, user_member.user.first_name)}</b> [<code>{user_member.user.id}</code>]\n<b>Promoter: {mention_html(user.id, user.first_name)}</b>",
         reply_markup=keyboard,
         parse_mode=ParseMode.HTML,
     )
@@ -602,11 +602,9 @@ def coadmin(update: Update, context: CallbackContext) -> str:
 def unadmin(update: Update, context: CallbackContext) -> str:
     bot = context.bot
     args = context.args
-
     chat = update.effective_chat
     message = update.effective_message
     user = update.effective_user
-
     user_id = extract_user(message, args)
     if not user_id:
         message.reply_text(
@@ -659,10 +657,18 @@ def unadmin(update: Update, context: CallbackContext) -> str:
             can_promote_members=False,
             can_manage_voice_chats=False,
         )
+        keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
+            ]
+        ]
+    )
 
         bot.sendMessage(
             chat.id,
-            f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(user_member.user.id, user_member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
+            f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(user_member.user.id, user_member.user.first_name)}</b> [<code>{user_member.user.id}</code>]\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
+            reply_markup=keyboard,
             parse_mode=ParseMode.HTML,
         )
 
