@@ -63,17 +63,7 @@ async def bug(_, msg: Message):
     if msg.chat.type == "private":
         await msg.reply_text("❎ <b>This command only works in groups.</b>")
         return
-
-    if user_id == owner:
-        if bugs:
-            await msg.reply_text(
-                f"❎ <b>How can be owner bot reporting bug idiot??</b>",
-            )
-            return
-        else:
-            await msg.reply_text(
-                f"❎ <b>Owner noob!</b>",
-            )
+    
     elif user_id != owner:
         if bugs:
             await msg.reply_text(

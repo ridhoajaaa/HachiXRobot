@@ -43,6 +43,8 @@ from HachiBot import pbot
 @pbot.on_message(filters.command("mod") & ~filters.edited & ~filters.bot)
 @admins_only
 async def mudapk(client, message):
+    if not pablo:
+        client.send_message("Please write a mod, example: `/mod subway surf`")
     pablo = await client.send_message(message.chat.id, "`Searching For Mod App.....`")
     sgname = message.text
     if not sgname:
@@ -52,7 +54,7 @@ async def mudapk(client, message):
         f"https://an1.com/tags/MOD/?story={sgname}&do=search&subaction=search"
     )
     r = requests.get(PabloEscobar)
-    soup = BeautifulSoup(r.content, "html5lib")
+    soup = BeautifulSoup(r.content, "html.parser")
     mydivs = soup.find_all("div", {"class": "search-results"})
     Pop = soup.find_all("div", {"class": "title"})
     sucker = mydivs[0]

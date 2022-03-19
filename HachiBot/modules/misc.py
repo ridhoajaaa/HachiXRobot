@@ -374,6 +374,9 @@ Compress And Decompress:
 *React*:
 × /react*:* Reacts with a random reaction
 
+*Hentai*
+× /nhentai <code>*:* To secrape litle info of hentai
+
 *Urban Dictonary*:
 × /ud <word>*:* Type the word or expression you want to search use
 
@@ -387,8 +390,8 @@ Compress And Decompress:
 × /tts <text>*:* Converts a text message to a voice message.
 
 *Telegraph*:
-× tgm*:* Upload media to telegraph
-× tgt*:* Upload text to telegraph
+× /tgm*:* Upload media to telegraph
+× /tgt*:* Upload text to telegraph
 """
 
 ECHO_HANDLER = DisableAbleCommandHandler(

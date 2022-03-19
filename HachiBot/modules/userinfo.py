@@ -237,12 +237,11 @@ def gifid(update: Update, context: CallbackContext):
 
 
 @ddocmd(command=["info", "ingfo"])
-def info(update: Update, context: CallbackContext):
+def infouser(update: Update, context: CallbackContext):
     bot, args = context.bot, context.args
     message = update.effective_message
     chat = update.effective_chat
     user_id = extract_user(update.effective_message, args)
-    dc_id = user.dc_id
 
     if user_id:
         user = bot.get_chat(user_id)
@@ -270,7 +269,6 @@ def info(update: Update, context: CallbackContext):
     text = (
         f"╔═══✦✪「 <b>Appraisal Results:</b> 」\n"
         f"╠  ID: <code>{user.id}</code>\n"
-        f"╠  DC: <code>{dc_id}</code>\n"
         f"╠  First Name: {html.escape(user.first_name)}"
     )
 

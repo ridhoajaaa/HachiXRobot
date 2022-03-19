@@ -30,7 +30,7 @@ from bs4 import BeautifulSoup
 from hurry.filesize import size as sizee
 from requests import get
 
-from HachiBot import pbot
+from HachiBot import app
 
 from .math import convert_size
 from HachiBot.utils.http import http
@@ -38,7 +38,7 @@ from HachiBot.modules.helper_funcs.alternate import typing_action
 from HachiBot.modules.helper_funcs.decorators import ddocmd
 
 
-@pbot.on_message(filters.command("pe"))
+@app.on_message(filters.command("pe"))
 async def pixel_experience(message, Client, update: Update):
     
     chat_id = update.chat.id,
@@ -77,7 +77,7 @@ async def pixel_experience(message, Client, update: Update):
     await message.reply_text(reply_text)
 
 
-@pbot.on_message(filters.command(["sxos", "statix"]))
+@app.on_message(filters.command(["sxos", "statix"]))
 async def statix(Client, update: Update):
     
     try:
@@ -116,7 +116,7 @@ async def statix(Client, update: Update):
         return
 
 
-@pbot.on_message(filters.command(["crdroid", "crd"]))
+@app.on_message(filters.command(["crdroid", "crd"]))
 async def crdroid(c: Client, update: Update):
 
     chat_id = update.chat.id,

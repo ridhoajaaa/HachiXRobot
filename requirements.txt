@@ -15,6 +15,7 @@ aiogram
 httpx
 git+https://github.com/Awesome-RJ/GoGoAnimeAPI.git
 h2
+html5lib
 pynewtonmath
 python-rapidjson==1.6
 py-Ultroid==2022.2.10

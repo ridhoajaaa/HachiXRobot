@@ -39,7 +39,7 @@ async def ewex(_, message):
     m = await message.reply_text("Hachi Is Best...")
     try:
         L = await fetch(
-            f"https://api.affiliateplus.xyz/api/chatbot?message={lycia}&botname=@idzeroid_bot&ownername=@IdzXartez&user=1"
+            f"https://api.affiliateplus.xyz/api/chatbot?message={chatbot}&botname=@idzeroid_bot&ownername=@IdzXartez&user=1"
         )
         chatbot = L["message"]
         VoiceAi = f"https://lyciavoice.herokuapp.com/lycia?text={chatbot}&lang=id"

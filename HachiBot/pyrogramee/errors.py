@@ -2,7 +2,7 @@ import sys
 import traceback
 from functools import wraps
 
-from HachiBot import EVENT_LOGS, pbot
+from HachiBot import EVENT_LOGS, app
 
 
 def split_limits(text):
@@ -45,7 +45,7 @@ def capture_err(func):
                 ),
             )
             for x in error_feedback:
-                await pbot.send_message(EVENT_LOGS, x)
+                await app.send_message(EVENT_LOGS, x)
             raise err
 
     return capture
