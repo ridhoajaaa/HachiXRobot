@@ -597,20 +597,18 @@ def coadmin(update: Update, context: CallbackContext) -> str:
 @can_promote
 @user_admin
 @loggable
-@ddomsg(Filters.regex("(?i)^.unetmin"))
-@ddomsg(Filters.regex("(?i)^.unadmin"))
 def unadmin(update: Update, context: CallbackContext) -> str:
     bot = context.bot
     args = context.args
+
     chat = update.effective_chat
     message = update.effective_message
     user = update.effective_user
+
     user_id = extract_user(message, args)
     if not user_id:
         message.reply_text(
-        f"<u><b>User Not Found</b></u>\n"
-        f"The command /unadmin must be used specifying user <b>username/id/mention</b> or <b>replying</b> to one of his messages.",
-        parse_mode=ParseMode.HTML,
+            "You don't seem to be referring to a user or the ID specified is incorrect..",
         )
         return
 
@@ -620,27 +618,15 @@ def unadmin(update: Update, context: CallbackContext) -> str:
         return
 
     if user_member.status == "creator":
-        message.reply_text(
-        f"<u><b>This Is Creator Group</b></u>\n"
-        f"I can't demote the creator! don't make fun of yourself!",
-        parse_mode=ParseMode.HTML,
-        )
+        message.reply_text("This person CREATED the chat, how would I demote them?")
         return
 
     if not user_member.status == "administrator":
-        message.reply_text(
-        f"<u><b>User Doesn't Have This Role</b></u>\n"
-        f"You can't remove {mention_html(user_member.user.id, user_member.user.first_name)} [<code>{user_member.user.id}</code>] From 👮🏻‍♂️ Admin.",
-        parse_mode=ParseMode.HTML,
-        )
+        message.reply_text("Can't demote what wasn't promoted!")
         return
 
     if user_id == bot.id:
-        message.reply_text(
-        f"<u><b>This Is My Self</b></u>\n"
-        f"I can't demote myself! Get an admin to do it manually for me.",
-        parse_mode=ParseMode.HTML,
-        )
+        message.reply_text("I can't demote myself! Get an admin to do it for me.")
         return
 
     try:
@@ -657,18 +643,10 @@ def unadmin(update: Update, context: CallbackContext) -> str:
             can_promote_members=False,
             can_manage_voice_chats=False,
         )
-        keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
-            ]
-        ]
-    )
 
         bot.sendMessage(
             chat.id,
-            f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(user_member.user.id, user_member.user.first_name)}</b> [<code>{user_member.user.id}</code>]\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
-            reply_markup=keyboard,
+            f"Sucessfully demoted a admins in <b>{chat.title}</b>\n\nAdmin: <b>{mention_html(user_member.user.id, user_member.user.first_name)}</b>\nDemoter: {mention_html(user.id, user.first_name)}",
             parse_mode=ParseMode.HTML,
         )
 
@@ -682,9 +660,8 @@ def unadmin(update: Update, context: CallbackContext) -> str:
         return log_message
     except BadRequest:
         message.reply_text(
-        f"<u><b>Admin Not Promoted By The Bot</b></u>\n"
-        f"The Administrator you have selected has not been promoted by this Bot and therefore cannot be removed with the command.",
-        parse_mode=ParseMode.HTML,
+            "Could not demote. I might not be admin, or the admin status was appointed by another"
+            " user, so I can't act upon them!",
         )
         return
 
@@ -1118,9 +1095,17 @@ def button(update: Update, context: CallbackContext) -> str:
             can_promote_members=False,
             can_manage_voice_chats=False,
         )
+        keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
+            ]
+        ]
+    )
         if demoted:
             update.effective_message.edit_text(
             f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(member.user.id, member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
+            reply_markup=keyboard,
             parse_mode=ParseMode.HTML,
             )
             query.answer("Demoted!")
