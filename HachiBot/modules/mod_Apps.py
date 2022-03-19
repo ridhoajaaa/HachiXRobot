@@ -43,13 +43,10 @@ from HachiBot import pbot
 @pbot.on_message(filters.command("mod") & ~filters.edited & ~filters.bot)
 @admins_only
 async def mudapk(client, message):
-    if not pablo:
-        client.send_message("Please write a mod, example: `/mod subway surf`")
-    pablo = await client.send_message(message.chat.id, "`Searching For Mod App.....`")
     sgname = message.text
     if not sgname:
-        await pablo.edit("Invalid Command Syntax, Please Check Help Menu To Know More!")
-        return
+        message.send_message("Please write a mod, example: `/mod subway surf`")
+    pablo = await client.send_message(message.chat.id, "`Searching For Mod App.....`")
     PabloEscobar = (
         f"https://an1.com/tags/MOD/?story={sgname}&do=search&subaction=search"
     )

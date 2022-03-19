@@ -64,7 +64,7 @@ async def bug(_, msg: Message):
         await msg.reply_text("❎ <b>This command only works in groups.</b>")
         return
     
-    elif user_id != owner:
+    elif user_id:
         if bugs:
             await msg.reply_text(
                 f"<b>Bug Report:</b> <code>{bugs}</code>\n\n"
