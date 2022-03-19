@@ -5,7 +5,10 @@ import os
 import re
 from typing import Optional
 from HachiBot.events import callbackquery
+from HachiBot.modules.pin import build_keyboard, parse_button
+from HachiBot.services.keyboard import rkb as ikb
 
+from pyrogram.types import Message
 from telegram import ParseMode, Update, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, User, Bot, Chat
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, CommandHandler, Filters, CallbackQueryHandler, run_async
@@ -16,8 +19,9 @@ from telethon.tl import *
 from telethon.tl import functions, types
 
 from HachiBot.modules.helper_funcs.decorators import ddocallback, ddomsg
-from HachiBot import DRAGONS, dispatcher, telethn as bot, pgram
+from HachiBot import DRAGONS, dispatcher, telethn as bot, pgram, pbot
 from HachiBot.modules.disable import DisableAbleCommandHandler
+from HachiBot.utils.custom_filters import admin_filter, command
 from HachiBot.modules.helper_funcs.chat_status import (
     bot_admin,
     can_pin,
@@ -828,6 +832,24 @@ def pin(update: Update, context: CallbackContext) -> str:
         )
 
         return log_message
+
+
+@pbot.on_message(command("permapin") & admin_filter )
+async def perma_pin(_, m: Message):
+    if m.reply_to_message or len(m.text.split()) > 1:
+        if m.reply_to_message:
+            text = m.reply_to_message.text
+        elif len(m.text.split()) > 1:
+            text = m.text.split(None, 1)[1]
+        teks, button = await parse_button(text)
+        button = await build_keyboard(button)
+        button = ikb(button) if button else None
+        z = await m.reply_text(teks, reply_markup=button)
+        await z.pin()
+    else:
+        await m.reply_text("Reply to a message or enter text to pin it.")
+    await m.delete()
+    return
 
 
 @bot_admin

@@ -338,39 +338,6 @@ async def clean_linked(_, m: Message):
     return
 
 
-@pbot.on_message(filters.command("permapin") & ~filters.private)
-async def perma_pin(_, m: Message):
-    chat_id = m.chat.id
-    user_id = m.from_user.id
-    permissions = await member_permissions(chat_id, user_id)
-    if "can_change_info" not in permissions:
-        await m.reply_text("You Don't Have Enough Permissions.")
-        return
-    if "can_pin_messages" not in permissions:
-        await m.reply_text("You Don't Have Enough Permissions.")
-        return
-    if "can_restrict_members" not in permissions:
-        await m.reply_text("You Don't Have Enough Permissions.")
-        return
-    if "can_promote_members" not in permissions:
-        await m.reply_text("You Don't Have Enough Permissions.")
-        return
-    if m.reply_to_message or len(m.text.split()) > 1:
-        if m.reply_to_message:
-            text = m.reply_to_message.text
-        elif len(m.text.split()) > 1:
-            text = m.text.split(None, 1)[1]
-        teks, button = await parse_button(text)
-        button = await build_keyboard(button)
-        button = InlineKeyboardMarkup(button) if button else None
-        z = await m.reply_text(teks, reply_markup=button)
-        await z.pin()
-    else:
-        await m.reply_text("Reply to a message or enter text to pin it.")
-    await m.delete()
-    return
-
-
 @pbot.on_message(filters.linked_channel)
 async def antichanpin_cleanlinked(c, m: Message):
     try:
