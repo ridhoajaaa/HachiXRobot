@@ -70,7 +70,7 @@ def check_user(user_id: int, bot: Bot, chat: Chat, update: Update) -> Optional[s
     if is_user_admin(chat, user_id, member) or user_id in TIGERS:
         message.reply_text(
         f"<u><b>The user is part of the group staff</b></u>\n"
-        f"This user has immunity and cannot be mute gblk.",
+        f"You can't muting {mention_html(member.user.id, member.user.first_name)} [<code>{member.user.id}</code>] In 👮🏻‍♂️ Group.",
         parse_mode=ParseMode.HTML,
         )
         return log_message

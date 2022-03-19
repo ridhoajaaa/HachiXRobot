@@ -608,7 +608,9 @@ def unadmin(update: Update, context: CallbackContext) -> str:
     user_id = extract_user(message, args)
     if not user_id:
         message.reply_text(
-            "You don't seem to be referring to a user or the ID specified is incorrect..",
+        f"<u><b>User Not Found</b></u>\n"
+        f"The command /unadmin must be used specifying user <b>username/id/mention</b> or <b>replying</b> to one of his messages.",
+        parse_mode=ParseMode.HTML,
         )
         return
 
@@ -618,15 +620,27 @@ def unadmin(update: Update, context: CallbackContext) -> str:
         return
 
     if user_member.status == "creator":
-        message.reply_text("This person CREATED the chat, how would I demote them?")
+        message.reply_text(
+        f"<u><b>This Is Creator Group</b></u>\n"
+        f"I can't demote the creator! don't make fun of yourself!",
+        parse_mode=ParseMode.HTML,
+        )
         return
 
     if not user_member.status == "administrator":
-        message.reply_text("Can't demote what wasn't promoted!")
+        message.reply_text(
+        f"<u><b>User Doesn't Have This Role</b></u>\n"
+        f"You can't remove {mention_html(user_member.user.id, user_member.user.first_name)} [<code>{user_member.user.id}</code>] From 👮🏻‍♂️ Admin.",
+        parse_mode=ParseMode.HTML,
+        )
         return
 
     if user_id == bot.id:
-        message.reply_text("I can't demote myself! Get an admin to do it for me.")
+        message.reply_text(
+        f"<u><b>This Is My Self</b></u>\n"
+        f"I can't demote myself! Get an admin to do it manually for me.",
+        parse_mode=ParseMode.HTML,
+        )
         return
 
     try:
@@ -643,10 +657,18 @@ def unadmin(update: Update, context: CallbackContext) -> str:
             can_promote_members=False,
             can_manage_voice_chats=False,
         )
+        keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
+            ]
+        ]
+    )
 
         bot.sendMessage(
             chat.id,
-            f"Sucessfully demoted a admins in <b>{chat.title}</b>\n\nAdmin: <b>{mention_html(user_member.user.id, user_member.user.first_name)}</b>\nDemoter: {mention_html(user.id, user.first_name)}",
+            f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(user_member.user.id, user_member.user.first_name)}</b> [<code>{user_member.user.id}</code>]\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
+            reply_markup=keyboard,
             parse_mode=ParseMode.HTML,
         )
 
@@ -660,8 +682,9 @@ def unadmin(update: Update, context: CallbackContext) -> str:
         return log_message
     except BadRequest:
         message.reply_text(
-            "Could not demote. I might not be admin, or the admin status was appointed by another"
-            " user, so I can't act upon them!",
+        f"<u><b>Admin Not Promoted By The Bot</b></u>\n"
+        f"The Administrator you have selected has not been promoted by this Bot and therefore cannot be removed with the command.",
+        parse_mode=ParseMode.HTML,
         )
         return
 
@@ -1203,7 +1226,7 @@ COADMIN_HANDLER = DisableAbleCommandHandler(
 LOW_PROMOTE_HANDLER = DisableAbleCommandHandler(
     "etmin", lowpromote, run_async=True
 )
-UNADMIN_HANDLER = DisableAbleCommandHandler("demote", unadmin, run_async=True)
+UNADMIN_HANDLER = DisableAbleCommandHandler("unadmin", unadmin, run_async=True)
 
 SET_TITLE_HANDLER = CommandHandler("title", set_title, run_async=True)
 RELOAD_HANDLER = CommandHandler(
@@ -1238,7 +1261,7 @@ __command_list__ = [
     "admin",
     "coadmin",
     "etmin",
-    "demote",
+    "unadmin",
     "reload",
 ]
 __handlers__ = [

@@ -148,7 +148,7 @@ def ban(
         else:
             message.reply_text(
         f"<u><b>The user is part of the group staff</b></u>\n"
-        f"This user has immunity and cannot be banned tll.",
+        f"You can't banned {mention_html(member.user.id, member.user.first_name)} [<code>{member.user.id}</code>] From 👮🏻‍♂️ Group.",
         parse_mode=ParseMode.HTML,
         )
         return log_message
@@ -429,7 +429,7 @@ def punch(update: Update, context: CallbackContext) -> str:
     if is_user_ban_protected(update, user_id):
         message.reply_text(
         f"<u><b>The user is part of the group staff</b></u>\n"
-        f"This user has immunity and cannot be banned tll.",
+        f"You can't kicked {mention_html(member.user.id, member.user.first_name)} [<code>{member.user.id}</code>] From 👮🏻‍♂️ Group.",
         parse_mode=ParseMode.HTML,
         )
         return log_message
