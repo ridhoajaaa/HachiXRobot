@@ -1,492 +1,360 @@
-import html
-import json
-from datetime import datetime
-from platform import python_version
-from typing import List
-import uuid
-from uuid import uuid4
+import traceback
 
-import requests
-from telegram import InlineQueryResultArticle, ParseMode, InputTextMessageContent, Update, InlineKeyboardMarkup, \
-    InlineKeyboardButton
-from telegram import __version__
-from telegram.error import BadRequest
-from telegram.ext import CallbackContext
-from telegram.utils.helpers import mention_html
+from HachiBot import pbot as app
+from HachiBot.utils.pluginhelper import fetch
+from HachiBot.utils.inlinefuncs import *
 
-import HachiBot.modules.sql.users_sql as sql
-from HachiBot import (
-    OWNER_ID,
-    WOLVES,
-    TIGERS,
-    DEV_USERS,
-    DRAGONS,
-    DEMONS,
-    sw, LOGGER as log
-)
-from HachiBot.modules.helper_funcs.misc import article
-from HachiBot.modules.helper_funcs.decorators import ddoinline
+__MODULE__ = "Inline"
+__HELP__ = """See inline for help related to inline"""
 
 
-def remove_prefix(text, prefix):
-    if text.startswith(prefix):
-        text = text.replace(prefix, "", 1)
-    return text
+@app.on_inline_query()
+async def inline_query_handler(client, query):
+    try:
+        text = query.query.strip().lower()
+        answers = []
+        if text.strip() == "":
+            answerss = await inline_help_func(__HELP__)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=10
+            )
+        elif text.split()[0] == "alive":
+            answerss = await alive_function(answers)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=10
+            )
+        elif text.split()[0] == "tr":
+            if len(text.split()) < 3:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="Translator | tr [LANG] [TEXT]",
+                    switch_pm_parameter="inline",
+                )
+            lang = text.split()[1]
+            tex = text.split(None, 2)[2].strip()
+            answerss = await translate_func(answers, lang, tex)
+            await client.answer_inline_query(
+                query.id,
+                results=answerss,
+            )
+        elif text.split()[0] == "ud":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="Urban Dictionary | ud [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await urban_func(answers, tex)
+            await client.answer_inline_query(
+                query.id,
+                results=answerss,
+            )
+        elif text.split()[0] == "google":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="Google Search | google [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await google_search_func(answers, tex)
+            await client.answer_inline_query(
+                query.id,
+                results=answerss,
+            )
 
-@ddoinline()
-def inlinequery(update: Update, _) -> None:
-    """
-    Main InlineQueryHandler callback.
-    """
-    query = update.inline_query.query
-    user = update.effective_user
+        elif text.split()[0] == "paste":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="paste | paste [TEXT]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await paste_func(answers, tex)
+            await client.answer_inline_query(query.id, results=answerss, cache_time=2)
 
-    results: List = []
-    inline_help_dicts = [
-        {
-            "title": "SpamProtection INFO",
-            "description": "Look up a person/bot/channel/chat on @Intellivoid SpamProtection API",
-            "message_text": "Click the button below to look up a person/bot/channel/chat on @Intellivoid SpamProtection API using "
-                            "username or telegram id",
-            "thumb_urL": "https://te.legra.ph/file/c06b3828725fd8b6d4d86.jpg",
-            "keyboard": ".spb ",
-        },
-        {
-            "title": "Account info on Kensur",
-            "description": "Look up a Telegram account in Kensur database",
-            "message_text": "Click the button below to look up a person in Kensur database using their Telegram ID",
-            "thumb_urL": "https://te.legra.ph/file/c06b3828725fd8b6d4d86.jpg",
-            "keyboard": ".info ",
-        },
-        {
-            "title": "About",
-            "description": "Know about KensurBot",
-            "message_text": "Click the button below to get to know about Kensur.",
-            "thumb_urL": "https://te.legra.ph/file/c06b3828725fd8b6d4d86.jpg",
-            "keyboard": ".about ",
-        },
-        {
-            "title": "Anilist",
-            "description": "Search anime and manga on AniList.co",
-            "message_text": "Click the button below to search anime and manga on AniList.co",
-            "thumb_urL": "https://te.legra.ph/file/c06b3828725fd8b6d4d86.jpg",
-            "keyboard": ".anilist ",
-        },
-    ]
+        elif text.split()[0] == "wall":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    is_gallery=True,
+                    switch_pm_text="Wallpapers Search | wall [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await wall_func(answers, tex)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=2
+            )
 
-    inline_funcs = {
-        ".spb": spb,
-        ".info": inlineinfo,
-        ".about": about,
-        ".anilist": media_query,
-    }
 
-    if (f := query.split(" ", 1)[0]) in inline_funcs:
-        inline_funcs[f](remove_prefix(query, f).strip(), update, user)
-    else:
-        for ihelp in inline_help_dicts:
+        elif text.split()[0] == "saavn":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="saavn Search | saavn [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await saavn_func(answers, tex)
+            await client.answer_inline_query(query.id, results=answerss)
+
+        elif text.split()[0] == "torrent":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="Torrent Search | torrent [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await torrent_func(answers, tex)
+            await client.answer_inline_query(
+                query.id,
+                results=answerss,
+            )
+
+        elif text.split()[0] == "yt":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="YouTube Search | yt [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await youtube_func(answers, tex)
+            await client.answer_inline_query(query.id, results=answerss)
+
+        elif text.split()[0] == "lyrics":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="Lyrics Search | lyrics [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await lyrics_func(answers, tex)
+            await client.answer_inline_query(query.id, results=answerss)
+
+        elif text.split()[0] == "search":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="Global Message Search. | search [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            user_id = query.from_user.id
+            tex = text.split(None, 1)[1].strip()
+            answerss = await tg_search_func(answers, tex, user_id)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=2
+            )
+
+        elif text.split()[0] == "music":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="Music Search | music [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await music_inline_func(answers, tex)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=2
+            )
+
+        elif text.split()[0] == "wiki":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="Wikipedia | wiki [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await wiki_func(answers, tex)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=2
+            )
+
+        elif text.split()[0] == "speedtest":
+            answerss = await speedtest_init(query)
+            return await client.answer_inline_query(
+                query.id, results=answerss, cache_time=2
+            )
+        elif text.split()[0] == "gh":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="gh | gh [USERNAME]",
+                    switch_pm_parameter="inline",
+                )
+            results = []
+            gett = text.split(None, 1)[1]
+            text = gett + ' "site:github.com"'
+            gresults = await GoogleSearch().async_search(text, 1)
+            result = ""
+            for i in range(4):
+                try:
+                    title = gresults["titles"][i].replace("\n", " ")
+                    source = gresults["links"][i]
+                    description = gresults["descriptions"][i]
+                    result += f"[{title}]({source})\n"
+                    result += f"`{description}`\n\n"
+                except IndexError:
+                    pass
             results.append(
-                article(
-                    title=ihelp["title"],
-                    description=ihelp["description"],
-                    message_text=ihelp["message_text"],
-                    thumb_url=ihelp["thumb_urL"],
-                    reply_markup=InlineKeyboardMarkup(
-                        [
-                            [
-                                InlineKeyboardButton(
-                                    text="Click Here",
-                                    switch_inline_query_current_chat=ihelp[
-                                        "keyboard"
-                                    ],
-                                )
-                            ]
-                        ]
+                InlineQueryResultArticle(
+                    title=f"Results for {gett}",
+                    description=f" Github info of {title}\n  Touch to read",
+                    input_message_content=InputTextMessageContent(
+                        result, disable_web_page_preview=True
                     ),
                 )
             )
-
-        update.inline_query.answer(results, cache_time=5)
-
-
-def inlineinfo(query: str, update: Update, context: CallbackContext) -> None:
-    """Handle the inline query."""
-    bot = context.bot
-    query = update.inline_query.query
-    log.info(query)
-    user_id = update.effective_user.id
-
-    try:
-        search = query.split(" ", 1)[1]
-    except IndexError:
-        search = user_id
-
-    try:
-        user = bot.get_chat(int(search))
-    except (BadRequest, ValueError):
-        user = bot.get_chat(user_id)
-
-    chat = update.effective_chat
-    sql.update_user(user.id, user.username)
-
-    text = (
-        f"<b>Information:</b>\n"
-        f"• ID: <code>{user.id}</code>\n"
-        f"• First Name: {html.escape(user.first_name)}"
-    )
-
-    if user.last_name:
-        text += f"\n• Last Name: {html.escape(user.last_name)}"
-
-    if user.username:
-        text += f"\n• Username: @{html.escape(user.username)}"
-
-    text += f"\n• Permanent user link: {mention_html(user.id, 'link')}"
-
-    disaster_level_present = False
-
-    if user.id == OWNER_ID:
-        text += "\n\n<b>The level for my master is</b> : Lord As Lord"
-        disaster_level_present = True
-    elif user.id in DEV_USERS:
-        text += "\n\n<b>The level for this user is</b>: Lord"
-        disaster_level_present = True
-    elif user.id in DRAGONS:
-        text += "\n\n<b>The level for this user is</b>: God"
-        disaster_level_present = True
-    elif user.id in DEMONS:
-        text += "\n\n<b>The level for this user is</b>: saint"
-        disaster_level_present = True
-    elif user.id in TIGERS:
-        text += "\n\n<b>The level for this user is</b>: Commander"
-        disaster_level_present = True
-    elif user.id in WOLVES:
-        text += "\n\n<b>The level for this user is</b>: Tiger"
-        disaster_level_present = True
-    elif user.id == 1482952149:
-        text += "\n\nCo-Owner Of A Bot. Queen Of @Badboyanim. Bot Name Inspired From Tantei Wa Mou, Shindeiru."
-        disaster_level_present = False
-
-    if disaster_level_present:
-        text += ' [<a href="https://t.me/HachiXLog/4">?</a>]'.format(
-            bot.username,
-        )
-
-    try:
-        spamwtc = sw.get_ban(int(user.id))
-        if spamwtc:
-            text += "<b>\n\n• SpamWatched:\n</b> Yes"
-            text += f"\n• Reason: <pre>{spamwtc.reason}</pre>"
-            text += "\n• Appeal at @SpamWatchSupport"
-        else:
-            text += "<b>\n\n• SpamWatched:</b> No"
-    except:
-        pass  # don't crash if api is down somehow...
-
-    num_chats = sql.get_user_num_chats(user.id)
-    text += f"\n• <b>Chat count</b>: <code>{num_chats}</code>"
+            await client.answer_inline_query(query.id, cache_time=0, results=results)
 
 
-
-
-    kb = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(
-                    text="Report Error",
-                    url=f"https://t.me/KensurCommunity",
-                ),
-                InlineKeyboardButton(
-                    text="Search again",
-                    switch_inline_query_current_chat=".info ",
-                ),
-
-            ],
-        ]
-        )
-
-    results = [
-        InlineQueryResultArticle(
-            id=str(uuid4()),
-            title=f"User info of {html.escape(user.first_name)}",
-            input_message_content=InputTextMessageContent(text, parse_mode=ParseMode.HTML,
-                                                          disable_web_page_preview=True),
-            reply_markup=kb
-        ),
-    ]
-
-    update.inline_query.answer(results, cache_time=5)
-
-
-def about(query: str, update: Update, context: CallbackContext) -> None:
-    """Handle the inline query."""
-    query = update.inline_query.query
-    user_id = update.effective_user.id
-    user = context.bot.get_chat(user_id)
-    sql.update_user(user.id, user.username)
-    about_text = f"""
-    KensurBot (@{context.bot.username})
-    Maintained by [Aruoto](t.me/AruotoxD)
-    Built with ❤️ using python-telegram-bot v{str(__version__)}
-    Running on Python {python_version()}
-    """
-    results: list = []
-    kb = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(
-                    text="Support",
-                    url=f"https://t.me/KensurCommunity",
-                ),
-                InlineKeyboardButton(
-                    text="Channel",
-                    url=f"https://t.me/KensurUpdates",
-                ),
-                InlineKeyboardButton(
-                    text='Ping',
-                    callback_data='pingCB'
-                ),
-
-            ],
-        ])
-
-    results.append(
-
-        InlineQueryResultArticle
-            (
-            id=str(uuid4()),
-            title=f"About KensurBot (@{context.bot.username})",
-            input_message_content=InputTextMessageContent(about_text, parse_mode=ParseMode.MARKDOWN,
-                                                          disable_web_page_preview=True),
-            reply_markup=kb
-        )
-    )
-    update.inline_query.answer(results)
-
-
-def spb(query: str, update: Update, context: CallbackContext) -> None:
-    """Handle the inline query."""
-    query = update.inline_query.query
-    user_id = update.effective_user.id
-    srdata = None
-    apst = requests.get(f'https://api.intellivoid.net/spamprotection/v1/lookup?query={context.bot.username}')
-    api_status = apst.status_code
-    if (api_status != 200):
-        stats = f"API RETURNED {api_status}"
-    else:
-        try:
-            search = query.split(" ", 1)[1]
-        except IndexError:
-            search = user_id
-
-        srdata = search or user_id
-        url = f"https://api.intellivoid.net/spamprotection/v1/lookup?query={srdata}"
-        r = requests.get(url)
-        a = r.json()
-        response = a["success"]
-        if response is True:
-            date = a["results"]["last_updated"]
-            stats = f"*◢ Intellivoid• SpamProtection Info*:\n"
-            stats += f' • *Updated on*: `{datetime.fromtimestamp(date).strftime("%Y-%m-%d %I:%M:%S %p")}`\n'
-
-            if a["results"]["attributes"]["is_potential_spammer"] is True:
-                stats += f" • *User*: `USERxSPAM`\n"
-            elif a["results"]["attributes"]["is_operator"] is True:
-                stats += f" • *User*: `USERxOPERATOR`\n"
-            elif a["results"]["attributes"]["is_agent"] is True:
-                stats += f" • *User*: `USERxAGENT`\n"
-            elif a["results"]["attributes"]["is_whitelisted"] is True:
-                stats += f" • *User*: `USERxWHITELISTED`\n"
-
-            stats += f' • *Type*: `{a["results"]["entity_type"]}`\n'
-            stats += (
-                f' • *Language*: `{a["results"]["language_prediction"]["language"]}`\n'
+        elif text.split()[0] == "ping":
+            answerss = await ping_func(answers)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=2
             )
-            stats += f' • *Language Probability*: `{a["results"]["language_prediction"]["probability"]}`\n'
-            stats += f"*Spam Prediction*:\n"
-            stats += f' • *Ham Prediction*: `{a["results"]["spam_prediction"]["ham_prediction"]}`\n'
-            stats += f' • *Spam Prediction*: `{a["results"]["spam_prediction"]["spam_prediction"]}`\n'
-            stats += f'*Blacklisted*: `{a["results"]["attributes"]["is_blacklisted"]}`\n'
-            if a["results"]["attributes"]["is_blacklisted"] is True:
-                stats += (
-                    f' • *Reason*: `{a["results"]["attributes"]["blacklist_reason"]}`\n'
+
+        elif text.split()[0] == "ytmusic":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="YT Music | ytmusic [url]",
+                    switch_pm_parameter="inline",
                 )
-                stats += f' • *Flag*: `{a["results"]["attributes"]["blacklist_flag"]}`\n'
-            stats += f'*PTID*:\n`{a["results"]["private_telegram_id"]}`\n'
+            tex = query.query.split(None, 1)[1].strip()
+            answerss = await yt_music_func(answers, tex)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=2
+            )
+        elif text.split()[0] == "webss":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="webss | webss [url]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await webss(tex)
+            await client.answer_inline_query(query.id, results=answerss, cache_time=2)
 
-        else:
-            stats = "`cannot reach SpamProtection API`"
+        elif text.split()[0] == "info":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="User Info | info [USERNAME|ID]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split()[1].strip()
+            answerss = await info_inline_func(answers, tex)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=2
+            )
 
-    kb = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(
-                    text="Report Error",
-                    url=f"https://t.me/kensurcommunity",
-                ),
-                InlineKeyboardButton(
-                    text="Search again",
-                    switch_inline_query_current_chat=".spb ",
-                ),
+        elif text.split()[0] == "tmdb":
+            if len(text.split()) < 2:
+                answerss = await tmdb_func(answers, "")
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answerss,
+                    switch_pm_text="TMDB Search | tmdb [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split()[1].strip()
+            answerss = await tmdb_func(answers, tex)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=2
+            )
+        elif text.split()[0] == "pokedex":
+            if len(text.split()) < 2:
+                await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    switch_pm_text="Pokemon [text]",
+                    switch_pm_parameter="pokedex",
+                )
+                return
+            pokedex = text.split(None, 1)[1].strip()
+            Pokedex = await pokedexinfo(answers, pokedex)
+            await client.answer_inline_query(query.id, results=Pokedex, cache_time=2)
+        elif text.split()[0] == "paste":
+            tex = text.split(None, 1)[1]
+            answerss = await paste_func(answers, tex)
+            await client.answer_inline_query(query.id, results=answerss, cache_time=2)
 
-            ],
-        ])
-
-    a = "the entity was not found"
-    results = [
-        InlineQueryResultArticle(
-            id=str(uuid4()),
-            title=f"SpamProtection API info of {srdata or a}",
-            input_message_content=InputTextMessageContent(stats, parse_mode=ParseMode.MARKDOWN,
-                                                          disable_web_page_preview=True),
-            reply_markup=kb
-        ),
-    ]
-
-    update.inline_query.answer(results, cache_time=5)
-
-
-
-MEDIA_QUERY = '''query ($search: String) {
-  Page (perPage: 10) {
-    media (search: $search) {
-      id
-      title {
-        romaji
-        english
-        native
-      }
-      type
-      format
-      status
-      description
-      episodes
-      bannerImage
-      duration
-      chapters
-      volumes
-      genres
-      synonyms
-      averageScore
-      airingSchedule(notYetAired: true) {
-        nodes {
-          airingAt
-          timeUntilAiring
-          episode
-        }
-      }
-      siteUrl
-    }
-  }
-}'''
-
-
-def media_query(query: str, update: Update, context: CallbackContext) -> None:
-    """
-    Handle anime inline query.
-    """
-    results: List = []
-
-    try:
-        results: List = []
-        r = requests.post('https://graphql.anilist.co',
-                          data=json.dumps({'query': MEDIA_QUERY, 'variables': {'search': query}}),
-                          headers={'Content-Type': 'application/json', 'Accept': 'application/json'})
-        res = r.json()
-        data = res['data']['Page']['media']
-        res = data
-        for data in res:
-            title_en = data["title"].get("english") or "N/A"
-            title_ja = data["title"].get("romaji") or "N/A"
-            format = data.get("format") or "N/A"
-            type = data.get("type") or "N/A"
-            bannerimg = data.get("bannerImage") or "https://telegra.ph/file/cc83a0b7102ad1d7b1cb3.jpg"
-            try:
-                des = data.get("description").replace("<br>", "").replace("</br>", "")
-                description = des.replace("<i>", "").replace("</i>", "") or "N/A"
-            except AttributeError:
-                description = data.get("description")
-
-            try:
-                description = html.escape(description)
-            except AttributeError:
-                description = description or "N/A"
-
-            if len((str(description))) > 700:
-                description = description [0:700] + "....."
-
-            avgsc = data.get("averageScore") or "N/A"
-            status = data.get("status") or "N/A"
-            genres = data.get("genres") or "N/A"
-            genres = ", ".join(genres)
-            img = f"https://img.anili.st/media/{data['id']}" or "https://telegra.ph/file/cc83a0b7102ad1d7b1cb3.jpg"
-            aurl = data.get("siteUrl")
-
-
-            kb = InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(
-                            text="Read More",
-                            url=aurl,
-                        ),
-                        InlineKeyboardButton(
-                            text="Search again",
-                            switch_inline_query_current_chat=".anilist ",
-                        ),
-
-                    ],
-                ])
-
-            txt = f"<b>{title_en} | {title_ja}</b>\n"
-            txt += f"<b>Format</b>: <code>{format}</code>\n"
-            txt += f"<b>Type</b>: <code>{type}</code>\n"
-            txt += f"<b>Average Score</b>: <code>{avgsc}</code>\n"
-            txt += f"<b>Status</b>: <code>{status}</code>\n"
-            txt += f"<b>Genres</b>: <code>{genres}</code>\n"
-            txt += f"<b>Description</b>: <code>{description}</code>\n"
-            txt += f"<a href='{img}'>&#xad</a>"
-
+        elif text.split()[0] == "fakegen":
+            results = []
+            fake = Faker()
+            name = str(fake.name())
+            fake.add_provider(internet)
+            address = str(fake.address())
+            ip = fake.ipv4_private()
+            cc = fake.credit_card_full()
+            email = fake.ascii_free_email()
+            job = fake.job()
+            android = fake.android_platform_token()
+            pc = fake.chrome()
+            res = f"<b><u> Fake Information Generated</b></u>\n<b>Name :-</b><code>{name}</code>\n\n<b>Address:-</b><code>{address}</code>\n\n<b>IP ADDRESS:-</b><code>{ip}</code>\n\n<b>credit card:-</b><code>{cc}</code>\n\n<b>Email Id:-</b><code>{email}</code>\n\n<b>Job:-</b><code>{job}</code>\n\n<b>android user agent:-</b><code>{android}</code>\n\n<b>Pc user agent:-</b><code>{pc}</code>"
             results.append(
-                InlineQueryResultArticle
-                    (
-                    id=str(uuid4()),
-                    title=f"{title_en} | {title_ja} | {format}",
-                    thumb_url=img,
-                    description=f"{description}",
-                    input_message_content=InputTextMessageContent(txt, parse_mode=ParseMode.HTML,
-                                                                  disable_web_page_preview=False),
-                    reply_markup=kb
+                InlineQueryResultArticle(
+                    title="Fake infomation gathered",
+                    description="Click here to see them",
+                    input_message_content=InputTextMessageContent(
+                        res, parse_mode="HTML", disable_web_page_preview=True
+                    ),
                 )
             )
+            await client.answer_inline_query(query.id, cache_time=0, results=results)
+
+
+        elif text.split()[0] == "image":
+            if len(text.split()) < 2:
+                return await client.answer_inline_query(
+                    query.id,
+                    results=answers,
+                    is_gallery=True,
+                    switch_pm_text="Image Search | image [QUERY]",
+                    switch_pm_parameter="inline",
+                )
+            tex = text.split(None, 1)[1].strip()
+            answerss = await image_func(answers, tex)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=3600
+            )
+
+
+        elif text.split()[0] == "exec":
+            await execute_code(query)
+
+        elif text.strip() == "tasks":
+            user_id = query.from_user.id
+            answerss = await task_inline_func(user_id)
+            await client.answer_inline_query(
+                query.id, results=answerss, cache_time=1
+            )
+
     except Exception as e:
-
-        kb = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        text="Report error",
-                        url="t.me/kensurcommunity",
-                    ),
-                    InlineKeyboardButton(
-                        text="Search again",
-                        switch_inline_query_current_chat=".anilist ",
-                    ),
-
-                ],
-            ])
-
-        results.append(
-
-            InlineQueryResultArticle
-                (
-                id=str(uuid4()),
-                title=f"Media {query} not found",
-                input_message_content=InputTextMessageContent(f"Media {query} not found due to {e}", parse_mode=ParseMode.MARKDOWN,
-                                                              disable_web_page_preview=True),
-                reply_markup=kb
-            )
-
-        )
-
-    update.inline_query.answer(results, cache_time=5)
+        e = traceback.format_exc()
+        print(e, " InLine")

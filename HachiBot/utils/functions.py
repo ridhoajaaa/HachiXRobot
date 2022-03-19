@@ -86,11 +86,6 @@ def test_speedtest():
     return [speed_convert(download), speed_convert(upload), info]
 
 
-async def get_http_status_code(url: str) -> int:
-    async with aiosession.head(url) as resp:
-        return resp.status
-
-
 async def make_carbon(code):
     url = "https://carbonara.vercel.app/api/cook"
     async with aiosession.post(url, json={"code": code}) as resp:

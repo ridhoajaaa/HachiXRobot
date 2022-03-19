@@ -29,6 +29,7 @@ from pyrogram.types import CallbackQuery, Message
 
 from HachiBot import pbot, arq
 from HachiBot.services.keyboard import ikb
+from HachiBot.modules.helper_funcs.decorators import ddocallback
 
 __MODULE__ = "Proxy"
 __HELP__ = (
@@ -83,7 +84,7 @@ async def proxy_func(_, message: Message):
     )
 
 
-@pbot.on_callback_query(filters.regex(r"proxy_arq_"))
+@ddocallback(pattern=r"proxy_arq_")
 async def proxy_callback_func(_, cq: CallbackQuery):
     data = cq.data
     index = int(data.split("_")[-1])
