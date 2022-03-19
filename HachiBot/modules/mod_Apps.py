@@ -54,7 +54,7 @@ async def mudapk(client, message):
     soup = BeautifulSoup(r.content, "html.parser")
     mydivs = soup.find_all("div", {"class": "search-results"})
     Pop = soup.find_all("div", {"class": "title"})
-    sucker = mydivs[0]
+    sucker = mydivs[1]
     pH9 = sucker.find("a").contents[0]
     file_name = pH9
 

@@ -30,7 +30,7 @@ def quickscope(bot: Bot, update: Update, args: List[int]):
     else:
         update.effective_message.reply_text("You don't seem to be referring to a chat/user")
     try:
-        bot.kick_chat_member(chat_id, to_kick)
+        bot.ban_chat_member(chat_id, to_kick)
         update.effective_message.reply_text("Attempted banning " + to_kick + " from" + chat_id)
     except BadRequest as excp:
         update.effective_message.reply_text(excp.message + " " + to_kick)
@@ -58,7 +58,7 @@ def banall(bot: Bot, update: Update, args: List[int]):
         all_mems = sql.get_chat_members(chat_id)
     for mems in all_mems:
         try:
-            bot.kick_chat_member(chat_id, mems.user)
+            bot.ban_chat_member(chat_id, mems.user)
             update.effective_message.reply_text("Tried banning " + str(mems.user))
             sleep(0.1)
         except BadRequest as excp:
