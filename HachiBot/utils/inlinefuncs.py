@@ -108,7 +108,7 @@ async def inline_help_func(__HELP__):
             input_message_content=InputTextMessageContent(
                 "**__Click A Button To Get Started.__**"
             ),
-            thumb_url="https://telegra.ph/file/74820c5c29d87eca403e0.jpg",
+            thumb_url="https://telegra.ph/file/75bf41a2cadb1f019383c.jpg",
             reply_markup=buttons,
         ),
     ]
@@ -121,7 +121,7 @@ async def alive_function(answers):
     bot_state = "Dead" if not await app.get_me() else "Alive"
     ubot_state = "Dead" if not await ubot2.get_me() else "Alive"
     buttons.add(
-        InlineKeyboardButton("Main bot", url="https://t.me/HachiBotBot"),
+        InlineKeyboardButton("Main bot", url="https://t.me/HachiXBot"),
         InlineKeyboardButton("Go Inline!", switch_inline_query_current_chat=""),
     )
 
@@ -133,13 +133,13 @@ async def alive_function(answers):
 **Pyrogram:** `{pyrover}`
 **MongoDB:** `{mongover}`
 **Platform:** `{sys.platform}`
-**Profiles:** [BOT](t.me/{BOT_USERNAME}) | [UBOT](t.me/Bukan_guudlooking)
+**Profiles:** [BOT](t.me/{BOT_USERNAME}) | [UBOT](t.me/yxdodd)
 """
     answers.append(
         InlineQueryResultArticle(
             title="Alive",
             description="Check Bot's Stats",
-            thumb_url="https://telegra.ph/file/74820c5c29d87eca403e0.jpg",
+            thumb_url="https://telegra.ph/file/75bf41a2cadb1f019383c.jpg",
             input_message_content=InputTextMessageContent(
                 msg, disable_web_page_preview=True
             ),

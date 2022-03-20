@@ -410,6 +410,9 @@ def hachi_about_callback(update, context):
             disable_web_page_preview=False,
             reply_markup=InlineKeyboardMarkup(
                 [
+                [
+                    InlineKeyboardButton("Go Inline!", switch_inline_query_current_chat=""),
+                ],
                  [
                     InlineKeyboardButton(text="Admins", callback_data="hachi_admin"),
                     InlineKeyboardButton(text="Notes", callback_data="hachi_notes"),
