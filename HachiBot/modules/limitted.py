@@ -10,23 +10,26 @@
 
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl.functions.contacts import UnblockRequest
+from HachiBot.utils.tools import edit_delete, edit_or_reply
 from HachiBot.events import register
 from HachiBot import ubot
 
 
 @register(pattern="^/limited ?(.*)")
 async def _(event):
-    chat = "@SpamBot"
-    msg = await event.reply("Checking If You Are Limited...")
-    async with ubot.conversation(chat) as conv:
+    await edit_or_reply(event, "`Processing...`")
+    async with ubot.conversation("@SpamBot") as conv:
         try:
             response = conv.wait_event(
                 events.NewMessage(incoming=True, from_users=178220800)
             )
             await conv.send_message("/start")
             response = await response
-            await ubot.send_read_acknowledge(chat)
+            await ubot.send_read_acknowledge(conv.chat_id)
         except YouBlockedUserError:
-            await msg.edit("Boss! Please Unblock @SpamBot ")
-            return
-        await msg.edit(f"~ {response.message.message}")
+            await event.client(UnblockRequest("@SpamBot"))
+            await conv.send_message("/start")
+            response = await response
+            await event.client.send_read_acknowledge(conv.chat_id)
+        await edit_or_reply(event, f"~ {response.message.message}")
