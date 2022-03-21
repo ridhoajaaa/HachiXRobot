@@ -229,6 +229,7 @@ __help__ = """
  × /carbon <text> [or reply] *:* Beautify your code using carbon.now.sh
  × /phone <number>*:* To get info about that number
  × /webss <url> *:* Take A Screenshot Of A Webpage.
+ × /write <text> *:* Automatic write if you lazy
 """
 
 

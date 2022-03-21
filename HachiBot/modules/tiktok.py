@@ -30,7 +30,7 @@ async def _(event):
             event,
             "**Berikan Link Tiktok Pesan atau Reply Link Tiktok Untuk di Download**",
         )
-    msg = await msg.edit("`Video Sedang Diproses...`")
+    xx = await edit_or_reply(event, "`Video Sedang Diproses...`")
     async with event.client.conversation("@thisvidbot") as conv:
         try:
             msg_start = conv.wait_event(
@@ -52,4 +52,4 @@ async def _(event):
         await ubot.client.delete_messages(
             conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id, text.id]
         )
-        await msg.delete()
+        await xx.delete()
