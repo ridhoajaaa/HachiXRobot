@@ -30,9 +30,8 @@ async def _(event):
             event,
             "**Berikan Link Tiktok Pesan atau Reply Link Tiktok Untuk di Download**",
         )
-    xx = await edit_or_reply(event, "`Video Sedang Diproses...`")
-    chat = "@thisvidbot"
-    async with event.client.conversation(chat) as conv:
+    xx = await msg.edit("`Video Sedang Diproses...`")
+    async with event.client.conversation("@thisvidbot") as conv:
         try:
             msg_start = conv.wait_event(
                 events.NewMessage(incoming=True, from_users=1878760241)
@@ -44,10 +43,11 @@ async def _(event):
             details = await conv.get_response()
             video = await conv.get_response()
             text = await conv.get_response()
-            await ubot.client.send_read_acknowledge(conv.chat_id)
+            await event.client.send_read_acknowledge(conv.chat_id)
         except YouBlockedUserError:
-            await msg.edit("Boss! Please Unblock @thisvidbot ")
-            return
+            await event.client(UnblockRequest("@thisvidbot"))
+            await conv.send_message("/start")
+            response = await response
         await event.client.send_file(event.chat_id, video)
         await ubot.client.delete_messages(
             conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id, text.id]
