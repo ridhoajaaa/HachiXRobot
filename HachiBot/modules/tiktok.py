@@ -30,7 +30,7 @@ async def _(event):
     else:
         await event.edit("```Video Sedang Diproses.....```")
     chat = "@ttsavebot"
-    async with ubot.conversation(chat) as conv:
+    async with tbot.conversation(chat) as conv:
         try:
             msg_start = await conv.send_message("/start")
             r = await conv.get_response()
@@ -38,13 +38,13 @@ async def _(event):
             details = await conv.get_response()
             video = await conv.get_response()
             """ - don't spam notif - """
-            await ubot.send_read_acknowledge(conv.chat_id)
+            await tbot.send_read_acknowledge(conv.chat_id)
         except YouBlockedUserError:
             await event.edit(
                 "**Kesalahan:** `Mohon Buka Blokir` @ttsavebot `Dan Coba Lagi !`"
             )
             return
-        await ubot.send_file(event.chat_id, video)
+        await tbot.send_file(event.chat_id, video)
         await event.client.delete_messages(
             conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id]
         )
