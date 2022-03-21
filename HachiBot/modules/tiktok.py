@@ -38,6 +38,7 @@ async def _(event):
                 events.NewMessage(incoming=True, from_users=1878760241)
             )
             await conv.send_message("/start")
+            msg_start = await msg_start
             r = await conv.get_response()
             msg = await conv.send_message(d_link)
             details = await conv.get_response()
