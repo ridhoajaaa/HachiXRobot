@@ -58,6 +58,7 @@ ConnectionHistory.__table__.create(checkfirst=True)
 CHAT_ACCESS_LOCK = threading.RLock()
 CONNECTION_INSERTION_LOCK = threading.RLock()
 CONNECTION_HISTORY_LOCK = threading.RLock()
+HISTORY_LOCK = threading.RLock()
 
 HISTORY_CONNECT = {}
 
@@ -170,6 +171,13 @@ def get_history_conn(user_id):
     if not HISTORY_CONNECT.get(int(user_id)):
         HISTORY_CONNECT[int(user_id)] = {}
     return HISTORY_CONNECT[int(user_id)]
+
+
+def get_history(user_id):
+    try:
+        return SESSION.query(ConnectionHistory).get(str(user_id))
+    finally:
+        SESSION.close()
 
 
 def clear_history_conn(user_id):
