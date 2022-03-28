@@ -22,13 +22,14 @@ from HachiBot.modules.helper_funcs.decorators import ddocallback, ddomsg
 from HachiBot import DRAGONS, dispatcher, telethn as bot, pgram, pbot
 from HachiBot.modules.disable import DisableAbleCommandHandler
 from HachiBot.utils.custom_filters import admin_filter, command
-from ..modules.helper_funcs.anonymous import user_admin, AdminPerms
+from ..modules.helper_funcs.anonymous import user_admin as user_etmin, AdminPerms
 from HachiBot.modules.helper_funcs.chat_status import (
     bot_admin,
     can_pin,
     can_promote,
     connection_status,
     is_user_admin,
+    user_admin,
     user_admin_no_reply,
     user_can_changeinfo,
     user_can_promote,
@@ -256,7 +257,7 @@ def setchat_title(update: Update, context: CallbackContext):
 
 @bot_admin
 @can_promote
-@user_admin
+@user_etmin(AdminPerms.CAN_PROMOTE_MEMBERS)
 @loggable
 @typing_action
 def admin(update: Update, context: CallbackContext) -> Optional[str]:
@@ -376,7 +377,7 @@ close_keyboard = InlineKeyboardMarkup(
 @connection_status
 @bot_admin
 @can_promote
-@user_admin
+@user_etmin(AdminPerms.CAN_PROMOTE_MEMBERS)
 @loggable
 @ddomsg(Filters.regex("(?i)^.etmin"))
 def lowpromote(update: Update, context: CallbackContext) -> str:
@@ -485,7 +486,7 @@ def lowpromote(update: Update, context: CallbackContext) -> str:
 @connection_status
 @bot_admin
 @can_promote
-@user_admin
+@user_etmin(AdminPerms.CAN_PROMOTE_MEMBERS)
 @loggable
 def coadmin(update: Update, context: CallbackContext) -> str:
     bot = context.bot
@@ -599,7 +600,7 @@ def coadmin(update: Update, context: CallbackContext) -> str:
 @connection_status
 @bot_admin
 @can_promote
-@user_admin
+@user_etmin(AdminPerms.CAN_PROMOTE_MEMBERS)
 @loggable
 def unadmin(update: Update, context: CallbackContext) -> str:
     bot = context.bot
