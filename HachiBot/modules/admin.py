@@ -1102,7 +1102,7 @@ def adminlist(update, context):
 @user_admin_no_reply
 @bot_admin
 @can_promote
-@user_admin
+@user_etmin(AdminPerms.CAN_PROMOTE_MEMBERS)
 @loggable
 @ddocallback(pattern=r"demote_")
 def button(update: Update, context: CallbackContext) -> str:
