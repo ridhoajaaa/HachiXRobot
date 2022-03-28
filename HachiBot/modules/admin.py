@@ -22,13 +22,13 @@ from HachiBot.modules.helper_funcs.decorators import ddocallback, ddomsg
 from HachiBot import DRAGONS, dispatcher, telethn as bot, pgram, pbot
 from HachiBot.modules.disable import DisableAbleCommandHandler
 from HachiBot.utils.custom_filters import admin_filter, command
+from ..modules.helper_funcs.anonymous import user_admin, AdminPerms
 from HachiBot.modules.helper_funcs.chat_status import (
     bot_admin,
     can_pin,
     can_promote,
     connection_status,
     is_user_admin,
-    user_admin,
     user_admin_no_reply,
     user_can_changeinfo,
     user_can_promote,

@@ -17,7 +17,7 @@ from HachiBot import (
     dispatcher,
 )
 
-from telegram import Chat, ChatMember, ParseMode, Update, User
+from telegram import Chat, ChatMember, ParseMode, Update, User, TelegramError
 from telegram.ext import CallbackContext
 
 # stores admemes in memory for 10 min.
@@ -233,22 +233,22 @@ def whitelist_plus(func):
 def user_admin(func):
     @wraps(func)
     def is_admin(update: Update, context: CallbackContext, *args, **kwargs):
-        bot = context.bot
+        # bot = context.bot
         user = update.effective_user
-        chat = update.effective_chat
+        # chat = update.effective_chat
 
-        if user and is_user_admin(chat, user.id):
+        if user and is_user_admin(update, user.id):
             return func(update, context, *args, **kwargs)
-        if not user:
+        elif not user:
             pass
         elif DEL_CMDS and " " not in update.effective_message.text:
             try:
                 update.effective_message.delete()
-            except:
+            except TelegramError:
                 pass
         else:
             update.effective_message.reply_text(
-                "Who dis non-admin telling me what to do? You want a punch?",
+                "Who dis non-admin telling me what to do?"
             )
 
     return is_admin
@@ -257,23 +257,20 @@ def user_admin(func):
 def user_admin_no_reply(func):
     @wraps(func)
     def is_not_admin_no_reply(
-        update: Update,
-        context: CallbackContext,
-        *args,
-        **kwargs,
+            update: Update, context: CallbackContext, *args, **kwargs
     ):
-        bot = context.bot
+        # bot = context.bot
         user = update.effective_user
-        chat = update.effective_chat
+        # chat = update.effective_chat
 
-        if user and is_user_admin(chat, user.id):
+        if user and is_user_admin(update, user.id):
             return func(update, context, *args, **kwargs)
-        if not user:
+        elif not user:
             pass
         elif DEL_CMDS and " " not in update.effective_message.text:
             try:
                 update.effective_message.delete()
-            except:
+            except TelegramError:
                 pass
 
     return is_not_admin_no_reply

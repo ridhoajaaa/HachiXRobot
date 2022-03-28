@@ -105,7 +105,7 @@ async def _(event):
         await event.client.send_message(chat_id, msg)
         await edit_or_reply(event, "**Berhasil Mengirim Pesan Anda.**")
     except BaseException:
-        await message.reply_text(event, "**ERROR: Gagal Mengirim Pesan.**", 10)
+        await msg.reply_text(event, "**ERROR: Gagal Mengirim Pesan.**", 10)
 
 
 @register(pattern="/fwdreply ?(.*)")
