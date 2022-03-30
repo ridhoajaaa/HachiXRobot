@@ -1,23 +1,60 @@
+# ⚠️ © @greyyvbss 
+
+# ⚠️ Don't Remove Credits for /asupan
+
 import requests
 import os
 import urllib
+import random
 
 import aiohttp
 import requests
+from telethon.tl.types import InputMessagesFilterVideo
 from pyrogram import filters
 from HachiBot.events import register
-from HachiBot import telethn as tbot
+from HachiBot import telethn as tbot, ubot2
 from HachiBot import TEMP_DOWNLOAD_DIRECTORY, pbot
+            
 
+@register(pattern="^/asupan ?(.*)")
 
-@register(pattern="^/ptl ?(.*)")
-async def asupan(event):
+async def _(event):
+
+    memeks = await event.reply("**Mencari Video Asupan...🔍**") 
+
     try:
-        resp = requests.get("https://api-tede.herokuapp.com/api/asupan/ptl").json()
-        asupannya = f"{resp['url']}"
-        return await tbot.send_file(event.chat_id, asupannya)
+
+        asupannya = [
+
+            asupan
+
+            async for asupan in ubot2.iter_messages(
+
+            "@Database_TonicUbot", filter=InputMessagesFilterVideo
+
+            )
+
+        ]
+
+        kontols = random.choice(asupannya)
+
+        pantek = await ubot2.download_media(kontols)
+
+        await tbot.send_file(
+
+            event.chat.id, 
+
+            caption="Nih Asupan nya Kak 🥵", 
+
+            file=pantek
+
+            )
+
+        await memeks.delete()
+
     except Exception:
-        await event.reply("`Error 404 not found...`")
+
+        await memeks.edit("Asupannya gaada komsol")
 
 
 @register(pattern="^/chika ?(.*)")
