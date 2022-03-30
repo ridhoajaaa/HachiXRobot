@@ -1099,10 +1099,9 @@ def adminlist(update, context):
     except BadRequest:  # if original message is deleted
         return
 
-@user_admin_no_reply
+@connection_status
 @bot_admin
-@can_promote
-@user_etmin(AdminPerms.CAN_PROMOTE_MEMBERS)
+@user_admin_no_reply
 @loggable
 @ddocallback(pattern=r"demote_")
 def button(update: Update, context: CallbackContext) -> str:
@@ -1110,6 +1109,13 @@ def button(update: Update, context: CallbackContext) -> str:
     user = update.effective_user
     bot = context.bot
     match = re.match(r"demote_\((.+?)\)", query.data)
+    if not is_user_admin(chat, int(user.id)):
+                bot.answer_callback_query(
+                    query.id,
+                    text="You don't have enough rights to demoted",
+                    show_alert=True,
+                )
+                return ""
     if match:
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
@@ -1154,7 +1160,7 @@ def button(update: Update, context: CallbackContext) -> str:
             reply_markup=keyboard,
             parse_mode=ParseMode.HTML,
             )
-            query.answer("Demoted!")
+            bot.answer_callback_query(query.id, text="Demoted!")
             return (
                 f"<b>{html.escape(chat.title)}:</b>\n"
                 f"#DEMOTE\n"
