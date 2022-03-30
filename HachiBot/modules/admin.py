@@ -1147,7 +1147,13 @@ def button(update: Update, context: CallbackContext) -> str:
             ]
         ]
     )
-        if demoted:
+        if not is_user_admin(chat, int(user.id)):
+                bot.answer_callback_query(
+                    query.id,
+                    text="You don't have enough rights to demoted",
+                    show_alert=True,
+                )
+        elif demoted:
             update.effective_message.edit_text(
             f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(member.user.id, member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
             reply_markup=keyboard,
@@ -1160,13 +1166,6 @@ def button(update: Update, context: CallbackContext) -> str:
                 f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
                 f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}"
             )
-        if not is_user_admin(chat, int(user.id)):
-                bot.answer_callback_query(
-                    query.id,
-                    text="You don't have enough rights to demoted",
-                    show_alert=True,
-                )
-                return ""
     else:
         update.effective_message.edit_text(
             "This user is not promoted or has left the group!"
