@@ -1154,7 +1154,9 @@ def button(update: Update, context: CallbackContext) -> str:
                     show_alert=True,
                 )
                 return ""
-        if not user_admin(chat, (user.id)):
+        if not user_admin(chat, user):
+                user = update.effective_user
+                chat = update.effective_chat
                 bot.answer_callback_query(
                     query.id,
                     text="You don't have enough rights to demoted",
