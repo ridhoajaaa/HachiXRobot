@@ -41,14 +41,6 @@ async def _(event):
 
         pantek = await ubot2.download_media(kontols)
 
-        keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(text="Support Chat", url="https://t.me/demonszxx"),
-            ]
-        ]
-        )
-
         await tbot.send_file(
 
             event.chat.id, 
@@ -57,8 +49,13 @@ async def _(event):
 
             caption=f"Asupan Founded\nRequested by: {event.sender.first_name}",
 
-            reply_markup=keyboard,
-
+            reply_markup=InlineKeyboardMarkup(
+            [
+            [
+                InlineKeyboardButton(text="Support Chat", url="https://t.me/demonszxx"),
+            ]
+            ]
+            )
             )
 
         await memeks.delete()

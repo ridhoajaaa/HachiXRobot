@@ -343,7 +343,7 @@ def admin(update: Update, context: CallbackContext) -> Optional[str]:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
             ]
         ]
     )
@@ -367,11 +367,6 @@ def admin(update: Update, context: CallbackContext) -> Optional[str]:
             mention_html(user_member.user.id, user_member.user.first_name),
         )
     )
-
-
-close_keyboard = InlineKeyboardMarkup(
-    [[InlineKeyboardButton("🔄 Refresh", callback_data="close2")]]
-)
 
 
 @connection_status
@@ -461,7 +456,7 @@ def lowpromote(update: Update, context: CallbackContext) -> str:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
             ]
         ]
     )
@@ -575,7 +570,7 @@ def coadmin(update: Update, context: CallbackContext) -> str:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
             ]
         ]
     )
@@ -665,7 +660,7 @@ def unadmin(update: Update, context: CallbackContext) -> str:
         keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
             ]
         ]
     )
@@ -1103,6 +1098,7 @@ def adminlist(update, context):
 @bot_admin
 @user_admin_no_reply
 @loggable
+@user_admin
 @ddocallback(pattern=r"demote_")
 def button(update: Update, context: CallbackContext) -> str:
     query = update.callback_query
@@ -1143,20 +1139,11 @@ def button(update: Update, context: CallbackContext) -> str:
         keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="cache_"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
             ]
         ]
     )
         if not is_user_admin(chat, int(user.id)):
-                bot.answer_callback_query(
-                    query.id,
-                    text="You don't have enough rights to demoted",
-                    show_alert=True,
-                )
-                return ""
-        if not user_admin(chat, user):
-                user = update.effective_user
-                chat = update.effective_chat
                 bot.answer_callback_query(
                     query.id,
                     text="You don't have enough rights to demoted",
@@ -1181,16 +1168,6 @@ def button(update: Update, context: CallbackContext) -> str:
             "This user is not promoted or has left the group!"
         )
         return ""
-
-@ddocallback(pattern=r"^cache_")
-def pingCallback(update: Update, context: CallbackContext):
-    query = update.callback_query
-    try:
-        ADMIN_CACHE.pop(update.effective_chat.id)
-    except KeyError:
-        pass
-
-    query.answer("✅ Admins cache refreshed And admin list updated!")
 
 
 __help__ = """
