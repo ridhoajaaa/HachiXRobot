@@ -53,9 +53,9 @@ async def _(event):
 
             event.chat.id, 
 
-            caption=f"Asupan Founded\nRequested by: {event.sender.first_name}", 
-
             file=pantek,
+
+            caption=f"Asupan Founded\nRequested by: {event.sender.first_name}",
 
             reply_markup=keyboard,
 
