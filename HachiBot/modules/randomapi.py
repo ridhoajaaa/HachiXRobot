@@ -53,13 +53,11 @@ async def _(event):
 
             event.chat.id, 
 
-            caption=f"Asupan Founded\n Requested by: {event.sender.first_name}", 
+            caption=f"Asupan Founded\nRequested by: {event.sender.first_name}", 
 
             file=pantek,
 
             reply_markup=keyboard,
-
-            parse_mode=ParseMode.HTML,
 
             )
 
