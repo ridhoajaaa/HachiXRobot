@@ -343,7 +343,7 @@ def admin(update: Update, context: CallbackContext) -> Optional[str]:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close"),
             ]
         ]
     )
@@ -456,7 +456,7 @@ def lowpromote(update: Update, context: CallbackContext) -> str:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close"),
             ]
         ]
     )
@@ -570,7 +570,7 @@ def coadmin(update: Update, context: CallbackContext) -> str:
                     text="⏬ Demote",
                     callback_data="demote_({})".format(user_member.user.id),
                 ),
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close"),
             ]
         ]
     )
@@ -660,7 +660,7 @@ def unadmin(update: Update, context: CallbackContext) -> str:
         keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close"),
             ]
         ]
     )
@@ -1139,7 +1139,7 @@ def button(update: Update, context: CallbackContext) -> str:
         keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="🔄 Refresh", callback_data="close2"),
+                InlineKeyboardButton(text="🔄 Refresh", callback_data="close"),
             ]
         ]
     )
