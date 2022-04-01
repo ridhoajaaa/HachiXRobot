@@ -9,9 +9,9 @@ import random
 
 import aiohttp
 import requests
-from telegram import ParseMode
+from telegram import ParseMode, InlineKeyboardButton, InlineKeyboardMarkup
 from telethon.tl.types import InputMessagesFilterVideo
-from pyrogram import filters, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram import filters
 from HachiBot.events import register
 from HachiBot import telethn as tbot, ubot2
 from HachiBot import TEMP_DOWNLOAD_DIRECTORY, pbot
