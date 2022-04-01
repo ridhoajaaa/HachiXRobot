@@ -9,8 +9,9 @@ import random
 
 import aiohttp
 import requests
+from telegram import ParseMode
 from telethon.tl.types import InputMessagesFilterVideo
-from pyrogram import filters
+from pyrogram import filters, InlineKeyboardButton, InlineKeyboardMarkup
 from HachiBot.events import register
 from HachiBot import telethn as tbot, ubot2
 from HachiBot import TEMP_DOWNLOAD_DIRECTORY, pbot
@@ -40,13 +41,25 @@ async def _(event):
 
         pantek = await ubot2.download_media(kontols)
 
+        keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(text="Support Chat", url="https://t.me/demonszxx"),
+            ]
+        ]
+        )
+
         await tbot.send_file(
 
             event.chat.id, 
 
-            caption="Nih Asupan nya Kak 🥵", 
+            caption=f"Asupan Founded\n Requested by: {event.sender.first_name}", 
 
-            file=pantek
+            file=pantek,
+
+            reply_markup=keyboard,
+
+            parse_mode=ParseMode.HTML,
 
             )
 

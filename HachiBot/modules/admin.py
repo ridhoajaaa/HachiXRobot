@@ -1153,6 +1153,14 @@ def button(update: Update, context: CallbackContext) -> str:
                     text="You don't have enough rights to demoted",
                     show_alert=True,
                 )
+                return ""
+        if not user_etmin(AdminPerms.CAN_PROMOTE_MEMBERS)(chat, int(user.id)):
+                bot.answer_callback_query(
+                    query.id,
+                    text="You don't have enough rights to demoted",
+                    show_alert=True,
+                )
+                return ""
         elif demoted:
             update.effective_message.edit_text(
             f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(member.user.id, member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
