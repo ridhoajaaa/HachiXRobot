@@ -11,6 +11,7 @@ import aiohttp
 import requests
 from telegram import ParseMode, InlineKeyboardButton, InlineKeyboardMarkup
 from telethon.tl.types import InputMessagesFilterVideo
+from telegram.utils.helpers import mention_html
 from pyrogram import filters
 from HachiBot.events import register
 from HachiBot import telethn as tbot, ubot2
@@ -47,8 +48,7 @@ async def _(event):
 
             file=pantek,
 
-            caption=f"Asupan Founded\nRequested by: {event.sender.first_name}",
-
+            caption=f"Asupan Founded\nRequested by: {mention_html(event.sender.first_name, event.sender.user.id)}",
             reply_markup=InlineKeyboardMarkup(
             [
             [

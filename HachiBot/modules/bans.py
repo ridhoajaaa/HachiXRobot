@@ -183,7 +183,7 @@ def ban(
 
         context.bot.send_sticker(chat.id, BAN_STICKER)  # banhammer marie sticker
         reply = (
-            f"❗️ <b>Banned Fvcking Shit In {chat.title}</b>\n\n× <b>User: {mention_html(member.user.id, html.escape(member.user.first_name))}</b> [<code>{member.user.id}</code>]\n"
+            f"❗️<b>Banned Fvcking Shit In {chat.title}</b>\n\n× <b>User:</b> {mention_html(member.user.id, html.escape(member.user.first_name))} [<code>{member.user.id}</code>]\n"
             f"× <b>By: {mention_html(user.id, html.escape(user.first_name))}</b>"
         )
         if reason:
@@ -196,7 +196,7 @@ def ban(
                 [
                     [
                         InlineKeyboardButton(
-                            text="Unbannned ✅", callback_data=f"unbanb_unban={user_id}"
+                            text="Unban ✅", callback_data=f"unbanb_unban={user_id}"
                         ),
                         InlineKeyboardButton(text="Deleted 🗑️", callback_data="unbanb_del"),
                     ]
@@ -439,7 +439,7 @@ def punch(update: Update, context: CallbackContext) -> str:
         # bot.send_sticker(chat.id, BAN_STICKER)  # banhammer marie sticker
         bot.sendMessage(
             chat.id,
-            f"Goodbay fvking shit hhe! <b>{mention_html(member.user.id, member.user.first_name)}</b> [<code>{member.user.id}</code>] was kicked by: {mention_html(user.id, user.first_name)} in <b>{message.chat.title}</b>\n<b>Reason</b>: <code>{reason}</code>",
+            f"Goodbay fvking shit hhe! <b>{mention_html(member.user.id, member.user.first_name)}</b> [<code>{member.user.id}</code>]\n\n <b>Was kicked by:</b> {mention_html(user.id, user.first_name)}",
             parse_mode=ParseMode.HTML,
         )
         log = (
@@ -535,8 +535,8 @@ def unban(update: Update, context: CallbackContext) -> Optional[str]:
 
     chat.unban_member(user_id)
     message.reply_text(
-        f"Yep! Unbanned <b>{mention_html(member.user.id, html.escape(member.user.first_name))}</b> [<code>{member.user.id}</code>] from <b>{chat.title}</b>\n"
-        f"Unbanned By: <b>{mention_html(user.id, html.escape(user.first_name))}!</b>",
+        f"Yep! Unbanned <b>{mention_html(member.user.id, html.escape(member.user.first_name))}</b> [<code>{member.user.id}</code>] from <b>{chat.title}</b>\n\n"
+        f"<b>Unbanned By: {mention_html(user.id, html.escape(user.first_name))}</b>",
         parse_mode=ParseMode.HTML,
     )
 
