@@ -49,14 +49,16 @@ async def _(event):
             file=pantek,
 
             caption=f"Asupan Founded\nRequested by: {event.sender.first_name}",
-            reply_markup=InlineKeyboardMarkup(
+        )
+
+        await tbot.reply_file(eply_markup=InlineKeyboardMarkup(
             [
             [
                 InlineKeyboardButton(text="Support Chat", url="https://t.me/demonszxx"),
             ]
             ]
             )
-            )
+        )
 
         await memeks.delete()
 
