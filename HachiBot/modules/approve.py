@@ -51,8 +51,7 @@ def free(update: Update, context: CallbackContext):
         return ""
     sql.approve(message.chat_id, user_id)
     message.reply_text(
-        f"{mention_html(user_member.user.id, user_member.user.first_name)} [<code>{user_member.user.id}</code>]  Has been free in <b>{chat_title}!</b> They "
-        f"will now be ignored by automated admin actions such as lock, blocklist, and anti-flood.",
+        f"{mention_html(user_member.user.id, user_member.user.first_name)} [<code>{user_member.user.id}</code>] is now longer 🧙‍♂ approved in <b>{chat_title}!</b>",
         parse_mode=ParseMode.HTML,
     )
     log_message = (

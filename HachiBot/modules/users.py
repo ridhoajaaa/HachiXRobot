@@ -57,9 +57,9 @@ def gcast(update: Update, context: CallbackContext):
     if len(to_send) >= 2:
         to_group = False
         to_user = False
-        if to_send[0] == "/broadcastgroups":
+        if to_send[0] == "/gcastgc":
             to_group = True
-        if to_send[0] == "/broadcastusers":
+        if to_send[0] == "/gcastus":
             to_user = True
         else:
             to_group = to_user = True
@@ -172,7 +172,7 @@ def __migrate__(old_chat_id, new_chat_id):
 __help__ = ""  # no help string
 
 GCAST_HANDLER = CommandHandler(
-    ["gcast", "gcastusers", "gcastgc"],
+    ["gcast", "gcastus", "gcastgc"],
     gcast,
     run_async=True,
 )

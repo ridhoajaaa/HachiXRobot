@@ -2,6 +2,8 @@ from io import BytesIO
 import html
 from time import sleep
 from typing import Optional, List
+from pyrogram import filters
+from pyrogram.types import Message
 from telegram import TelegramError, Chat, Message
 from telegram import Update, Bot
 from telegram.error import BadRequest
@@ -13,10 +15,33 @@ from html import escape
 from HachiBot.modules.helper_funcs.chat_status import is_user_ban_protected, bot_admin
 
 import HachiBot.modules.sql.users_sql as sql
+from HachiBot import app, arq
+from HachiBot.utils.filter_groups import autocorrect_group
 from HachiBot import dispatcher, OWNER_ID, DEMONS, DRAGONS, LOGGER
 from HachiBot.modules.helper_funcs.filters import CustomFilters
 
 USERS_GROUP = 4
+
+
+@app.on_message(
+    filters.command("autocorrect")
+    & ~filters.edited
+)
+async def autocorrect_bot(_, message: Message):
+    if not message.reply_to_message:
+        return await message.reply_text("Reply to a text message.")
+    reply = message.reply_to_message
+    text = reply.text or reply.caption
+    if not text:
+        return await message.reply_text("Reply to a text message.")
+    data = await arq.spellcheck(text)
+    if not data.ok:
+        return await message.reply_text("Something wrong happened.")
+    result = data.result
+    await message.reply_text(result.corrected if result.corrected else "Empty")
+
+
+IS_ENABLED = False
 
 
 def escape_html(word):
