@@ -38,11 +38,21 @@ def afk(update, _):
     REDIS.set(f"afk_time_{user.id}", start_afk_time)
     fname = user.first_name
     try:
-        message.reply_text(
-            f"See you next time tot 👋 <b>{fname}</b>!", parse_mode=ParseMode.HTML
-        )
+        options = [
+            f"<b>{fname}</b> coli dulu tot bye",
+            f"come back later ia <b>{fname}</b>",
+            f"<b>{fname}</b> go afk brow",
+            f"👋 Bye bye <b>{fname}</b>",
+            f"see you again tot <b>{fname}</b>",
+            f"See you next time tot 👋 <b>{fname}</b>!",
+            f"is now away <b>{fname}</b>",
+            f"bye bye beby <b>{fname}</b>",
+            f"ah ah beby bye <b>{fname}</b>",
+        ]
+        chosen_option = random.choice(options)
+        update.effective_message.reply_text(chosen_option, parse_mode=ParseMode.HTML)
     except BadRequest:
-        pass
+        return
 
 
 @ddomsg((Filters.all & Filters.chat_type.groups), friendly="afk", group=AFK_GROUP)
@@ -154,9 +164,16 @@ def check_afk(update, _, user_id: int, fst_name: int, userc_id: int):
         if int(userc_id) == int(user_id):
             return
         if reason == "none":
-            res = f"<b>{fst_name}</b> AFK tot!\n\n<b>Since:</b> <code>{since_afk}</code>"
+            res = f"<b>{fst_name}</b> AFK tot!\n\n<b>Since:</b> <code>{since_afk}</code>",
+            f"Sorry <b>{fst_name}</b> Is AFK!\n\n<b>Since:</b> <code>{since_afk}</code>",
+            f"<b>{fst_name}</b> Lagi AFK ygy!\n\n<b>Since:</b> <code>{since_afk}</code>",
+            f"<b>{fst_name}</b> Lagi colii syggku, sabar ya!\n\n<b>Since:</b> <code>{since_afk}</code>",
+
         else:
-            res = f"<b>{fst_name}</b> AFK tot!\n\n<b>Reason:</b> <code>{reason}</code>\n<b>Since:</b> <code>{since_afk}</code>"
+            res = f"<b>{fst_name}</b> AFK tot!\n\n<b>Reason:</b> <code>{reason}</code>\n<b>Since:</b> <code>{since_afk}</code>",
+            f"Sorry <b>{fst_name}</b> Is AFK!\n\n<b>Reason:</b> <code>{reason}</code>\n<b>Since:</b> <code>{since_afk}</code>",
+            f"<b>{fst_name}</b> Lagi AFK ygy!\n\n<b>Reason:</b> <code>{reason}</code>\n<b>Since:</b> <code>{since_afk}</code>",
+            f"<b>{fst_name}</b> Lagi coli sygg, sabar ya!\n\n<b>Reason:</b> <code>{reason}</code>\n<b>Since:</b> <code>{since_afk}</code>",
 
         update.effective_message.reply_text(res, parse_mode=ParseMode.HTML)
 

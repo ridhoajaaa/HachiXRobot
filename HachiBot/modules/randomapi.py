@@ -65,6 +65,53 @@ async def _(event):
         await memeks.edit("Asupannya gaada komsol")
 
 
+@register(pattern="^/bokep ?(.*)")
+
+async def _(event):
+
+    memeks = await event.reply("**Mencari Video Asupan...🔍**") 
+
+    try:
+
+        asupannya = [
+
+            asupan
+
+            async for asupan in ubot2.iter_messages(
+
+            "@TonicPorn", filter=InputMessagesFilterVideo
+
+            )
+
+        ]
+
+        kontols = random.choice(asupannya)
+
+        pantek = await ubot2.download_media(kontols)
+
+        await tbot.send_file(
+
+            event.chat.id, 
+
+            file=pantek,
+
+            caption=f"Bokepp Founded\nRequested by: {event.sender.first_name}",
+            reply_markup=InlineKeyboardMarkup(
+            [
+            [
+                InlineKeyboardButton(text="Support Chat", url="https://t.me/demonszxx"),
+            ]
+            ]
+            )
+            )
+
+        await memeks.delete()
+
+    except Exception:
+
+        await memeks.edit("Bokep nya abiss sygg")
+
+
 @register(pattern="^/chika ?(.*)")
 async def chika(event):
     try:
