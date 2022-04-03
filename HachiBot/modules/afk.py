@@ -1,4 +1,4 @@
-import time
+import time, random, html
 
 from telegram import MessageEntity, ParseMode
 from telegram.error import BadRequest
@@ -67,10 +67,19 @@ def no_longer_afk(update, _):
             return
         firstname = update.effective_user.first_name
         try:
-            message.reply_text(
-                f"<b>{firstname}</b> im here brader\n\nYou were away for: <code>{end_afk_time}</code>",
-                parse_mode=ParseMode.HTML,
-            )
+            options = [
+                f"<b>{firstname}</b> is here!\n\nYou were away for: <code>{end_afk_time}</code>",
+                f"<b>{firstname}</b> is back!n\nYou were away for: <code>{end_afk_time}</code>",
+                f"<b>{firstname}</b> is now in the chat!\n\nYou were away for: <code>{end_afk_time}</code>",
+                f"<b>{firstname}</b> is awake!\n\nYou were away for: <code>{end_afk_time}</code>",
+                f"<b>{firstname}</b> is back online!\n\nYou were away for: <code>{end_afk_time}</code>",
+                f"<b>{firstname}</b> is finally here!\n\nYou were away for: <code>{end_afk_time}</code>",
+                f"Welcome back babu! <b>{firstname}</b>",
+                f"Where is <b>{firstname}</b>?\nIn the chat!",
+            ]
+            chosen_option = random.choice(options)
+            update.effective_message.reply_text(chosen_option)
+            parse_mode=ParseMode.HTML,
         except BadRequest:
             return
 

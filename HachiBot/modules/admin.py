@@ -374,7 +374,6 @@ def admin(update: Update, context: CallbackContext) -> Optional[str]:
 @can_promote
 @user_etmin(AdminPerms.CAN_PROMOTE_MEMBERS)
 @loggable
-@ddomsg(Filters.regex("(?i)^.etmin"))
 def lowpromote(update: Update, context: CallbackContext) -> str:
     bot = context.bot
     args = context.args
