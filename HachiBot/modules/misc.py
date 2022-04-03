@@ -1,7 +1,7 @@
 from ast import pattern
 import datetime
 import platform
-import random
+import random, requests
 import re
 import wikipedia
 import os

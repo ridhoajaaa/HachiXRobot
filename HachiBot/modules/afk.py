@@ -42,7 +42,7 @@ def afk(update, _):
             f"<b>{fname}</b> coli dulu tot bye",
             f"come back later ia <b>{fname}</b>",
             f"<b>{fname}</b> go afk brow",
-            f"👋 Bye bye <b>{fname}</b>",
+            f"Bye bye 👋<b>{fname}</b>",
             f"see you again tot <b>{fname}</b>",
             f"See you next time tot 👋 <b>{fname}</b>!",
             f"is now away <b>{fname}</b>",
@@ -79,7 +79,7 @@ def no_longer_afk(update, _):
         try:
             options = [
                 f"<b>{firstname}</b> is here!\n\nYou were away for: <code>{end_afk_time}</code>",
-                f"<b>{firstname}</b> is back!n\nYou were away for: <code>{end_afk_time}</code>",
+                f"<b>{firstname}</b> is back!\n\nYou were away for: <code>{end_afk_time}</code>",
                 f"<b>{firstname}</b> is now in the chat!\n\nYou were away for: <code>{end_afk_time}</code>",
                 f"<b>{firstname}</b> is awake!\n\nYou were away for: <code>{end_afk_time}</code>",
                 f"<b>{firstname}</b> is back online!\n\nYou were away for: <code>{end_afk_time}</code>",
