@@ -31,6 +31,6 @@ async def writer(event):
         y = y + line_height - 5
     file = "hachi.jpg"
     img.save(file)
-    await event.reply(file=file, caption = "Made by **@HachiXBot**")
+    await event.reply_photo(file=file, caption = "Made by **@HachiXBot**")
     os.remove(file)
     await k.delete()
