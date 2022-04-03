@@ -7,10 +7,9 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 from HachiBot.events import register
 from HachiBot.utils.tools import edit_delete, edit_or_reply, text_set
-from HachiBot.modules.helper_funcs.decorators import ddocmd
 
 @register(pattern="/write(?: |$)(.*)")
-async def writer(event, message):
+async def writer(event):
     if event.reply_to:
         reply = await event.get_reply_message()
         text = reply.message
@@ -30,6 +29,6 @@ async def writer(event, message):
         y = y + line_height - 5
     file = "hachi.jpg"
     img.save(file)
-    await message.reply_photo(file=file, caption = "Made by **@HachiXBot**")
+    await event.reply(file=file)
     os.remove(file)
     await k.delete()
