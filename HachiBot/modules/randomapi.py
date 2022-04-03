@@ -48,7 +48,7 @@ async def _(event):
 
             file=pantek,
 
-            caption=f"Asupan Founded\nRequested by: {mention_html(event.sender.first_name,)}",
+            caption=f"Asupan Founded\nRequested by: {event.sender.first_name}",
             reply_markup=InlineKeyboardMarkup(
             [
             [

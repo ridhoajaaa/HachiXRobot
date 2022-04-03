@@ -78,8 +78,7 @@ def no_longer_afk(update, _):
                 f"Where is <b>{firstname}</b>?\nIn the chat!",
             ]
             chosen_option = random.choice(options)
-            update.effective_message.reply_text(chosen_option)
-            parse_mode=ParseMode.HTML,
+            update.effective_message.reply_text(chosen_option, parse_mode=ParseMode.HTML)
         except BadRequest:
             return
 
