@@ -3,6 +3,7 @@
 # ⚠️ Don't Remove Credits
 
 from ast import pattern
+from email import message
 import os
 
 from PIL import Image, ImageDraw, ImageFont
@@ -31,6 +32,6 @@ async def writer(event):
         y = y + line_height - 5
     file = "hachi.jpg"
     img.save(file)
-    await event.reply_photo(file=file, caption = "Made by **@HachiXBot**")
+    await message.reply_photo(file=file, caption = "Made by **@HachiXBot**")
     os.remove(file)
     await k.delete()
