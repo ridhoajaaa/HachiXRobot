@@ -175,7 +175,8 @@ def check_afk(update, _, user_id: int, fst_name: int, userc_id: int):
             f"<b>{fst_name}</b> Lagi AFK ygy!\n\n<b>Reason:</b> <code>{reason}</code>\n<b>Since:</b> <code>{since_afk}</code>",
             f"<b>{fst_name}</b> Lagi coli sygg, sabar ya!\n\n<b>Reason:</b> <code>{reason}</code>\n<b>Since:</b> <code>{since_afk}</code>",
 
-        update.effective_message.reply_text(res, parse_mode=ParseMode.HTML)
+        chosen_option = random.choice(res)
+        update.effective_message.reply_text(chosen_option, parse_mode=ParseMode.HTML)
 
 
 def __gdpr__(user_id):

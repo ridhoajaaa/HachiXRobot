@@ -99,21 +99,9 @@ def markdown_help_sender(update: Update):
     )
     update.effective_message.reply_text(
         "/save test This is a markdown test. _italics_, *bold*, code, "
-        "[URL](example.com) [button](buttonurl:github.com) "
+        "[URL](example.com) [button](buttonurl:github.com/ridhoajaaa) "
         "[button2](buttonurl://google.com:same)",
     )
-
-
-def repo(update: Update, context: CallbackContext):
-    message = update.effective_message
-    text = message.text[len('/repo '):]
-    usr = get(f'https://api.github.com/users/{text}/repos?per_page=40').json()
-    reply_text = "*Repo*\n"
-    for i in range(len(usr)):
-        reply_text += f"[{usr[i]['name']}]({usr[i]['html_url']})\n"
-    message.reply_text(reply_text,
-                       parse_mode=ParseMode.MARKDOWN,
-                       disable_web_page_preview=True)
 
 
 def gdpr(update: Update, context: CallbackContext):
@@ -292,16 +280,16 @@ def ud(update, context):
     if not text:
         msg.reply_text("Please enter keywords to search on ud!")
         return
-    if text == "Arya":
-        msg.reply_text("Arya is my owner so if you search him on urban dictionary you can't find the meaning because he is my husband and only me who know what's the meaning of Arya!")
+    if text == "ddok":
+        msg.reply_text("ddok is my owner so if you search him on urban dictionary you can't find the meaning because he is my husband and only me who know what's the meaning of ddok!")
         return
     try:
         results = get(f"http://api.urbandictionary.com/v0/define?term={text}").json()
-        reply_text = f'Word: {text}\n\nDefinition: \n{results["list"][0]["definition"]}'
-        reply_text += f'\n\nExample: \n{results["list"][0]["example"]}'
+        reply_text = f'**Word:** {text}\n\n**Definition:** \n{results["list"][0]["definition"]}'
+        reply_text += f'\n\n**Example:** \n{results["list"][0]["example"]}'
     except IndexError:
         reply_text = (
-            f"Word: {text}\n\nResults: Sorry could not find any matching results!"
+            f"**Word:** {text}\n\n**Results:** Sorry could not find any matching results!"
         )
     ignore_chars = "[]"
     reply = reply_text
@@ -405,11 +393,6 @@ IP_HANDLER = CommandHandler(
 SYS_STATUS_HANDLER = CommandHandler(
     "sysinfo", system_status, filters=CustomFilters.dev_filter, run_async=True
 )
-REPO_HANDLER = DisableAbleCommandHandler("repos",
-                                         repo,
-                                         pass_args=True,
-                                         run_async=True,
-                                         admin_ok=True)
 
 GDPR_HANDLER = CommandHandler("gdpr",
                               gdpr,
@@ -420,19 +403,17 @@ dispatcher.add_handler(ECHO_HANDLER)
 dispatcher.add_handler(MD_HELP_HANDLER)
 dispatcher.add_handler(GDPR_HANDLER)
 dispatcher.add_handler(REDDIT_MEMES_HANDLER)
-dispatcher.add_handler(REPO_HANDLER)
 dispatcher.add_handler(SYS_STATUS_HANDLER)
 dispatcher.add_handler(IP_HANDLER)
 dispatcher.add_handler(
     DisableAbleCommandHandler("removebotkeyboard", reply_keyboard_remove))
 
 __mod_name__ = "Extras"
-__command_list__ = ["id", "echo", "rmeme", "ip", "sysinfo", "repos"]
+__command_list__ = ["id", "echo", "rmeme", "ip", "sysinfo"]
 __handlers__ = [
     ECHO_HANDLER,
     MD_HELP_HANDLER,
     REDDIT_MEMES_HANDLER,
     IP_HANDLER,
     SYS_STATUS_HANDLER,
-    REPO_HANDLER,
 ]

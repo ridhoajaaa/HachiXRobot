@@ -147,7 +147,7 @@ def get_welcome_type(msg: Message):
             offset = 0  # offset is no need since target was in reply
             entities = msg.reply_to_message.parse_entities()
         else:
-            argumen = args[1]
+            argumen = args[0]
             offset = len(argumen) - len(
                 msg.text,
             )  # set correct offset relative to command + notename

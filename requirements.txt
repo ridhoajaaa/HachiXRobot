@@ -31,6 +31,7 @@ psutil
 aiohttp
 cloudscraper
 Pillow
+py-Ultroid
 CurrencyConverter
 googletrans
 cloudmersive_virus_api_client
