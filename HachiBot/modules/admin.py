@@ -1100,12 +1100,11 @@ def adminlist(update, context):
 @user_admin
 @ddocallback(pattern=r"demote_")
 def button(update: Update, context: CallbackContext) -> str:
+    promoter = chat.get_member(user.id)
     query = update.callback_query
     user = update.effective_user
     bot = context.bot
     match = re.match(r"demote_\((.+?)\)", query.data)
-
-    promoter = chat.get_member(user.id)
 
     if (
         not (promoter.can_promote_members or promoter.status == "creator")
