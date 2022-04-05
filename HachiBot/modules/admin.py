@@ -1104,6 +1104,7 @@ def button(update: Update, context: CallbackContext) -> str:
     user = update.effective_user
     bot = context.bot
     match = re.match(r"demote_\((.+?)\)", query.data)
+
     promoter = chat.get_member(user.id)
 
     if (
@@ -1117,7 +1118,7 @@ def button(update: Update, context: CallbackContext) -> str:
         )
         return
 
-    if match:
+    elif match:
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
         member = chat.get_member(user_id)
