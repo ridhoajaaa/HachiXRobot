@@ -1100,27 +1100,16 @@ def adminlist(update, context):
 @user_admin
 @ddocallback(pattern=r"demote_")
 def button(update: Update, context: CallbackContext) -> str:
-    promoter = chat.get_member(user.id)
     query = update.callback_query
     user = update.effective_user
     bot = context.bot
     match = re.match(r"demote_\((.+?)\)", query.data)
 
-    if (
-        not (promoter.can_promote_members or promoter.status == "creator")
-        and user.id not in DRAGONS
-    ):
-        bot.answer_callback_query(
-                    query.id,
-                    text="You don't have enough rights to demoted",
-                    show_alert=True,
-        )
-        return
-
-    elif match:
+    if match:
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
         member = chat.get_member(user_id)
+        promoter = chat.get_member(user.id)
         bot_member = chat.get_member(bot.id)
         bot_permissions = bot.promoteChatMember(
             chat.id,
@@ -1155,6 +1144,15 @@ def button(update: Update, context: CallbackContext) -> str:
             ]
         ]
     )
+    if (
+        not (promoter.can_promote_members or promoter.status == "creator")
+        and user.id not in DRAGONS
+    ):
+        bot.answer_callback_query(
+                    query.id,
+                    text="You don't have enough rights to demoted",
+                    show_alert=True,
+        )
         if demoted:
             update.effective_message.edit_text(
             f"Demoted a admins in <b>{chat.title}</b>\n\n<b>Admin: {mention_html(member.user.id, member.user.first_name)}</b>\n<b>Demoter: {mention_html(user.id, user.first_name)}</b>",
