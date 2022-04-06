@@ -51,7 +51,7 @@ def free(update: Update, context: CallbackContext):
         return ""
     sql.approve(message.chat_id, user_id)
     message.reply_text(
-        f"{mention_html(user_member.user.id, user_member.user.first_name)} [<code>{user_member.user.id}</code>] is now longer 🧙‍♂ approved in <b>{chat_title}!</b>",
+        f"@{html.escape(user.username)} [<code>{user_member.user.id}</code>] is now longer 🧙‍♂ approved in <b>{chat_title}!</b>",
         parse_mode=ParseMode.HTML,
     )
     log_message = (
