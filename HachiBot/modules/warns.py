@@ -121,7 +121,7 @@ def warn(user: User,
     else:
         keyboard = InlineKeyboardMarkup([[
             InlineKeyboardButton(
-                "❌ Remove", callback_data="rm_warn({})".format(user.id))
+                "❌ Remove Warn", callback_data="rm_warn({})".format(user.id))
         ]])
 
         reply = (
