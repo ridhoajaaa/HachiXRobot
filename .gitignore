@@ -1,8 +1,8 @@
 # Config files, logs and stuff
-SkyzuRobot/modules/helper_funcs/temp.txt
-SkyzuRobot/elevated_users.json
-SkyzuRobot/config.py
-SkyzuRobot/config.ini
+HachiBot/modules/helper_funcs/temp.txt
+HachiBot/elevated_users.json
+HachiBot/config.py
+HachiBot/config.ini
 log.txt
 kangsticker.png
 kangsticker.tgs
@@ -11,9 +11,9 @@ updates.txt
 start_service.bat
 
 # Session files
-SkyzuRobot/*.session
-SkyzuRobot/*.session-journal
-Skyzu.session-journal
+HachiBot/*.session
+HachiBot/*.session-journal
+Hachi.session-journal
 *.session
 
 # Byte-compiled / optimized / DLL files
