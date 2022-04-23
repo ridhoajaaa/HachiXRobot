@@ -104,11 +104,15 @@ def unfree(update: Update, context: CallbackContext):
         parse_mode=ParseMode.HTML,
         )
         return ""
-    sql.disapprove(message.chat_id, user_id)
-    message.reply_text(
+    if sql.disapprove(message.chat_id, user_id):
+        message.reply_text(
+        f"@{html.escape(user_member.username)} [<code>{user_member.user.id}</code>] is no longer approved in <b>{chat_title}</b>.",
+        parse_mode=ParseMode.HTML,
+    )
+    else:
         f"{mention_html(user_member.user.id, user_member.user.first_name)} [<code>{user_member.user.id}</code>] is no longer approved in <b>{chat_title}</b>.",
         parse_mode=ParseMode.HTML,
-        )
+        
     log_message = (
         f"<b>{html.escape(chat.title)}:</b>\n"
         f"#UNAPPROVED\n"
