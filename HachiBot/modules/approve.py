@@ -1,4 +1,5 @@
 import html
+import re
 
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, Update
 from telegram.error import BadRequest
@@ -49,11 +50,15 @@ def free(update: Update, context: CallbackContext):
             parse_mode=ParseMode.HTML,
         )
         return ""
-    sql.approve(message.chat_id, user_id)
-    message.reply_text(
-        f"@{html.escape(user.username)} [<code>{user_member.user.id}</code>] is now longer 🧙‍♂ approved in <b>{chat_title}!</b>",
+    if sql.approve(message.chat_id, user_id):
+        message.reply_text(
+        f"@{html.escape(user_member.username)} [<code>{user_member.user.id}</code>] is now longer 🧙‍♂ approved in <b>{chat_title}!</b>",
         parse_mode=ParseMode.HTML,
     )
+    else:
+        f"{mention_html(user_member.user.id, user_member.user.first_name)} [<code>{user_member.user.id}</code>] is now longer 🧙‍♂ approved in <b>{chat_title}!</b>",
+        parse_mode=ParseMode.HTML,
+        
     log_message = (
         f"<b>{html.escape(chat.title)}:</b>\n"
         f"#APPROVED\n"
